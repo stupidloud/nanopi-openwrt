@@ -62,7 +62,6 @@ jobs:
         run: |
           cd friendlywrt-h5/friendlywrt/package
           git clone https://github.com/Baozisoftware/luci-app-koolproxy
-          git clone https://github.com/vernesong/OpenClash
       
       - name: Update Target.mk
         run: |
