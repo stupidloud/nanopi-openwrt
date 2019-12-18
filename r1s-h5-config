@@ -3832,7 +3832,6 @@ CONFIG_PACKAGE_luci-i18n-firewall-zh-cn=y
 # CONFIG_PACKAGE_luci-i18n-firewall-zh-tw is not set
 CONFIG_PACKAGE_luci-i18n-flowoffload-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-guest-wifi-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-haproxy-tcp-zh-cn=y
 # CONFIG_PACKAGE_luci-i18n-mwan3-ja is not set
 # CONFIG_PACKAGE_luci-i18n-mwan3-ru is not set
 CONFIG_PACKAGE_luci-i18n-mwan3-zh-cn=y
@@ -3841,34 +3840,8 @@ CONFIG_PACKAGE_luci-i18n-mwan3helper-zh-cn=y
 # CONFIG_PACKAGE_luci-i18n-nlbwmon-ja is not set
 # CONFIG_PACKAGE_luci-i18n-nlbwmon-ru is not set
 CONFIG_PACKAGE_luci-i18n-nlbwmon-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-pppoe-relay-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-pptp-server-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-ramfree-zh-cn=y
-# CONFIG_PACKAGE_luci-i18n-samba4-ca is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-cs is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-de is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-el is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-en is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-es is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-fr is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-he is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-hu is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-it is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-ja is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-ms is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-no is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-pl is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-pt is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-pt-br is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-ro is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-ru is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-sk is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-sv is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-tr is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-uk is not set
-# CONFIG_PACKAGE_luci-i18n-samba4-vi is not set
-CONFIG_PACKAGE_luci-i18n-samba4-zh-cn=y
-# CONFIG_PACKAGE_luci-i18n-samba4-zh-tw is not set
 CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-ssrserver-python-zh-cn=y
 # CONFIG_PACKAGE_luci-i18n-statistics-ca is not set
@@ -4112,10 +4085,10 @@ CONFIG_PACKAGE_gnurl=y
 # CONFIG_PACKAGE_rosy-file-server is not set
 # CONFIG_PACKAGE_rsync is not set
 # CONFIG_PACKAGE_rsyncd is not set
-# CONFIG_PACKAGE_vsftpd is not set
+CONFIG_PACKAGE_vsftpd=y
 CONFIG_PACKAGE_vsftpd-alt=y
 CONFIG_VSFTPD_USE_UCI_SCRIPTS=y
-# CONFIG_PACKAGE_vsftpd-tls is not set
+CONFIG_PACKAGE_vsftpd-tls=y
 CONFIG_PACKAGE_wget=y
 CONFIG_PACKAGE_wget-nossl=y
 
