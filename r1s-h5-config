@@ -3634,7 +3634,7 @@ CONFIG_PACKAGE_luci-app-mwan3helper=y
 # CONFIG_PACKAGE_luci-app-nft-qos is not set
 CONFIG_PACKAGE_luci-app-nlbwmon=y
 # CONFIG_PACKAGE_luci-app-noddos is not set
-# CONFIG_PACKAGE_luci-app-nps is not set
+CONFIG_PACKAGE_luci-app-nps=y
 # CONFIG_PACKAGE_luci-app-ntpc is not set
 # CONFIG_PACKAGE_luci-app-ocserv is not set
 # CONFIG_PACKAGE_luci-app-olsr is not set
