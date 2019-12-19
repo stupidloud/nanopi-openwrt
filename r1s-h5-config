@@ -4812,8 +4812,8 @@ CONFIG_PACKAGE_ipt2socks=y
 # CONFIG_PACKAGE_iputils-tracepath is not set
 # CONFIG_PACKAGE_iputils-tracepath6 is not set
 # CONFIG_PACKAGE_iputils-traceroute6 is not set
-CONFIG_PACKAGE_iw=y
-# CONFIG_PACKAGE_iw-full is not set
+# CONFIG_PACKAGE_iw is not set
+CONFIG_PACKAGE_iw-full=y
 # CONFIG_PACKAGE_jool is not set
 # CONFIG_PACKAGE_jool-tools is not set
 CONFIG_PACKAGE_kcptun-client=y
