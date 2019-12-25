@@ -3659,7 +3659,7 @@ CONFIG_PACKAGE_luci-app-ramfree=y
 # CONFIG_PACKAGE_luci-app-shairplay is not set
 # CONFIG_PACKAGE_luci-app-siitwizard is not set
 # CONFIG_PACKAGE_luci-app-simple-adblock is not set
-CONFIG_PACKAGE_luci-app-smartdns=y
+# CONFIG_PACKAGE_luci-app-smartdns is not set
 # CONFIG_PACKAGE_luci-app-softethervpn is not set
 # CONFIG_PACKAGE_luci-app-splash is not set
 CONFIG_PACKAGE_luci-app-sqm=y
@@ -3842,7 +3842,7 @@ CONFIG_PACKAGE_luci-i18n-mwan3helper-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-nlbwmon-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-pptp-server-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-ramfree-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn=y
+# CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn is not set
 CONFIG_PACKAGE_luci-i18n-ssrserver-python-zh-cn=y
 # CONFIG_PACKAGE_luci-i18n-statistics-ca is not set
 # CONFIG_PACKAGE_luci-i18n-statistics-cs is not set
@@ -4925,7 +4925,7 @@ CONFIG_PACKAGE_shadowsocksr-libev-alt=y
 CONFIG_PACKAGE_shadowsocksr-libev-server=y
 CONFIG_PACKAGE_shadowsocksr-libev-ssr-local=y
 # CONFIG_PACKAGE_simple-adblock is not set
-CONFIG_PACKAGE_smartdns=y
+# CONFIG_PACKAGE_smartdns is not set
 # CONFIG_PACKAGE_smartsnmpd is not set
 # CONFIG_PACKAGE_snmp-mibs is not set
 # CONFIG_PACKAGE_snmp-utils is not set
