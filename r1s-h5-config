@@ -2186,7 +2186,7 @@ CONFIG_PACKAGE_kmod-rtl8192c-common=y
 CONFIG_PACKAGE_kmod-rtl8192cu=y
 CONFIG_PACKAGE_kmod-rtl8xxxu=y
 CONFIG_PACKAGE_kmod-rtlwifi=y
-# CONFIG_PACKAGE_RTLWIFI_DEBUG is not set
+CONFIG_PACKAGE_RTLWIFI_DEBUG=y
 CONFIG_PACKAGE_kmod-rtlwifi-usb=y
 CONFIG_PACKAGE_kmod-wl12xx=m
 CONFIG_PACKAGE_kmod-wl18xx=m
@@ -3312,7 +3312,7 @@ CONFIG_PACKAGE_libjson-c=y
 CONFIG_PACKAGE_libltdl=y
 CONFIG_PACKAGE_liblua=y
 # CONFIG_PACKAGE_liblz4 is not set
-# CONFIG_PACKAGE_liblzo is not set
+CONFIG_PACKAGE_liblzo=y
 # CONFIG_PACKAGE_libmad is not set
 # CONFIG_PACKAGE_libmagic is not set
 # CONFIG_PACKAGE_libmariadb is not set
@@ -3615,7 +3615,7 @@ CONFIG_PACKAGE_luci-app-flowoffload=y
 # CONFIG_PACKAGE_luci-app-freifunk-widgets is not set
 CONFIG_PACKAGE_luci-app-frpc=y
 # CONFIG_PACKAGE_luci-app-fwknopd is not set
-CONFIG_PACKAGE_luci-app-guest-wifi=y
+# CONFIG_PACKAGE_luci-app-guest-wifi is not set
 # CONFIG_PACKAGE_luci-app-haproxy-tcp is not set
 # CONFIG_PACKAGE_luci-app-hd-idle is not set
 # CONFIG_PACKAGE_luci-app-hnet is not set
@@ -3640,8 +3640,8 @@ CONFIG_PACKAGE_luci-app-nps=y
 # CONFIG_PACKAGE_luci-app-olsr is not set
 # CONFIG_PACKAGE_luci-app-olsr-services is not set
 # CONFIG_PACKAGE_luci-app-olsr-viz is not set
-# CONFIG_PACKAGE_luci-app-openvpn is not set
-# CONFIG_PACKAGE_luci-app-openvpn-server is not set
+CONFIG_PACKAGE_luci-app-openvpn=y
+CONFIG_PACKAGE_luci-app-openvpn-server=y
 # CONFIG_PACKAGE_luci-app-p910nd is not set
 # CONFIG_PACKAGE_luci-app-pagekitec is not set
 # CONFIG_PACKAGE_luci-app-polipo is not set
@@ -3696,7 +3696,7 @@ CONFIG_PACKAGE_luci-app-wifischedule=y
 CONFIG_PACKAGE_luci-app-wireguard=y
 CONFIG_PACKAGE_luci-app-wol=y
 CONFIG_PACKAGE_luci-app-wrtbwmon=y
-CONFIG_PACKAGE_luci-app-xlnetacc=y
+# CONFIG_PACKAGE_luci-app-xlnetacc is not set
 CONFIG_PACKAGE_luci-app-zerotier=y
 
 #
@@ -3831,7 +3831,6 @@ CONFIG_PACKAGE_luci-i18n-filetransfer-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-firewall-zh-cn=y
 # CONFIG_PACKAGE_luci-i18n-firewall-zh-tw is not set
 CONFIG_PACKAGE_luci-i18n-flowoffload-zh-cn=y
-CONFIG_PACKAGE_luci-i18n-guest-wifi-zh-cn=y
 # CONFIG_PACKAGE_luci-i18n-mwan3-ja is not set
 # CONFIG_PACKAGE_luci-i18n-mwan3-ru is not set
 CONFIG_PACKAGE_luci-i18n-mwan3-zh-cn=y
@@ -3840,9 +3839,34 @@ CONFIG_PACKAGE_luci-i18n-mwan3helper-zh-cn=y
 # CONFIG_PACKAGE_luci-i18n-nlbwmon-ja is not set
 # CONFIG_PACKAGE_luci-i18n-nlbwmon-ru is not set
 CONFIG_PACKAGE_luci-i18n-nlbwmon-zh-cn=y
+# CONFIG_PACKAGE_luci-i18n-openvpn-ca is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-cs is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-de is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-el is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-en is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-es is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-fr is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-he is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-hu is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-it is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-ja is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-ms is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-no is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-pl is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-pt is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-pt-br is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-ro is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-ru is not set
+CONFIG_PACKAGE_luci-i18n-openvpn-server-zh-cn=y
+# CONFIG_PACKAGE_luci-i18n-openvpn-sk is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-sv is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-tr is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-uk is not set
+# CONFIG_PACKAGE_luci-i18n-openvpn-vi is not set
+CONFIG_PACKAGE_luci-i18n-openvpn-zh-cn=y
+# CONFIG_PACKAGE_luci-i18n-openvpn-zh-tw is not set
 CONFIG_PACKAGE_luci-i18n-pptp-server-zh-cn=y
 CONFIG_PACKAGE_luci-i18n-ramfree-zh-cn=y
-# CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn is not set
 CONFIG_PACKAGE_luci-i18n-ssrserver-python-zh-cn=y
 # CONFIG_PACKAGE_luci-i18n-statistics-ca is not set
 # CONFIG_PACKAGE_luci-i18n-statistics-cs is not set
@@ -4212,6 +4236,7 @@ CONFIG_PACKAGE_avahi-dbus-daemon=y
 CONFIG_PACKAGE_ddns-scripts=y
 # CONFIG_PACKAGE_ddns-scripts_aliyun is not set
 # CONFIG_PACKAGE_ddns-scripts_cloudflare.com-v4 is not set
+# CONFIG_PACKAGE_ddns-scripts_dnspod is not set
 # CONFIG_PACKAGE_ddns-scripts_freedns_42_pl is not set
 # CONFIG_PACKAGE_ddns-scripts_godaddy.com-v1 is not set
 # CONFIG_PACKAGE_ddns-scripts_no-ip_com is not set
@@ -4510,10 +4535,24 @@ CONFIG_PACKAGE_tc=y
 # CONFIG_PACKAGE_ocserv is not set
 # CONFIG_PACKAGE_openconnect is not set
 # CONFIG_PACKAGE_opennhrp is not set
-# CONFIG_PACKAGE_openvpn-easy-rsa is not set
+CONFIG_PACKAGE_openvpn-easy-rsa=y
 # CONFIG_PACKAGE_openvpn-mbedtls is not set
 # CONFIG_PACKAGE_openvpn-nossl is not set
-# CONFIG_PACKAGE_openvpn-openssl is not set
+CONFIG_PACKAGE_openvpn-openssl=y
+CONFIG_OPENVPN_openssl_ENABLE_LZO=y
+CONFIG_OPENVPN_openssl_ENABLE_LZ4=y
+# CONFIG_OPENVPN_openssl_ENABLE_X509_ALT_USERNAME is not set
+CONFIG_OPENVPN_openssl_ENABLE_SERVER=y
+# CONFIG_OPENVPN_openssl_ENABLE_MANAGEMENT is not set
+CONFIG_OPENVPN_openssl_ENABLE_HTTP=y
+CONFIG_OPENVPN_openssl_ENABLE_SOCKS=y
+CONFIG_OPENVPN_openssl_ENABLE_FRAGMENT=y
+CONFIG_OPENVPN_openssl_ENABLE_MULTIHOME=y
+CONFIG_OPENVPN_openssl_ENABLE_PORT_SHARE=y
+CONFIG_OPENVPN_openssl_ENABLE_DEF_AUTH=y
+CONFIG_OPENVPN_openssl_ENABLE_PF=y
+# CONFIG_OPENVPN_openssl_ENABLE_IPROUTE2 is not set
+CONFIG_OPENVPN_openssl_ENABLE_SMALL=y
 CONFIG_PACKAGE_pptpd=y
 # CONFIG_PACKAGE_softethervpn-base is not set
 # CONFIG_PACKAGE_softethervpn-bridge is not set
@@ -4725,7 +4764,6 @@ CONFIG_PACKAGE_wifischedule=y
 CONFIG_PACKAGE_6in4=y
 # CONFIG_PACKAGE_6rd is not set
 # CONFIG_PACKAGE_6to4 is not set
-# CONFIG_PACKAGE_BaiduPCS-Web is not set
 # CONFIG_PACKAGE_acme is not set
 # CONFIG_PACKAGE_acme-dnsapi is not set
 # CONFIG_PACKAGE_adblock is not set
@@ -4737,6 +4775,7 @@ CONFIG_PACKAGE_adbyby=y
 # CONFIG_PACKAGE_apcupsd-cgi is not set
 # CONFIG_PACKAGE_apinger is not set
 # CONFIG_PACKAGE_arp-scan is not set
+# CONFIG_PACKAGE_baidupcs-web is not set
 # CONFIG_PACKAGE_banip is not set
 # CONFIG_PACKAGE_batctl is not set
 # CONFIG_PACKAGE_beanstalkd is not set
@@ -4925,7 +4964,7 @@ CONFIG_PACKAGE_shadowsocksr-libev-alt=y
 CONFIG_PACKAGE_shadowsocksr-libev-server=y
 CONFIG_PACKAGE_shadowsocksr-libev-ssr-local=y
 # CONFIG_PACKAGE_simple-adblock is not set
-# CONFIG_PACKAGE_smartdns is not set
+CONFIG_PACKAGE_smartdns=y
 # CONFIG_PACKAGE_smartsnmpd is not set
 # CONFIG_PACKAGE_snmp-mibs is not set
 # CONFIG_PACKAGE_snmp-utils is not set
