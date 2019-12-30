@@ -6,8 +6,8 @@ on:
   push:
     branches: 
       - master
-  # schedule:
-  #   - cron: 0 20 * * *
+  schedule:
+      - cron: 0 8 * * 5
   # release:
   #   types: [published]
 
