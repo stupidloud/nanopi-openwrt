@@ -53,8 +53,8 @@ jobs:
         run: |
           cd friendlywrt-h5
           git clone https://github.com/coolsnowwolf/lede
-          cd friendlywrt
-          cp -r ../lede/package/lean package/         
+          cp -r lede/package/lean friendlywrt/package/
+          cd friendlywrt  
           echo "src-git packages https://github.com/coolsnowwolf/packages" > feeds.conf.default
           echo "src-git luci https://github.com/coolsnowwolf/luci" >> feeds.conf.default
           echo "src-git routing https://git.openwrt.org/feed/routing.git^31407945f91112b8119f91b6437476f21fe1f6c0" >> feeds.conf.default
