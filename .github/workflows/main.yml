@@ -55,8 +55,10 @@ jobs:
           git clone https://github.com/coolsnowwolf/lede
           cd friendlywrt
           cp -r ../lede/package/lean package/         
-          sed -i 's/https:\/\/git.openwrt.org\/project\/luci.git;openwrt-19.07/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-          sed -i 's/https:\/\/git.openwrt.org\/feed\/packages.git;openwrt-19.07/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+          echo "src-git packages https://github.com/coolsnowwolf/packages" > feeds.conf.default
+          echo "src-git luci https://github.com/coolsnowwolf/luci" >> feeds.conf.default
+          echo "src-git routing https://git.openwrt.org/feed/routing.git^31407945f91112b8119f91b6437476f21fe1f6c0" >> feeds.conf.default
+          echo "src-git telephony https://git.openwrt.org/feed/telephony.git^fc9aa2b3ea37a280f1380ccfa059907fd68e2cfe" >> feeds.conf.default
 
       - name: Custom Applications
         run: |
