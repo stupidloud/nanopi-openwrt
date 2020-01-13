@@ -6,7 +6,7 @@
   <remote name="v18061"
           fetch="."
           revision="refs/heads/master-v18.06.1" />
-  <remote name="self" fetch="https://github.com/camino13" />
+  <remote name="self" fetch="https://github.com/klever1988" />
 	
   <remote name="self-sd-size" fetch="https://github.com/skytotwo" revision="refs/heads/master"/>
 
