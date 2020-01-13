@@ -55,8 +55,8 @@ jobs:
           git clone https://github.com/coolsnowwolf/lede
           cd friendlywrt
           cp -r ../lede/package/lean package/         
-          sed -i 's/https:\/\/git.openwrt.org\/project\/luci.git;openwrt-19.07/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-          sed -i 's/https:\/\/git.openwrt.org\/feed\/packages.git;openwrt-19.07/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+          #sed -i 's/https:\/\/git.openwrt.org\/project\/luci.git;openwrt-19.07/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
+          #sed -i 's/https:\/\/git.openwrt.org\/feed\/packages.git;openwrt-19.07/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
 
       - name: Custom Applications
         run: |
@@ -66,7 +66,7 @@ jobs:
       - name: Update Target.mk
         run: |
           cd friendlywrt-h5/friendlywrt/include 
-          sed -i 's/dnsmasq /dnsmasq-full default-settings luci/' target.mk    
+          sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk    
           
       - name: Update Feeds
         run: |
