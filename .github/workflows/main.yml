@@ -55,13 +55,13 @@ jobs:
           git clone https://github.com/coolsnowwolf/lede
           cd friendlywrt
           cp -r ../lede/package/lean package/         
-          #sed -i 's/https:\/\/git.openwrt.org\/project\/luci.git;openwrt-19.07/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-          #sed -i 's/https:\/\/git.openwrt.org\/feed\/packages.git;openwrt-19.07/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+          sed -i 's/http.*luci.*/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
+          sed -i 's/http.*feed\/packages.*/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
 
       - name: Custom Applications
         run: |
-          cd friendlywrt-h5/friendlywrt/package
-          git clone https://github.com/Baozisoftware/luci-app-koolproxy
+          #cd friendlywrt-h5/friendlywrt/package
+          #git clone https://github.com/Baozisoftware/luci-app-koolproxy
       
       - name: Update Target.mk
         run: |
