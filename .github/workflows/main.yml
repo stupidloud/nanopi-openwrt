@@ -119,14 +119,6 @@ jobs:
           # CONFIG_DISPLAY_SUPPORT is not set	
           	
           EOF
-      
-      - name: Download package
-        if: always()
-        run: |
-          cd friendlywrt-h5/friendlywrt
-          make download -j8
-          find dl -size -1024c -exec ls -l {} \;
-          find dl -size -1024c -exec rm -f {} \;
           
       - name: Build FriendlyWrt
         run: |
