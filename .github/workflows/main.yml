@@ -76,8 +76,8 @@ jobs:
           
       - name: Custom Configure File
         run: |
-          cd friendlywrt-h5/friendlywrt
-          rm -f ./.config*
+          cd friendlywrt-h5
+          rm -f friendlywrt/.config*
           cat >> ./configs/config_h5 <<EOF	
           	
           CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y	
