@@ -28,7 +28,7 @@
   </project>
 
   <!-- friendlywrt source code -->
-  <project path="friendlywrt" name="friendlywrt" remote="self" revision="refs/heads/master-v18.06.1" />
+  <project path="friendlywrt" name="friendlywrt" remote="self" revision="refs/heads/master" />
 
   <!-- toolchain -->
   <project path="toolchain" name="prebuilts" remote="origin" revision="refs/heads/master" />
