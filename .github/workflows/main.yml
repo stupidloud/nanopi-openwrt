@@ -46,7 +46,7 @@ jobs:
           cd friendlywrt-h5
           cd .repo/manifests
           rm -f ./h5.xml
-          wget https://raw.githubusercontent.com/camino13/NanoPi-R1S/master/h5.xml
+          wget https://raw.githubusercontent.com/klever1988/NanoPi-R1S/master/h5.xml
           repo sync -c  --no-clone-bundle
 
       - name: Merge LEDE
