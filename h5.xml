@@ -3,12 +3,7 @@
   <remote name="origin"
           fetch="."
           revision="refs/heads/master" />
-  <remote name="v18061"
-          fetch="."
-          revision="refs/heads/master-v18.06.1" />
   <remote name="self" fetch="https://github.com/klever1988" />
-	
-  <remote name="self-sd-size" fetch="https://github.com/skytotwo" revision="refs/heads/master"/>
 
   <project path="kernel" name="linux" remote="origin" revision="refs/heads/sunxi-4.14.y" />
   <project path="u-boot" name="u-boot" remote="origin" revision="refs/heads/sunxi-v2017.x" />
