@@ -1,0 +1,112 @@
+#
+# This is free software, lisence use MIT.
+#
+# Copyright (C) 2019 Jolly <https://totoro.site>
+#
+# <https://github.com/skytotwo/NanoPi-R1S-Build-By-Actions>
+#
+# Write by Jolly 2019/12/7
+# last update at 2019/12/19
+
+name: NanoPi-R1s H5 OpenWrt 19.07 Build
+
+on:
+  push:
+    paths: 
+      - '.github/workflows/NanoPi-R1s H5 OpenWrt 19.07 Build.yml'
+  # schedule:
+  #   - cron: 0 20 * * *
+  # release:
+  #   types: [published]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          ref: master
+
+      - name: Initialization Environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          #docker rmi `docker images -q`
+          #sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php
+          #sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
+          sudo rm -rf /etc/apt/sources.list.d
+          #sudo -E apt-get update
+          curl https://raw.githubusercontent.com/friendlyarm/build-env-on-ubuntu-bionic/master/install.sh | bash
+          #sudo -E apt-get -y autoremove --purge
+          #sudo -E apt-get clean
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk
+          
+      - name: Install Repo
+        run: |
+          git clone https://github.com/friendlyarm/repo
+          sudo cp repo/repo /usr/bin/
+          mkdir friendlywrt-h5
+          cd friendlywrt-h5
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m h5.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
+      
+      - name: Download Source
+        run: |
+          cd friendlywrt-h5
+          #rm -f .repo/manifests/h5.xml
+          #cp ../source_xml/h5_19.07.xml .repo/manifests/h5.xml
+          #sudo mkdir -p -m 777 /mnt/storage && mkdir -p friendlywrt /mnt/storage/friendlywrt && sudo mount --bind /mnt/storage/friendlywrt friendlywrt
+          repo sync -c  --no-clone-bundle
+          cat .repo/manifests/h5.xml
+      
+      - name: Merge Lean's Package
+        run: |
+          cd friendlywrt-h5
+          git clone https://github.com/klever1988/lede
+          cd friendlywrt
+          #cp -r ../lede/package/lean package/
+          #sed -i 's/http.*luci.*/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
+          #sed -i 's/http.*feed\/packages.*/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+          #sed -i 's/http.*routing.*/https:\/\/git.openwrt.org\/feed\/routing.git;openwrt-19.07/' feeds.conf.default
+          #sed -i 's/http.*telephony.*/https:\/\/git.openwrt.org\/feed\/telephony.git;openwrt-19.07/' feeds.conf.default
+          #echo 'src-git rosy https://github.com/rosywrt/luci-theme-rosy.git;openwrt-18.06' >> feeds.conf.default
+          cat feeds.conf.default
+          #sed -i 's/exit 0//' package/lean/default-settings/files/zzz-default-settings
+          #echo 'chown -R root:root /usr/share/netdata' >> package/lean/default-settings/files/zzz-default-settings
+          #cd include 
+          #sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk    
+
+      - name: Custom Configure File
+        run: |
+          cd friendlywrt-h5
+          #sed -i '/docker/d;/DOCKER/d' ./configs/config_h5
+          
+      - name: Build OpenWrt
+        run: |
+          cd friendlywrt-h5
+          #sed -i 's/make -j$(nproc)/make -j3/' scripts/mk-friendlywrt.sh
+          cat scripts/mk-friendlywrt.sh
+          ./build.sh nanopi_r1s.mk
+          df -h
+          
+      - name: Zip Files
+        run: |
+          #find friendlywrt-h5/out/ -name "FriendlyWrt_*img*" | xargs -i zip -r {}.zip {}
+          gzip friendlywrt-h5/out/*.img
+          
+      - name: Assemble Artifact
+        run: |
+          rm -rf ./artifact/
+          mkdir -p ./artifact/
+          #find friendlywrt-h5/out/ -name "FriendlyWrt_*img.zip*" | xargs -i mv -f {} ./artifact/
+          mv friendlywrt-h5/out/*img* ./artifact/
+          cp friendlywrt-h5/friendlywrt/.config ./artifact/
+      - name: Upload Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: FriendlyWrt_NanoPi-R1S H5 v19.07
+          path: ./artifact/
