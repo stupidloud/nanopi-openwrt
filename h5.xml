@@ -14,7 +14,7 @@
   <project path="u-boot" name="u-boot" remote="origin" revision="refs/heads/sunxi-v2017.x" />
 
   <!-- img tools for h5 -->
-  <project path="scripts/sd-fuse" name="sd-fuse_h5" remote="self-sd-size" >
+  <project path="scripts/sd-fuse" name="sd-fuse_h5" remote="origin" >
 	  <linkfile dest="out" src="out"/>
   </project>
 
