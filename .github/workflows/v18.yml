@@ -1,0 +1,131 @@
+#NanoPi-R1S H5 FriendlyWrt Build
+
+name: NanoPi-R1S H5 FriendlyWrt Build
+
+on:
+  push:
+    paths:
+      - '.github/workflows/v18.yml'
+  schedule:
+      - cron: 0 8 * * 5
+  # release:
+  #   types: [published]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          ref: master
+
+      - name: Initialization Environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          wget -O - https://raw.githubusercontent.com/friendlyarm/build-env-on-ubuntu-bionic/master/install.sh | bash
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk
+          
+      - name: Download Source
+        run: |
+          mkdir friendlywrt-h5
+          cd friendlywrt-h5
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v18.06.1 -m h5.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
+      
+      - name: Merge UpStearm OpenWrt
+        run: |
+          cd friendlywrt-h5
+          #rm .repo/manifests/h5.xml
+          #cp ../h5.xml .repo/manifests/h5.xml
+          repo sync -c  --no-clone-bundle
+
+      - name: Merge LEDE
+        run: |
+          cd friendlywrt-h5
+          git clone https://github.com/coolsnowwolf/lede
+          cd friendlywrt
+          cp -r ../lede/package/lean package/
+          #sed -i 's/http.*luci.*/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
+          #sed -i 's/http.*feed\/packages.*/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+          echo 'src-git rosy https://github.com/rosywrt/luci-theme-rosy.git;openwrt-18.06' >> feeds.conf.default
+      
+      - name: Update Target.mk
+        run: |
+          cd friendlywrt-h5/friendlywrt/include 
+          sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk    
+          
+      - name: Custom Configure File
+        run: |
+          cd friendlywrt-h5
+          rm -f friendlywrt/.config*
+          sed -i '/docker/d;/DOCKER/d' ./configs/config_h5
+          cat >> ./configs/config_h5 <<EOF	
+          	
+          CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y	
+          CONFIG_PACKAGE_ipv6helper=y	
+          CONFIG_PACKAGE_luci-app-adbyby-plus=y	
+          CONFIG_PACKAGE_luci-app-samba4=y	
+          CONFIG_PACKAGE_luci-app-statistics=y	
+          CONFIG_PACKAGE_luci-app-unblockmusic=y	
+          CONFIG_PACKAGE_luci-app-vnstat=y
+          CONFIG_PACKAGE_luci-app-ssr-plus=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y	
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y	
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y	
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y	
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
+          CONFIG_PACKAGE_luci-app-ttyd=y	
+          CONFIG_PACKAGE_luci-app-wrtbwmon=y	
+          CONFIG_PACKAGE_luci-app-netdata=y	
+          CONFIG_PACKAGE_luci-theme-argon=y	
+          CONFIG_PACKAGE_luci-theme-netgear=y	
+          CONFIG_PACKAGE_luci-theme-rosy=y	
+          CONFIG_PACKAGE_curl=y	
+          CONFIG_PACKAGE_htop=y	
+          CONFIG_PACKAGE_nano=y	
+          CONFIG_PACKAGE_screen=y	
+          CONFIG_PACKAGE_tree=y	
+          CONFIG_PACKAGE_vim-fuller=y	
+          CONFIG_PACKAGE_wget=y	
+          CONFIG_PACKAGE_collectd-mod-ping=y	
+          CONFIG_PACKAGE_collectd-mod-thermal=y	
+          CONFIG_PACKAGE_collectd-mod-cpufreq=y	
+          # CONFIG_FEED_rosy is not set	
+          # CONFIG_ALL_KMODS is not set	
+          # CONFIG_ALL_NONSHARED is not set	
+          # CONFIG_DEVEL is not set	
+          # CONFIG_PACKAGE_luci-lib-iptparser is not set	
+          # CONFIG_PACKAGE_luci-app-samba is not set	
+          # CONFIG_PACKAGE_samba36-server is not set	
+          # CONFIG_DISPLAY_SUPPORT is not set	
+          	
+          EOF
+          cat ./configs/config_h5
+          
+      - name: Build FriendlyWrt
+        run: |
+          cd friendlywrt-h5
+          ./build.sh nanopi_r1s.mk
+      
+      - name: Zip Files
+        run: |
+          #find friendlywrt-h5/out/ -name "FriendlyWrt_*img*" | xargs -i zip -r {}.zip {}
+          gzip friendlywrt-h5/out/*.img
+          
+      - name: Assemble Artifact
+        run: |
+          rm -rf ./artifact/
+          mkdir -p ./artifact/
+          #find friendlywrt-h5/out/ -name "FriendlyWrt_*img.zip*" | xargs -i mv -f {} ./artifact/
+          mv friendlywrt-h5/out/*img* ./artifact/
+          cp friendlywrt-h5/friendlywrt/.config ./artifact/
+      - name: Upload Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: FriendlyWrt_NanoPi-R1S
+          path: ./artifact/
