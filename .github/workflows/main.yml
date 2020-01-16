@@ -4,8 +4,8 @@ name: NanoPi-R1S H5 FriendlyWrt Build
 
 on:
   push:
-    branches: 
-      - master
+    paths:
+      - '.github/workflows/main.yml'
   schedule:
       - cron: 0 8 * * 5
   # release:
