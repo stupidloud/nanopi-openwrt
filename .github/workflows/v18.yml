@@ -40,8 +40,8 @@ jobs:
       - name: Merge UpStearm OpenWrt
         run: |
           cd friendlywrt-h5
-          #rm .repo/manifests/h5.xml
-          #cp ../h5.xml .repo/manifests/h5.xml
+          rm .repo/manifests/h5.xml
+          cp ../h5-18.06.xml .repo/manifests/h5.xml
           repo sync -c  --no-clone-bundle
 
       - name: Merge LEDE
@@ -49,7 +49,7 @@ jobs:
           cd friendlywrt-h5
           git clone https://github.com/coolsnowwolf/lede
           cd friendlywrt
-          cp -r ../lede/package/lean package/
+          #cp -r ../lede/package/lean package/
           #sed -i 's/http.*luci.*/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
           #sed -i 's/http.*feed\/packages.*/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
           echo 'src-git rosy https://github.com/rosywrt/luci-theme-rosy.git;openwrt-18.06' >> feeds.conf.default
@@ -57,7 +57,7 @@ jobs:
       - name: Update Target.mk
         run: |
           cd friendlywrt-h5/friendlywrt/include 
-          sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk    
+          #sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk    
           
       - name: Custom Configure File
         run: |
