@@ -63,48 +63,6 @@ jobs:
         run: |
           cd friendlywrt-h5
           rm -f friendlywrt/.config*
-          sed -i '/docker/d;/DOCKER/d' ./configs/config_h5
-          cat >> ./configs/config_h5 <<EOF	
-          	
-          CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y	
-          CONFIG_PACKAGE_ipv6helper=y	
-          CONFIG_PACKAGE_luci-app-adbyby-plus=y	
-          CONFIG_PACKAGE_luci-app-samba4=y	
-          CONFIG_PACKAGE_luci-app-statistics=y	
-          CONFIG_PACKAGE_luci-app-unblockmusic=y	
-          CONFIG_PACKAGE_luci-app-vnstat=y
-          CONFIG_PACKAGE_luci-app-ssr-plus=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y	
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y	
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y	
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y	
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
-          CONFIG_PACKAGE_luci-app-ttyd=y	
-          CONFIG_PACKAGE_luci-app-wrtbwmon=y	
-          CONFIG_PACKAGE_luci-app-netdata=y	
-          CONFIG_PACKAGE_luci-theme-argon=y	
-          CONFIG_PACKAGE_luci-theme-netgear=y	
-          CONFIG_PACKAGE_luci-theme-rosy=y	
-          CONFIG_PACKAGE_curl=y	
-          CONFIG_PACKAGE_htop=y	
-          CONFIG_PACKAGE_nano=y	
-          CONFIG_PACKAGE_screen=y	
-          CONFIG_PACKAGE_tree=y	
-          CONFIG_PACKAGE_vim-fuller=y	
-          CONFIG_PACKAGE_wget=y	
-          CONFIG_PACKAGE_collectd-mod-ping=y	
-          CONFIG_PACKAGE_collectd-mod-thermal=y	
-          CONFIG_PACKAGE_collectd-mod-cpufreq=y	
-          # CONFIG_FEED_rosy is not set	
-          # CONFIG_ALL_KMODS is not set	
-          # CONFIG_ALL_NONSHARED is not set	
-          # CONFIG_DEVEL is not set	
-          # CONFIG_PACKAGE_luci-lib-iptparser is not set	
-          # CONFIG_PACKAGE_luci-app-samba is not set	
-          # CONFIG_PACKAGE_samba36-server is not set	
-          # CONFIG_DISPLAY_SUPPORT is not set	
-          	
-          EOF
           cat ./configs/config_h5
           
       - name: Build FriendlyWrt
