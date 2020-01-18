@@ -6,8 +6,6 @@ on:
   push:
     paths:
       - '.github/workflows/v19.yml'
-  schedule:
-      - cron: 0 8 * * 5
   # release:
   #   types: [published]
 
@@ -63,15 +61,15 @@ jobs:
         run: |
           cd friendlywrt-h5
           rm -f friendlywrt/.config*
-          sed -i '/docker/d;/DOCKER/d' ./configs/config_h3
-          cat >> ./configs/config_h3 <<EOF	
+          sed -i '/docker/d;/DOCKER/d' ./configs/config_h5
+          cat >> ./configs/config_h5 <<EOF	
           	
           CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y	
           CONFIG_PACKAGE_ipv6helper=y	
           CONFIG_PACKAGE_luci-app-adbyby-plus=y	
           CONFIG_PACKAGE_luci-app-samba4=y	
           CONFIG_PACKAGE_luci-app-statistics=y	
-          CONFIG_PACKAGE_luci-app-unblockmusic=y	
+          CONFIG_PACKAGE_luci-app-unblockmusic=y
           CONFIG_PACKAGE_luci-app-vnstat=y
           CONFIG_PACKAGE_luci-app-ssr-plus=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y	
@@ -80,13 +78,13 @@ jobs:
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y	
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-app-ttyd=y	
-          CONFIG_PACKAGE_luci-app-wrtbwmon=y	
-          CONFIG_PACKAGE_luci-app-netdata=y	
-          CONFIG_PACKAGE_luci-theme-argon=y	
-          CONFIG_PACKAGE_luci-theme-netgear=y	
-          CONFIG_PACKAGE_luci-theme-rosy=y	
-          CONFIG_PACKAGE_curl=y	
-          CONFIG_PACKAGE_htop=y	
+          CONFIG_PACKAGE_luci-app-wrtbwmon=y
+          CONFIG_PACKAGE_luci-app-netdata=y
+          CONFIG_PACKAGE_luci-theme-argon=y
+          CONFIG_PACKAGE_luci-theme-netgear=y
+          CONFIG_PACKAGE_luci-theme-rosy=y
+          CONFIG_PACKAGE_curl=y
+          CONFIG_PACKAGE_htop=y
           CONFIG_PACKAGE_nano=y	
           CONFIG_PACKAGE_screen=y	
           CONFIG_PACKAGE_tree=y	
@@ -106,7 +104,6 @@ jobs:
           	
           EOF
           cat ./configs/config_h5
-          curl https://raw.githubusercontent.com/camino13/NanoPi-R1S/master/r1s-h5-config > friendlywrt/.config
           
       - name: Build FriendlyWrt
         run: |
