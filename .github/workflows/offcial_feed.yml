@@ -1,13 +1,11 @@
 #NanoPi-R1S H5 FriendlyWrt Build
 
-name: NanoPi-R1S H5 FriendlyWrt Build
+name: NanoPi-R1S H5 FriendlyWrt(offcial feeds) Build
 
 on:
   push:
     paths:
       - '.github/workflows/offcial_feed.yml'
-  schedule:
-      - cron: 0 8 * * 5
   # release:
   #   types: [published]
 
