@@ -52,7 +52,7 @@ jobs:
           cd friendlywrt-h5
           git clone https://github.com/coolsnowwolf/lede
           cd friendlywrt
-          cp -r ../lede/package/lean package/
+          #cp -r ../lede/package/lean package/
           #sed -i 's/http.*luci.*/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
           #sed -i 's/http.*feed\/packages.*/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
           echo 'src-git rosy https://github.com/rosywrt/luci-theme-rosy.git;openwrt-18.06' >> feeds.conf.default
