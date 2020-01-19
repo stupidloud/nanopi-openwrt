@@ -60,7 +60,7 @@ jobs:
       - name: Update Target.mk
         run: |
           cd friendlywrt-h5/friendlywrt/include
-          sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk
+          #sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk
           
       - name: Custom Configure File
         run: |
