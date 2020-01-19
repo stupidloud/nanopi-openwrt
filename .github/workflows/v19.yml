@@ -61,9 +61,117 @@ jobs:
         run: |
           cd friendlywrt-h5
           rm -f friendlywrt/.config*
-          sed -i '/docker/d;/DOCKER/d' ./configs/config_h5
-          cat >> ./configs/config_h5 <<EOF	
-          	
+          #sed -i '/docker/d;/DOCKER/d' ./configs/config_h5
+          cat > ./configs/config_h5 <<EOF
+          CONFIG_TARGET_sunxi=y
+          CONFIG_TARGET_sunxi_cortexa53=y
+          CONFIG_TARGET_MULTI_PROFILE=y
+          CONFIG_TARGET_DEVICE_sunxi_cortexa53_DEVICE_sun50i-h5-nanopi-neo-plus2=y
+          CONFIG_TARGET_DEVICE_PACKAGES_sunxi_cortexa53_DEVICE_sun50i-h5-nanopi-neo-plus2=""
+          
+          CONFIG_TARGET_PER_DEVICE_ROOTFS=y
+          CONFIG_IB=y
+          CONFIG_IMAGEOPT=y
+          
+          CONFIG_PACKAGE_iw=y
+          CONFIG_PACKAGE_iwinfo=y
+          
+          CONFIG_PACKAGE_ar3k-firmware=y
+          CONFIG_PACKAGE_ath6k-firmware=y
+          CONFIG_PACKAGE_ath9k-htc-firmware=y
+          CONFIG_PACKAGE_brcmfmac-firmware-43430-sdio=y
+          CONFIG_PACKAGE_brcmfmac-firmware-usb=y
+          CONFIG_PACKAGE_carl9170-firmware=y
+          CONFIG_PACKAGE_edgeport-firmware=y
+          CONFIG_PACKAGE_kmod-br-netfilter=y
+          CONFIG_PACKAGE_kmod-brcmfmac=y
+          CONFIG_PACKAGE_kmod-brcmutil=y
+          CONFIG_PACKAGE_kmod-cfg80211=y
+          CONFIG_PACKAGE_kmod-crypto-acompress=y
+          CONFIG_PACKAGE_kmod-crypto-aead=y
+          CONFIG_PACKAGE_kmod-crypto-authenc=y
+          CONFIG_PACKAGE_kmod-crypto-cbc=y
+          CONFIG_PACKAGE_kmod-crypto-crc32c=y
+          CONFIG_PACKAGE_kmod-crypto-ctr=y
+          CONFIG_PACKAGE_kmod-crypto-deflate=y
+          CONFIG_PACKAGE_kmod-crypto-des=y
+          CONFIG_PACKAGE_kmod-crypto-echainiv=y
+          CONFIG_PACKAGE_kmod-crypto-gcm=y
+          CONFIG_PACKAGE_kmod-crypto-gf128=y
+          CONFIG_PACKAGE_kmod-crypto-ghash=y
+          CONFIG_PACKAGE_kmod-crypto-hash=y
+          CONFIG_PACKAGE_kmod-crypto-hmac=y
+          CONFIG_PACKAGE_kmod-crypto-iv=y
+          CONFIG_PACKAGE_kmod-crypto-manager=y
+          CONFIG_PACKAGE_kmod-crypto-md5=y
+          CONFIG_PACKAGE_kmod-crypto-null=y
+          CONFIG_PACKAGE_kmod-crypto-pcompress=y
+          CONFIG_PACKAGE_kmod-crypto-rng=y
+          CONFIG_PACKAGE_kmod-crypto-seqiv=y
+          CONFIG_PACKAGE_kmod-crypto-sha1=y
+          CONFIG_PACKAGE_kmod-crypto-sha256=y
+          CONFIG_PACKAGE_kmod-crypto-wq=y
+          CONFIG_PACKAGE_kmod-cryptodev=y
+          CONFIG_PACKAGE_kmod-dax=y
+          CONFIG_PACKAGE_kmod-dm=y
+          CONFIG_PACKAGE_kmod-dummy=y
+          CONFIG_PACKAGE_kmod-fs-autofs4=y
+          CONFIG_PACKAGE_kmod-fs-btrfs=y
+          CONFIG_PACKAGE_kmod-ifb=y
+          CONFIG_PACKAGE_kmod-ikconfig=y
+          CONFIG_PACKAGE_kmod-ipsec=y
+          CONFIG_PACKAGE_kmod-ipsec4=y
+          CONFIG_PACKAGE_kmod-ipt-conntrack-extra=y
+          CONFIG_PACKAGE_kmod-ipt-extra=y
+          CONFIG_PACKAGE_kmod-ipt-ipopt=y
+          CONFIG_PACKAGE_kmod-ipt-ipset=y
+          CONFIG_PACKAGE_kmod-ipt-raw=y
+          CONFIG_PACKAGE_kmod-iptunnel4=y
+          CONFIG_PACKAGE_kmod-lib-crc32c=y
+          CONFIG_PACKAGE_kmod-lib-lzo=y
+          CONFIG_PACKAGE_kmod-lib-raid6=y
+          CONFIG_PACKAGE_kmod-lib-textsearch=y
+          CONFIG_PACKAGE_kmod-lib-xor=y
+          CONFIG_PACKAGE_kmod-lib-zlib-deflate=y
+          CONFIG_PACKAGE_kmod-lib-zlib-inflate=y
+          CONFIG_PACKAGE_kmod-lib-zstd=y
+          CONFIG_PACKAGE_kmod-macvlan=y
+          CONFIG_PACKAGE_kmod-mmc=y
+          CONFIG_PACKAGE_kmod-nf-conntrack-netlink=y
+          CONFIG_PACKAGE_kmod-nf-ipvs=y
+          CONFIG_PACKAGE_kmod-nf-nathelper=y
+          CONFIG_PACKAGE_kmod-nf-nathelper-extra=y
+          CONFIG_PACKAGE_kmod-nfnetlink=y
+          CONFIG_PACKAGE_kmod-nls-base=y
+          CONFIG_PACKAGE_kmod-sched-cake=y
+          CONFIG_PACKAGE_kmod-sched-connmark=y
+          CONFIG_PACKAGE_kmod-sched-core=y
+          CONFIG_PACKAGE_kmod-tun=y
+          CONFIG_PACKAGE_kmod-udptunnel4=y
+          CONFIG_PACKAGE_kmod-usb-core=y
+          CONFIG_PACKAGE_kmod-veth=y
+          CONFIG_PACKAGE_libertas-spi-firmware=y
+          CONFIG_PACKAGE_libertas-usb-firmware=y
+          CONFIG_PACKAGE_mt7601u-firmware=y
+          CONFIG_PACKAGE_mwl8k-firmware=y
+          CONFIG_PACKAGE_p54-usb-firmware=y
+          CONFIG_PACKAGE_prism54-firmware=y
+          CONFIG_PACKAGE_r8169-firmware=y
+          CONFIG_PACKAGE_rs9113-firmware=y
+          CONFIG_PACKAGE_rt2800-usb-firmware=y
+          CONFIG_PACKAGE_rt73-usb-firmware=y
+          CONFIG_PACKAGE_rtl8188eu-firmware=y
+          CONFIG_PACKAGE_rtl8192ce-firmware=y
+          CONFIG_PACKAGE_rtl8192cu-firmware=y
+          CONFIG_PACKAGE_rtl8192de-firmware=y
+          CONFIG_PACKAGE_rtl8192se-firmware=y
+          CONFIG_PACKAGE_rtl8192su-firmware=y
+          CONFIG_PACKAGE_rtl8821ae-firmware=y
+          CONFIG_PACKAGE_ti-3410-firmware=y
+          CONFIG_PACKAGE_ti-5052-firmware=y
+          CONFIG_PACKAGE_wl12xx-firmware=y
+          CONFIG_PACKAGE_wl18xx-firmware=y
+          
           CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y	
           CONFIG_PACKAGE_ipv6helper=y	
           CONFIG_PACKAGE_luci-app-adbyby-plus=y	
@@ -101,7 +209,7 @@ jobs:
           # CONFIG_PACKAGE_luci-app-samba is not set	
           # CONFIG_PACKAGE_samba36-server is not set	
           # CONFIG_DISPLAY_SUPPORT is not set	
-          	
+          
           EOF
           cat ./configs/config_h5
           
