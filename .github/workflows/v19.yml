@@ -1,6 +1,6 @@
 #NanoPi-R1S H5 FriendlyWrt Build
 
-name: NanoPi-R1S H5 FriendlyWrt Build
+name: NanoPi-R1S H5 FriendlyWrt(19.07) Build
 
 on:
   push:
