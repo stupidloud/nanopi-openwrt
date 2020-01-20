@@ -1,13 +1,9 @@
-#NanoPi-R1S H5 FriendlyWrt Build
-
-name: NanoPi-R1S H5 FriendlyWrt(offcial feeds) Build
+name: NanoPi-R1S H5 Openwrt(lean) Build
 
 on:
   push:
     paths:
       - '.github/workflows/offcial_feed.yml'
-  # release:
-  #   types: [published]
 
 jobs:
 
@@ -39,7 +35,7 @@ jobs:
         run: |
           cd friendlywrt-h5
           rm .repo/manifests/h5.xml
-          cp ../h5.xml .repo/manifests/h5.xml
+          cp ../lean.xml .repo/manifests/h5.xml
           repo sync -c  --no-clone-bundle
 
       - name: Merge LEDE
