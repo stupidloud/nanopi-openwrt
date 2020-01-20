@@ -1,5 +1,3 @@
-#NanoPi-R1S H5 FriendlyWrt Build
-
 name: NanoPi-R1S H5 FriendlyWrt(19.07) Build
 
 on:
@@ -54,14 +52,13 @@ jobs:
       
       - name: Update Target.mk
         run: |
-          cd friendlywrt-h5/friendlywrt/include 
-          sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk    
+          cd friendlywrt-h5/friendlywrt/include
+          sed -i 's/dnsmasq /dnsmasq-full default-settings luci /' target.mk
           
       - name: Custom Configure File
         run: |
           cd friendlywrt-h5
           rm -f friendlywrt/.config*
-          #sed -i '/docker/d;/DOCKER/d' ./configs/config_h5
           cat > ./configs/config_h5 <<EOF
           CONFIG_TARGET_sunxi=y
           CONFIG_TARGET_sunxi_cortexa53=y
