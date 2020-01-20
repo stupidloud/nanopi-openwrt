@@ -1,0 +1,68 @@
+name: NanoPi-R1S H5 passwall Build
+
+on:
+  push:
+    paths:
+      - '.github/workflows/passwall.yml'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          ref: master
+
+      - name: Initialization Environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          wget -O - https://raw.githubusercontent.com/friendlyarm/build-env-on-ubuntu-bionic/master/install.sh | bash
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk
+          
+      - name: Download Source
+        run: |
+          mkdir friendlywrt-h5
+          cd friendlywrt-h5
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m h5.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
+      
+      - name: Merge UpStearm OpenWrt
+        run: |
+          cd friendlywrt-h5
+          rm .repo/manifests/h5.xml
+          cp ../passwall.xml .repo/manifests/h5.xml
+          repo sync -c  --no-clone-bundle
+          
+      - name: Custom Configure File
+        run: |
+          cd friendlywrt-h5
+          rm -f friendlywrt/.config*
+          cp ../passwall.config.seed ./configs/config_h5
+          
+      - name: Build FriendlyWrt
+        run: |
+          cd friendlywrt-h5
+          ./build.sh nanopi_r1s.mk
+      
+      - name: Zip Files
+        run: |
+          #find friendlywrt-h5/out/ -name "FriendlyWrt_*img*" | xargs -i zip -r {}.zip {}
+          gzip friendlywrt-h5/out/*.img
+          
+      - name: Assemble Artifact
+        run: |
+          rm -rf ./artifact/
+          mkdir -p ./artifact/
+          #find friendlywrt-h5/out/ -name "FriendlyWrt_*img.zip*" | xargs -i mv -f {} ./artifact/
+          mv friendlywrt-h5/out/*img* ./artifact/
+          cp friendlywrt-h5/friendlywrt/.config ./artifact/
+      - name: Upload Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: FriendlyWrt_NanoPi-R1S
+          path: ./artifact/
