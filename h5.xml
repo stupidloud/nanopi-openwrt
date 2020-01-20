@@ -3,7 +3,7 @@
   <remote name="origin"
           fetch="."
           revision="refs/heads/master" />
-  <remote name="self" fetch="https://github.com/klever1988" />
+  <remote name="self" fetch="https://github.com/coolsnowwolf" />
 
   <project path="kernel" name="linux" remote="origin" revision="refs/heads/sunxi-4.14.y" />
   <project path="u-boot" name="u-boot" remote="origin" revision="refs/heads/sunxi-v2017.x" />
@@ -23,7 +23,7 @@
   </project>
 
   <!-- friendlywrt source code -->
-  <project path="friendlywrt" name="friendlywrt" remote="self" revision="refs/heads/master" />
+  <project path="friendlywrt" name="lede" remote="self" revision="refs/heads/master" />
 
   <!-- toolchain -->
   <project path="toolchain" name="prebuilts" remote="origin" revision="refs/heads/master" />
