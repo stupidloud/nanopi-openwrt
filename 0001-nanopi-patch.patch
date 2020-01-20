@@ -1,99 +1,99 @@
-From a936c976db157db3392c1ea10b3535b0d1a3e17f Mon Sep 17 00:00:00 2001
-From: Your Name <you@example.com>
-Date: Mon, 20 Jan 2020 17:57:48 +0200
+From 563f82df52cc63b977b8a2251b368285c2a6265b Mon Sep 17 00:00:00 2001
+From: klever1988 <klever1988@protonmail.com>
+Date: Mon, 20 Jan 2020 16:57:12 -0500
 Subject: [PATCH] nanopi patch
 
 ---
- friendlyelec/.gitignore                       |    3 +
- friendlyelec/build.sh                         |   63 +
- friendlyelec/config_nanopi-h3.seed            |  128 +
- friendlyelec/config_nanopi-h5.seed            |  114 +
- friendlyelec/config_nanopi-h6.seed            |    1 +
- package/base-files/files/bin/config_generate  |    4 +-
- package/base-files/files/etc/.gitignore       |    1 +
- package/base-files/files/etc/banner           |   12 +-
- package/base-files/files/etc/enable-swap.sh   |   51 +
- .../hotplug.d/ieee80211/09-wireless-bcm4356   |   22 +
- .../etc/hotplug.d/usb/30-usb_wifi_huawei      |   42 +
- .../files/etc/hotplug.d/usb/31-usb_wifi       |   75 +
- package/base-files/files/etc/init.d/fa-wifiap |   13 +
- .../base-files/files/etc/modules.d/10-8152    |    1 +
- .../base-files/files/etc/modules.d/90-8189es  |    1 +
- .../base-files/files/etc/modules.d/90-8821cu  |    1 +
- .../files/etc/modules.d/90-cdc_ether          |    1 +
- .../files/etc/modules.d/xradio_wlan           |    1 +
- .../base-files/files/etc/rc.d/S11fa-wifiap    |    1 +
- package/base-files/files/etc/rc.local         |   10 +
- package/base-files/files/etc/sysctl.conf      |    3 +
- package/base-files/files/root/setup.sh        |  114 +
- .../base-files/files/usr/bin/fix_wifi_ap.sh   |   43 +
- package/base-files/files/usr/bin/lcd2usb_echo |  Bin 0 -> 1579032 bytes
- .../files/lib/netifd/wireless/mac80211.sh     |    8 +-
- package/utils/usbmode/Makefile                |    3 +-
- package/utils/usbmode/files/usb-mode.json     | 3144 +++++++++++++++++
- target/linux/allwinner-h5/Makefile            |   26 +
- .../base-files/etc/board.d/01_leds            |   20 +
- .../base-files/etc/board.d/02_network         |   55 +
- .../linux/allwinner-h5/base-files/etc/inittab |    5 +
- .../lib/firmware/brcm/brcmfmac4329-sdio.txt   |   57 +
- .../lib/firmware/brcm/brcmfmac43362-sdio.txt  |   51 +
- .../lib/firmware/brcm/brcmfmac43430-sdio.txt  |   53 +
- .../firmware/brcm/brcmfmac43430a0-sdio.txt    |    1 +
- .../base-files/lib/preinit/03_b53_hack.sh     |   18 +
- .../base-files/lib/preinit/79_move_config     |   20 +
- .../base-files/lib/upgrade/platform.sh        |   88 +
- .../allwinner-h5/base-files/usr/bin/cpu_freq  |  120 +
- target/linux/allwinner-h5/config-4.14         |  546 +++
- target/linux/allwinner-h5/image/Makefile      |   21 +
- ...-support-for-rgmii-internal-delay-mo.patch |  139 +
- ...rx-workaround-BGX-TX-Underflow-issue.patch |  110 +
- .../linux/allwinner-h5/profiles/00-default.mk |   17 +
- target/linux/nexell-s5p4418/Makefile          |   30 +
- .../base-files/etc/board.d/01_leds            |   16 +
- .../base-files/etc/board.d/02_network         |   27 +
- .../nexell-s5p4418/base-files/etc/inittab     |    5 +
- .../base-files/etc/modules.d/10-bcmdhd        |    1 +
- .../base-files/lib/upgrade/platform.sh        |   89 +
- target/linux/nexell-s5p4418/config-4.14       |  523 +++
- target/linux/nexell-s5p4418/config-4.19       |  538 +++
- target/linux/nexell-s5p4418/image/Makefile    |   10 +
- .../patches-4.14/100-bootargs.patch           |   11 +
- .../patches-4.14/200-disable-msi.patch        |   18 +
- .../301-apalis-ixora-dts-leds.patch           |   86 +
- .../302-apalis-ixora-dts-reset-button.patch   |   76 +
- .../patches-4.19/100-bootargs.patch           |   11 +
- .../301-apalis-ixora-dts-leds.patch           |   86 +
- .../302-apalis-ixora-dts-reset-button.patch   |   76 +
- .../nexell-s5p4418/profiles/00-default.mk     |   19 +
- target/linux/nexell-s5p6818/Makefile          |   26 +
- .../base-files/etc/board.d/01_leds            |   16 +
- .../base-files/etc/board.d/02_network         |   26 +
- .../nexell-s5p6818/base-files/etc/inittab     |    5 +
- .../base-files/etc/modules.d/10-bcmdhd        |    1 +
- target/linux/nexell-s5p6818/config-4.14       |  546 +++
- target/linux/nexell-s5p6818/image/Makefile    |   21 +
- ...-support-for-rgmii-internal-delay-mo.patch |  139 +
- ...rx-workaround-BGX-TX-Underflow-issue.patch |  110 +
- .../nexell-s5p6818/profiles/00-default.mk     |   17 +
- target/linux/rockchip-rk3399/Makefile         |   26 +
- .../base-files/etc/board.d/01_leds            |   16 +
- .../base-files/etc/board.d/02_network         |   24 +
- .../iface/12-disable-rk3399-eth-offloading    |   22 +
- .../base-files/etc/init.d/fa-rk3399-pwmfan    |    9 +
- .../rockchip-rk3399/base-files/etc/inittab    |    5 +
- .../base-files/etc/modules.d/10-bcmdhd        |    1 +
- .../base-files/etc/rc.d/S96fa-rk3399-pwmfan   |    1 +
- .../usr/bin/start-rk3399-pwm-fan.sh           |   59 +
- target/linux/rockchip-rk3399/config-4.14      |  546 +++
- target/linux/rockchip-rk3399/image/Makefile   |   21 +
- ...-support-for-rgmii-internal-delay-mo.patch |  139 +
- ...rx-workaround-BGX-TX-Underflow-issue.patch |  110 +
- .../rockchip-rk3399/profiles/00-default.mk    |   17 +
- .../sunxi/base-files/etc/board.d/01_leds      |   20 +
- .../sunxi/base-files/etc/board.d/02_network   |   27 +
- .../linux/sunxi/base-files/usr/bin/cpu_freq   |  120 +
- target/linux/sunxi/image/cortex-a53.mk        |    3 +
- 89 files changed, 8891 insertions(+), 11 deletions(-)
+ friendlyelec/.gitignore                            |    3 +
+ friendlyelec/build.sh                              |   63 +
+ friendlyelec/config_nanopi-h3.seed                 |  128 +
+ friendlyelec/config_nanopi-h5.seed                 |  114 +
+ friendlyelec/config_nanopi-h6.seed                 |    1 +
+ package/base-files/files/bin/config_generate       |    4 +-
+ package/base-files/files/etc/.gitignore            |    1 +
+ package/base-files/files/etc/banner                |   12 +-
+ package/base-files/files/etc/enable-swap.sh        |   51 +
+ .../etc/hotplug.d/ieee80211/09-wireless-bcm4356    |   22 +
+ .../files/etc/hotplug.d/usb/30-usb_wifi_huawei     |   42 +
+ .../base-files/files/etc/hotplug.d/usb/31-usb_wifi |   75 +
+ package/base-files/files/etc/init.d/fa-wifiap      |   13 +
+ package/base-files/files/etc/modules.d/10-8152     |    1 +
+ package/base-files/files/etc/modules.d/90-8189es   |    1 +
+ package/base-files/files/etc/modules.d/90-8821cu   |    1 +
+ .../base-files/files/etc/modules.d/90-cdc_ether    |    1 +
+ package/base-files/files/etc/modules.d/xradio_wlan |    1 +
+ package/base-files/files/etc/rc.d/S11fa-wifiap     |    1 +
+ package/base-files/files/etc/rc.local              |   10 +
+ package/base-files/files/etc/sysctl.conf           |    3 +
+ package/base-files/files/root/setup.sh             |  114 +
+ package/base-files/files/usr/bin/fix_wifi_ap.sh    |   43 +
+ package/base-files/files/usr/bin/lcd2usb_echo      |  Bin 0 -> 1579032 bytes
+ .../mac80211/files/lib/netifd/wireless/mac80211.sh |    6 +-
+ package/utils/usbmode/Makefile                     |    3 +-
+ package/utils/usbmode/files/usb-mode.json          | 3144 ++++++++++++++++++++
+ target/linux/allwinner-h5/Makefile                 |   26 +
+ .../allwinner-h5/base-files/etc/board.d/01_leds    |   20 +
+ .../allwinner-h5/base-files/etc/board.d/02_network |   55 +
+ target/linux/allwinner-h5/base-files/etc/inittab   |    5 +
+ .../lib/firmware/brcm/brcmfmac4329-sdio.txt        |   57 +
+ .../lib/firmware/brcm/brcmfmac43362-sdio.txt       |   51 +
+ .../lib/firmware/brcm/brcmfmac43430-sdio.txt       |   53 +
+ .../lib/firmware/brcm/brcmfmac43430a0-sdio.txt     |    1 +
+ .../base-files/lib/preinit/03_b53_hack.sh          |   18 +
+ .../base-files/lib/preinit/79_move_config          |   20 +
+ .../base-files/lib/upgrade/platform.sh             |   88 +
+ .../linux/allwinner-h5/base-files/usr/bin/cpu_freq |  120 +
+ target/linux/allwinner-h5/config-4.14              |  546 ++++
+ target/linux/allwinner-h5/image/Makefile           |   21 +
+ ...x-add-support-for-rgmii-internal-delay-mo.patch |  139 +
+ ...hunderx-workaround-BGX-TX-Underflow-issue.patch |  110 +
+ target/linux/allwinner-h5/profiles/00-default.mk   |   17 +
+ target/linux/nexell-s5p4418/Makefile               |   30 +
+ .../nexell-s5p4418/base-files/etc/board.d/01_leds  |   16 +
+ .../base-files/etc/board.d/02_network              |   27 +
+ target/linux/nexell-s5p4418/base-files/etc/inittab |    5 +
+ .../base-files/etc/modules.d/10-bcmdhd             |    1 +
+ .../base-files/lib/upgrade/platform.sh             |   89 +
+ target/linux/nexell-s5p4418/config-4.14            |  523 ++++
+ target/linux/nexell-s5p4418/config-4.19            |  538 ++++
+ target/linux/nexell-s5p4418/image/Makefile         |   10 +
+ .../nexell-s5p4418/patches-4.14/100-bootargs.patch |   11 +
+ .../patches-4.14/200-disable-msi.patch             |   18 +
+ .../patches-4.14/301-apalis-ixora-dts-leds.patch   |   86 +
+ .../302-apalis-ixora-dts-reset-button.patch        |   76 +
+ .../nexell-s5p4418/patches-4.19/100-bootargs.patch |   11 +
+ .../patches-4.19/301-apalis-ixora-dts-leds.patch   |   86 +
+ .../302-apalis-ixora-dts-reset-button.patch        |   76 +
+ target/linux/nexell-s5p4418/profiles/00-default.mk |   19 +
+ target/linux/nexell-s5p6818/Makefile               |   26 +
+ .../nexell-s5p6818/base-files/etc/board.d/01_leds  |   16 +
+ .../base-files/etc/board.d/02_network              |   26 +
+ target/linux/nexell-s5p6818/base-files/etc/inittab |    5 +
+ .../base-files/etc/modules.d/10-bcmdhd             |    1 +
+ target/linux/nexell-s5p6818/config-4.14            |  546 ++++
+ target/linux/nexell-s5p6818/image/Makefile         |   21 +
+ ...x-add-support-for-rgmii-internal-delay-mo.patch |  139 +
+ ...hunderx-workaround-BGX-TX-Underflow-issue.patch |  110 +
+ target/linux/nexell-s5p6818/profiles/00-default.mk |   17 +
+ target/linux/rockchip-rk3399/Makefile              |   26 +
+ .../rockchip-rk3399/base-files/etc/board.d/01_leds |   16 +
+ .../base-files/etc/board.d/02_network              |   24 +
+ .../iface/12-disable-rk3399-eth-offloading         |   22 +
+ .../base-files/etc/init.d/fa-rk3399-pwmfan         |    9 +
+ .../linux/rockchip-rk3399/base-files/etc/inittab   |    5 +
+ .../base-files/etc/modules.d/10-bcmdhd             |    1 +
+ .../base-files/etc/rc.d/S96fa-rk3399-pwmfan        |    1 +
+ .../base-files/usr/bin/start-rk3399-pwm-fan.sh     |   59 +
+ target/linux/rockchip-rk3399/config-4.14           |  546 ++++
+ target/linux/rockchip-rk3399/image/Makefile        |   21 +
+ ...x-add-support-for-rgmii-internal-delay-mo.patch |  139 +
+ ...hunderx-workaround-BGX-TX-Underflow-issue.patch |  110 +
+ .../linux/rockchip-rk3399/profiles/00-default.mk   |   17 +
+ target/linux/sunxi/base-files/etc/board.d/01_leds  |   20 +
+ .../linux/sunxi/base-files/etc/board.d/02_network  |   27 +
+ target/linux/sunxi/base-files/usr/bin/cpu_freq     |  120 +
+ target/linux/sunxi/image/cortex-a53.mk             |    3 +
+ 89 files changed, 8890 insertions(+), 10 deletions(-)
  create mode 100644 friendlyelec/.gitignore
  create mode 100755 friendlyelec/build.sh
  create mode 100644 friendlyelec/config_nanopi-h3.seed
@@ -178,7 +178,7 @@ Subject: [PATCH] nanopi patch
 
 diff --git a/friendlyelec/.gitignore b/friendlyelec/.gitignore
 new file mode 100644
-index 00000000..1c37a4d2
+index 0000000..1c37a4d
 --- /dev/null
 +++ b/friendlyelec/.gitignore
 @@ -0,0 +1,3 @@
@@ -187,7 +187,7 @@ index 00000000..1c37a4d2
 +1.sh
 diff --git a/friendlyelec/build.sh b/friendlyelec/build.sh
 new file mode 100755
-index 00000000..64025682
+index 0000000..6402568
 --- /dev/null
 +++ b/friendlyelec/build.sh
 @@ -0,0 +1,63 @@
@@ -256,7 +256,7 @@ index 00000000..64025682
 +create_rootfs_tgz
 diff --git a/friendlyelec/config_nanopi-h3.seed b/friendlyelec/config_nanopi-h3.seed
 new file mode 100644
-index 00000000..736dce4b
+index 0000000..736dce4
 --- /dev/null
 +++ b/friendlyelec/config_nanopi-h3.seed
 @@ -0,0 +1,128 @@
@@ -390,7 +390,7 @@ index 00000000..736dce4b
 +# CONFIG_TARGET_DEVICE_sunxi_cortexa7_DEVICE_sun8i-h3-orangepi-plus is not set
 diff --git a/friendlyelec/config_nanopi-h5.seed b/friendlyelec/config_nanopi-h5.seed
 new file mode 100644
-index 00000000..00608008
+index 0000000..0060800
 --- /dev/null
 +++ b/friendlyelec/config_nanopi-h5.seed
 @@ -0,0 +1,114 @@
@@ -510,17 +510,17 @@ index 00000000..00608008
 +# CONFIG_TARGET_DEVICE_sunxi_cortexa53_DEVICE_sun50i-h5-orangepi-zero-plus is not set
 diff --git a/friendlyelec/config_nanopi-h6.seed b/friendlyelec/config_nanopi-h6.seed
 new file mode 120000
-index 00000000..af92920d
+index 0000000..af92920
 --- /dev/null
 +++ b/friendlyelec/config_nanopi-h6.seed
 @@ -0,0 +1 @@
 +config_nanopi-h5.seed
 \ No newline at end of file
 diff --git a/package/base-files/files/bin/config_generate b/package/base-files/files/bin/config_generate
-index df221cc2..d494f3ca 100755
+index 3bf48d7..eedc869 100755
 --- a/package/base-files/files/bin/config_generate
 +++ b/package/base-files/files/bin/config_generate
-@@ -96,7 +96,7 @@ generate_network() {
+@@ -100,7 +100,7 @@ generate_network() {
  		static)
  			local ipad
  			case "$1" in
@@ -529,7 +529,7 @@ index df221cc2..d494f3ca 100755
  				*) ipad=${ipaddr:-"192.168.$((addr_offset++)).1"} ;;
  			esac
  
-@@ -234,7 +234,7 @@ generate_static_system() {
+@@ -241,7 +241,7 @@ generate_static_system() {
  	uci -q batch <<-EOF
  		delete system.@system[0]
  		add system system
@@ -540,13 +540,13 @@ index df221cc2..d494f3ca 100755
  		set system.@system[-1].log_size='64'
 diff --git a/package/base-files/files/etc/.gitignore b/package/base-files/files/etc/.gitignore
 new file mode 100644
-index 00000000..577f99e9
+index 0000000..577f99e
 --- /dev/null
 +++ b/package/base-files/files/etc/.gitignore
 @@ -0,0 +1 @@
 +/rom-version
 diff --git a/package/base-files/files/etc/banner b/package/base-files/files/etc/banner
-index f3af3c01..facdce03 100644
+index f3af3c0..facdce0 100644
 --- a/package/base-files/files/etc/banner
 +++ b/package/base-files/files/etc/banner
 @@ -1,8 +1,8 @@
@@ -566,7 +566,7 @@ index f3af3c01..facdce03 100644
   -----------------------------------------------------
 diff --git a/package/base-files/files/etc/enable-swap.sh b/package/base-files/files/etc/enable-swap.sh
 new file mode 100755
-index 00000000..e7bc6dee
+index 0000000..e7bc6de
 --- /dev/null
 +++ b/package/base-files/files/etc/enable-swap.sh
 @@ -0,0 +1,51 @@
@@ -623,7 +623,7 @@ index 00000000..e7bc6dee
 +
 diff --git a/package/base-files/files/etc/hotplug.d/ieee80211/09-wireless-bcm4356 b/package/base-files/files/etc/hotplug.d/ieee80211/09-wireless-bcm4356
 new file mode 100755
-index 00000000..92f2b7dc
+index 0000000..92f2b7d
 --- /dev/null
 +++ b/package/base-files/files/etc/hotplug.d/ieee80211/09-wireless-bcm4356
 @@ -0,0 +1,22 @@
@@ -651,7 +651,7 @@ index 00000000..92f2b7dc
 +exit 0
 diff --git a/package/base-files/files/etc/hotplug.d/usb/30-usb_wifi_huawei b/package/base-files/files/etc/hotplug.d/usb/30-usb_wifi_huawei
 new file mode 100755
-index 00000000..60b82a6f
+index 0000000..60b82a6
 --- /dev/null
 +++ b/package/base-files/files/etc/hotplug.d/usb/30-usb_wifi_huawei
 @@ -0,0 +1,42 @@
@@ -699,7 +699,7 @@ index 00000000..60b82a6f
 +fi
 diff --git a/package/base-files/files/etc/hotplug.d/usb/31-usb_wifi b/package/base-files/files/etc/hotplug.d/usb/31-usb_wifi
 new file mode 100755
-index 00000000..19910823
+index 0000000..19910823
 --- /dev/null
 +++ b/package/base-files/files/etc/hotplug.d/usb/31-usb_wifi
 @@ -0,0 +1,75 @@
@@ -780,7 +780,7 @@ index 00000000..19910823
 +fi
 diff --git a/package/base-files/files/etc/init.d/fa-wifiap b/package/base-files/files/etc/init.d/fa-wifiap
 new file mode 100755
-index 00000000..20f226f0
+index 0000000..20f226f
 --- /dev/null
 +++ b/package/base-files/files/etc/init.d/fa-wifiap
 @@ -0,0 +1,13 @@
@@ -799,49 +799,49 @@ index 00000000..20f226f0
 +}
 diff --git a/package/base-files/files/etc/modules.d/10-8152 b/package/base-files/files/etc/modules.d/10-8152
 new file mode 100644
-index 00000000..261be141
+index 0000000..261be14
 --- /dev/null
 +++ b/package/base-files/files/etc/modules.d/10-8152
 @@ -0,0 +1 @@
 +r8152
 diff --git a/package/base-files/files/etc/modules.d/90-8189es b/package/base-files/files/etc/modules.d/90-8189es
 new file mode 100644
-index 00000000..5157d881
+index 0000000..5157d88
 --- /dev/null
 +++ b/package/base-files/files/etc/modules.d/90-8189es
 @@ -0,0 +1 @@
 +8189es
 diff --git a/package/base-files/files/etc/modules.d/90-8821cu b/package/base-files/files/etc/modules.d/90-8821cu
 new file mode 100644
-index 00000000..ba36e9b8
+index 0000000..ba36e9b
 --- /dev/null
 +++ b/package/base-files/files/etc/modules.d/90-8821cu
 @@ -0,0 +1 @@
 +8821cu
 diff --git a/package/base-files/files/etc/modules.d/90-cdc_ether b/package/base-files/files/etc/modules.d/90-cdc_ether
 new file mode 100644
-index 00000000..de6e227b
+index 0000000..de6e227
 --- /dev/null
 +++ b/package/base-files/files/etc/modules.d/90-cdc_ether
 @@ -0,0 +1 @@
 +cdc_ether
 diff --git a/package/base-files/files/etc/modules.d/xradio_wlan b/package/base-files/files/etc/modules.d/xradio_wlan
 new file mode 100644
-index 00000000..20db7ac3
+index 0000000..20db7ac
 --- /dev/null
 +++ b/package/base-files/files/etc/modules.d/xradio_wlan
 @@ -0,0 +1 @@
 +xradio_wlan
 diff --git a/package/base-files/files/etc/rc.d/S11fa-wifiap b/package/base-files/files/etc/rc.d/S11fa-wifiap
 new file mode 120000
-index 00000000..de59c879
+index 0000000..de59c87
 --- /dev/null
 +++ b/package/base-files/files/etc/rc.d/S11fa-wifiap
 @@ -0,0 +1 @@
 +../init.d/fa-wifiap
 \ No newline at end of file
 diff --git a/package/base-files/files/etc/rc.local b/package/base-files/files/etc/rc.local
-index 56394773..a07d8a48 100644
+index 5639477..a07d8a4 100644
 --- a/package/base-files/files/etc/rc.local
 +++ b/package/base-files/files/etc/rc.local
 @@ -1,4 +1,14 @@
@@ -860,7 +860,7 @@ index 56394773..a07d8a48 100644
 +#iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
  exit 0
 diff --git a/package/base-files/files/etc/sysctl.conf b/package/base-files/files/etc/sysctl.conf
-index ae04212f..7c3ae6fe 100644
+index ae04212..7c3ae6f 100644
 --- a/package/base-files/files/etc/sysctl.conf
 +++ b/package/base-files/files/etc/sysctl.conf
 @@ -1 +1,4 @@
@@ -870,7 +870,7 @@ index ae04212f..7c3ae6fe 100644
 +net.bridge.bridge-nf-call-iptables=1
 diff --git a/package/base-files/files/root/setup.sh b/package/base-files/files/root/setup.sh
 new file mode 100755
-index 00000000..64681eda
+index 0000000..64681ed
 --- /dev/null
 +++ b/package/base-files/files/root/setup.sh
 @@ -0,0 +1,114 @@
@@ -990,7 +990,7 @@ index 00000000..64681eda
 +logger "done"
 diff --git a/package/base-files/files/usr/bin/fix_wifi_ap.sh b/package/base-files/files/usr/bin/fix_wifi_ap.sh
 new file mode 100755
-index 00000000..b7637417
+index 0000000..b763741
 --- /dev/null
 +++ b/package/base-files/files/usr/bin/fix_wifi_ap.sh
 @@ -0,0 +1,43 @@
@@ -11757,7 +11757,7 @@ literal 0
 HcmV?d00001
 
 diff --git a/package/kernel/mac80211/files/lib/netifd/wireless/mac80211.sh b/package/kernel/mac80211/files/lib/netifd/wireless/mac80211.sh
-index 9ffec7ac..30d79762 100644
+index 634aadc..7b40614 100644
 --- a/package/kernel/mac80211/files/lib/netifd/wireless/mac80211.sh
 +++ b/package/kernel/mac80211/files/lib/netifd/wireless/mac80211.sh
 @@ -456,8 +456,12 @@ mac80211_prepare_vif() {
@@ -11765,18 +11765,17 @@ index 9ffec7ac..30d79762 100644
  	json_get_vars ifname mode ssid wds powersave macaddr
  
 -	[ -n "$ifname" ] || ifname="wlan${phy#phy}${if_idx:+-$if_idx}"
--	if_idx=$((${if_idx:-0} + 1))
 +	#[ -n "$ifname" ] || ifname="wlan${phy#phy}${if_idx:+-$if_idx}"
 +	if [ -z "$ifname" ]; then
 +		ifname=`ls /sys/class/ieee80211/$phy/device/net/`
 +	fi
-+        if_idx=$((${if_idx:-0} + 1))
-+        logger "mac80211.sh->mac80211_prepare_vif phy=$phy ifname=$ifname"
+ 	if_idx=$((${if_idx:-0} + 1))
++	logger "mac80211.sh->mac80211_prepare_vif phy=$phy ifname=$ifname"
  
  	set_default wds 0
  	set_default powersave 0
 diff --git a/package/utils/usbmode/Makefile b/package/utils/usbmode/Makefile
-index f3e46ec0..ea668048 100644
+index f3e46ec..ea66804 100644
 --- a/package/utils/usbmode/Makefile
 +++ b/package/utils/usbmode/Makefile
 @@ -66,7 +66,8 @@ define Package/usb-modeswitch/install
@@ -11791,7 +11790,7 @@ index f3e46ec0..ea668048 100644
  endef
 diff --git a/package/utils/usbmode/files/usb-mode.json b/package/utils/usbmode/files/usb-mode.json
 new file mode 100644
-index 00000000..4e63ec57
+index 0000000..4e63ec5
 --- /dev/null
 +++ b/package/utils/usbmode/files/usb-mode.json
 @@ -0,0 +1,3144 @@
@@ -14941,7 +14940,7 @@ index 00000000..4e63ec57
 +}
 diff --git a/target/linux/allwinner-h5/Makefile b/target/linux/allwinner-h5/Makefile
 new file mode 100644
-index 00000000..77b69183
+index 0000000..77b6918
 --- /dev/null
 +++ b/target/linux/allwinner-h5/Makefile
 @@ -0,0 +1,26 @@
@@ -14973,7 +14972,7 @@ index 00000000..77b69183
 +$(eval $(call BuildTarget))
 diff --git a/target/linux/allwinner-h5/base-files/etc/board.d/01_leds b/target/linux/allwinner-h5/base-files/etc/board.d/01_leds
 new file mode 100755
-index 00000000..8b58ef09
+index 0000000..8b58ef0
 --- /dev/null
 +++ b/target/linux/allwinner-h5/base-files/etc/board.d/01_leds
 @@ -0,0 +1,20 @@
@@ -14999,7 +14998,7 @@ index 00000000..8b58ef09
 +exit 0
 diff --git a/target/linux/allwinner-h5/base-files/etc/board.d/02_network b/target/linux/allwinner-h5/base-files/etc/board.d/02_network
 new file mode 100755
-index 00000000..67a93b93
+index 0000000..67a93b9
 --- /dev/null
 +++ b/target/linux/allwinner-h5/base-files/etc/board.d/02_network
 @@ -0,0 +1,55 @@
@@ -15060,7 +15059,7 @@ index 00000000..67a93b93
 +exit 0
 diff --git a/target/linux/allwinner-h5/base-files/etc/inittab b/target/linux/allwinner-h5/base-files/etc/inittab
 new file mode 100644
-index 00000000..be81ab3e
+index 0000000..be81ab3
 --- /dev/null
 +++ b/target/linux/allwinner-h5/base-files/etc/inittab
 @@ -0,0 +1,5 @@
@@ -15071,7 +15070,7 @@ index 00000000..be81ab3e
 +tty1::askfirst:/usr/libexec/login.sh
 diff --git a/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac4329-sdio.txt b/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac4329-sdio.txt
 new file mode 100644
-index 00000000..6cb3fd73
+index 0000000..6cb3fd7
 --- /dev/null
 +++ b/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac4329-sdio.txt
 @@ -0,0 +1,57 @@
@@ -15134,7 +15133,7 @@ index 00000000..6cb3fd73
 +
 diff --git a/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac43362-sdio.txt b/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac43362-sdio.txt
 new file mode 100644
-index 00000000..901e7825
+index 0000000..901e782
 --- /dev/null
 +++ b/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac43362-sdio.txt
 @@ -0,0 +1,51 @@
@@ -15191,7 +15190,7 @@ index 00000000..901e7825
 +temp_mult=425
 diff --git a/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac43430-sdio.txt b/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac43430-sdio.txt
 new file mode 100644
-index 00000000..9baa5c33
+index 0000000..9baa5c3
 --- /dev/null
 +++ b/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac43430-sdio.txt
 @@ -0,0 +1,53 @@
@@ -15250,7 +15249,7 @@ index 00000000..9baa5c33
 +#cldo_pwm=0x4
 diff --git a/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac43430a0-sdio.txt b/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac43430a0-sdio.txt
 new file mode 120000
-index 00000000..2ed66898
+index 0000000..2ed6689
 --- /dev/null
 +++ b/target/linux/allwinner-h5/base-files/lib/firmware/brcm/brcmfmac43430a0-sdio.txt
 @@ -0,0 +1 @@
@@ -15258,7 +15257,7 @@ index 00000000..2ed66898
 \ No newline at end of file
 diff --git a/target/linux/allwinner-h5/base-files/lib/preinit/03_b53_hack.sh b/target/linux/allwinner-h5/base-files/lib/preinit/03_b53_hack.sh
 new file mode 100644
-index 00000000..170cfd5b
+index 0000000..170cfd5
 --- /dev/null
 +++ b/target/linux/allwinner-h5/base-files/lib/preinit/03_b53_hack.sh
 @@ -0,0 +1,18 @@
@@ -15282,7 +15281,7 @@ index 00000000..170cfd5b
 +boot_hook_add preinit_main do_b53_hack
 diff --git a/target/linux/allwinner-h5/base-files/lib/preinit/79_move_config b/target/linux/allwinner-h5/base-files/lib/preinit/79_move_config
 new file mode 100644
-index 00000000..74caee8a
+index 0000000..74caee8
 --- /dev/null
 +++ b/target/linux/allwinner-h5/base-files/lib/preinit/79_move_config
 @@ -0,0 +1,20 @@
@@ -15308,7 +15307,7 @@ index 00000000..74caee8a
 +
 diff --git a/target/linux/allwinner-h5/base-files/lib/upgrade/platform.sh b/target/linux/allwinner-h5/base-files/lib/upgrade/platform.sh
 new file mode 100644
-index 00000000..10412c51
+index 0000000..10412c5
 --- /dev/null
 +++ b/target/linux/allwinner-h5/base-files/lib/upgrade/platform.sh
 @@ -0,0 +1,88 @@
@@ -15402,7 +15401,7 @@ index 00000000..10412c51
 +}
 diff --git a/target/linux/allwinner-h5/base-files/usr/bin/cpu_freq b/target/linux/allwinner-h5/base-files/usr/bin/cpu_freq
 new file mode 100755
-index 00000000..4b010058
+index 0000000..4b01005
 --- /dev/null
 +++ b/target/linux/allwinner-h5/base-files/usr/bin/cpu_freq
 @@ -0,0 +1,120 @@
@@ -15529,7 +15528,7 @@ index 00000000..4b010058
 \ No newline at end of file
 diff --git a/target/linux/allwinner-h5/config-4.14 b/target/linux/allwinner-h5/config-4.14
 new file mode 100644
-index 00000000..fd627d6a
+index 0000000..fd627d6
 --- /dev/null
 +++ b/target/linux/allwinner-h5/config-4.14
 @@ -0,0 +1,546 @@
@@ -16081,7 +16080,7 @@ index 00000000..fd627d6a
 +CONFIG_XPS=y
 diff --git a/target/linux/allwinner-h5/image/Makefile b/target/linux/allwinner-h5/image/Makefile
 new file mode 100644
-index 00000000..203f0ea5
+index 0000000..203f0ea
 --- /dev/null
 +++ b/target/linux/allwinner-h5/image/Makefile
 @@ -0,0 +1,21 @@
@@ -16108,7 +16107,7 @@ index 00000000..203f0ea5
 +$(eval $(call BuildImage))
 diff --git a/target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-add-support-for-rgmii-internal-delay-mo.patch b/target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-add-support-for-rgmii-internal-delay-mo.patch
 new file mode 100644
-index 00000000..efd13da5
+index 0000000..efd13da
 --- /dev/null
 +++ b/target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-add-support-for-rgmii-internal-delay-mo.patch
 @@ -0,0 +1,139 @@
@@ -16253,7 +16252,7 @@ index 00000000..efd13da5
 + 	/* Enable compensation controller and force the
 diff --git a/target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch b/target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
 new file mode 100644
-index 00000000..ef7aef3a
+index 0000000..ef7aef3
 --- /dev/null
 +++ b/target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
 @@ -0,0 +1,110 @@
@@ -16369,7 +16368,7 @@ index 00000000..ef7aef3a
 + #define BGX_MSIX_VEC_0_29_CTL		0x400008
 diff --git a/target/linux/allwinner-h5/profiles/00-default.mk b/target/linux/allwinner-h5/profiles/00-default.mk
 new file mode 100644
-index 00000000..5f985721
+index 0000000..5f98572
 --- /dev/null
 +++ b/target/linux/allwinner-h5/profiles/00-default.mk
 @@ -0,0 +1,17 @@
@@ -16392,7 +16391,7 @@ index 00000000..5f985721
 +$(eval $(call Profile,Default))
 diff --git a/target/linux/nexell-s5p4418/Makefile b/target/linux/nexell-s5p4418/Makefile
 new file mode 100644
-index 00000000..02bad856
+index 0000000..02bad85
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/Makefile
 @@ -0,0 +1,30 @@
@@ -16428,7 +16427,7 @@ index 00000000..02bad856
 +$(eval $(call BuildTarget))
 diff --git a/target/linux/nexell-s5p4418/base-files/etc/board.d/01_leds b/target/linux/nexell-s5p4418/base-files/etc/board.d/01_leds
 new file mode 100755
-index 00000000..984e2549
+index 0000000..984e254
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/base-files/etc/board.d/01_leds
 @@ -0,0 +1,16 @@
@@ -16450,7 +16449,7 @@ index 00000000..984e2549
 +exit 0
 diff --git a/target/linux/nexell-s5p4418/base-files/etc/board.d/02_network b/target/linux/nexell-s5p4418/base-files/etc/board.d/02_network
 new file mode 100755
-index 00000000..1af2b2a1
+index 0000000..1af2b2a
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/base-files/etc/board.d/02_network
 @@ -0,0 +1,27 @@
@@ -16483,7 +16482,7 @@ index 00000000..1af2b2a1
 +exit 0
 diff --git a/target/linux/nexell-s5p4418/base-files/etc/inittab b/target/linux/nexell-s5p4418/base-files/etc/inittab
 new file mode 100644
-index 00000000..be235d87
+index 0000000..be235d8
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/base-files/etc/inittab
 @@ -0,0 +1,5 @@
@@ -16494,14 +16493,14 @@ index 00000000..be235d87
 +tty1::askfirst:/usr/libexec/login.sh
 diff --git a/target/linux/nexell-s5p4418/base-files/etc/modules.d/10-bcmdhd b/target/linux/nexell-s5p4418/base-files/etc/modules.d/10-bcmdhd
 new file mode 100644
-index 00000000..383470a6
+index 0000000..383470a
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/base-files/etc/modules.d/10-bcmdhd
 @@ -0,0 +1 @@
 +bcmdhd op_mode=0x0002
 diff --git a/target/linux/nexell-s5p4418/base-files/lib/upgrade/platform.sh b/target/linux/nexell-s5p4418/base-files/lib/upgrade/platform.sh
 new file mode 100644
-index 00000000..88ef4790
+index 0000000..88ef479
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/base-files/lib/upgrade/platform.sh
 @@ -0,0 +1,89 @@
@@ -16596,7 +16595,7 @@ index 00000000..88ef4790
 +}
 diff --git a/target/linux/nexell-s5p4418/config-4.14 b/target/linux/nexell-s5p4418/config-4.14
 new file mode 100644
-index 00000000..49463d9e
+index 0000000..49463d9
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/config-4.14
 @@ -0,0 +1,523 @@
@@ -17125,7 +17124,7 @@ index 00000000..49463d9e
 +CONFIG_ZLIB_INFLATE=y
 diff --git a/target/linux/nexell-s5p4418/config-4.19 b/target/linux/nexell-s5p4418/config-4.19
 new file mode 100644
-index 00000000..07c04241
+index 0000000..07c0424
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/config-4.19
 @@ -0,0 +1,538 @@
@@ -17669,7 +17668,7 @@ index 00000000..07c04241
 +CONFIG_ZLIB_INFLATE=y
 diff --git a/target/linux/nexell-s5p4418/image/Makefile b/target/linux/nexell-s5p4418/image/Makefile
 new file mode 100644
-index 00000000..6d339c4f
+index 0000000..6d339c4
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/image/Makefile
 @@ -0,0 +1,10 @@
@@ -17685,7 +17684,7 @@ index 00000000..6d339c4f
 +$(eval $(call BuildImage))
 diff --git a/target/linux/nexell-s5p4418/patches-4.14/100-bootargs.patch b/target/linux/nexell-s5p4418/patches-4.14/100-bootargs.patch
 new file mode 100644
-index 00000000..09543912
+index 0000000..0954391
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/patches-4.14/100-bootargs.patch
 @@ -0,0 +1,11 @@
@@ -17702,7 +17701,7 @@ index 00000000..09543912
 + };
 diff --git a/target/linux/nexell-s5p4418/patches-4.14/200-disable-msi.patch b/target/linux/nexell-s5p4418/patches-4.14/200-disable-msi.patch
 new file mode 100644
-index 00000000..9de7eeee
+index 0000000..9de7eee
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/patches-4.14/200-disable-msi.patch
 @@ -0,0 +1,18 @@
@@ -17726,7 +17725,7 @@ index 00000000..9de7eeee
 + 
 diff --git a/target/linux/nexell-s5p4418/patches-4.14/301-apalis-ixora-dts-leds.patch b/target/linux/nexell-s5p4418/patches-4.14/301-apalis-ixora-dts-leds.patch
 new file mode 100644
-index 00000000..acec1e8e
+index 0000000..acec1e8
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/patches-4.14/301-apalis-ixora-dts-leds.patch
 @@ -0,0 +1,86 @@
@@ -17818,7 +17817,7 @@ index 00000000..acec1e8e
 + 		};
 diff --git a/target/linux/nexell-s5p4418/patches-4.14/302-apalis-ixora-dts-reset-button.patch b/target/linux/nexell-s5p4418/patches-4.14/302-apalis-ixora-dts-reset-button.patch
 new file mode 100644
-index 00000000..ede872fb
+index 0000000..ede872f
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/patches-4.14/302-apalis-ixora-dts-reset-button.patch
 @@ -0,0 +1,76 @@
@@ -17900,7 +17899,7 @@ index 00000000..ede872fb
 + };
 diff --git a/target/linux/nexell-s5p4418/patches-4.19/100-bootargs.patch b/target/linux/nexell-s5p4418/patches-4.19/100-bootargs.patch
 new file mode 100644
-index 00000000..caf2d2a3
+index 0000000..caf2d2a
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/patches-4.19/100-bootargs.patch
 @@ -0,0 +1,11 @@
@@ -17917,7 +17916,7 @@ index 00000000..caf2d2a3
 + };
 diff --git a/target/linux/nexell-s5p4418/patches-4.19/301-apalis-ixora-dts-leds.patch b/target/linux/nexell-s5p4418/patches-4.19/301-apalis-ixora-dts-leds.patch
 new file mode 100644
-index 00000000..bae9df17
+index 0000000..bae9df1
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/patches-4.19/301-apalis-ixora-dts-leds.patch
 @@ -0,0 +1,86 @@
@@ -18009,7 +18008,7 @@ index 00000000..bae9df17
 + 		};
 diff --git a/target/linux/nexell-s5p4418/patches-4.19/302-apalis-ixora-dts-reset-button.patch b/target/linux/nexell-s5p4418/patches-4.19/302-apalis-ixora-dts-reset-button.patch
 new file mode 100644
-index 00000000..da9de296
+index 0000000..da9de29
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/patches-4.19/302-apalis-ixora-dts-reset-button.patch
 @@ -0,0 +1,76 @@
@@ -18091,7 +18090,7 @@ index 00000000..da9de296
 + };
 diff --git a/target/linux/nexell-s5p4418/profiles/00-default.mk b/target/linux/nexell-s5p4418/profiles/00-default.mk
 new file mode 100644
-index 00000000..48d41451
+index 0000000..48d4145
 --- /dev/null
 +++ b/target/linux/nexell-s5p4418/profiles/00-default.mk
 @@ -0,0 +1,19 @@
@@ -18116,7 +18115,7 @@ index 00000000..48d41451
 +$(eval $(call Profile,Default))
 diff --git a/target/linux/nexell-s5p6818/Makefile b/target/linux/nexell-s5p6818/Makefile
 new file mode 100644
-index 00000000..3d34fb48
+index 0000000..3d34fb4
 --- /dev/null
 +++ b/target/linux/nexell-s5p6818/Makefile
 @@ -0,0 +1,26 @@
@@ -18148,7 +18147,7 @@ index 00000000..3d34fb48
 +$(eval $(call BuildTarget))
 diff --git a/target/linux/nexell-s5p6818/base-files/etc/board.d/01_leds b/target/linux/nexell-s5p6818/base-files/etc/board.d/01_leds
 new file mode 100755
-index 00000000..6a22098d
+index 0000000..6a22098
 --- /dev/null
 +++ b/target/linux/nexell-s5p6818/base-files/etc/board.d/01_leds
 @@ -0,0 +1,16 @@
@@ -18170,7 +18169,7 @@ index 00000000..6a22098d
 +exit 0
 diff --git a/target/linux/nexell-s5p6818/base-files/etc/board.d/02_network b/target/linux/nexell-s5p6818/base-files/etc/board.d/02_network
 new file mode 100755
-index 00000000..198bc379
+index 0000000..198bc37
 --- /dev/null
 +++ b/target/linux/nexell-s5p6818/base-files/etc/board.d/02_network
 @@ -0,0 +1,26 @@
@@ -18202,7 +18201,7 @@ index 00000000..198bc379
 +exit 0
 diff --git a/target/linux/nexell-s5p6818/base-files/etc/inittab b/target/linux/nexell-s5p6818/base-files/etc/inittab
 new file mode 100644
-index 00000000..1af772c5
+index 0000000..1af772c
 --- /dev/null
 +++ b/target/linux/nexell-s5p6818/base-files/etc/inittab
 @@ -0,0 +1,5 @@
@@ -18213,14 +18212,14 @@ index 00000000..1af772c5
 +tty1::askfirst:/usr/libexec/login.sh
 diff --git a/target/linux/nexell-s5p6818/base-files/etc/modules.d/10-bcmdhd b/target/linux/nexell-s5p6818/base-files/etc/modules.d/10-bcmdhd
 new file mode 100644
-index 00000000..383470a6
+index 0000000..383470a
 --- /dev/null
 +++ b/target/linux/nexell-s5p6818/base-files/etc/modules.d/10-bcmdhd
 @@ -0,0 +1 @@
 +bcmdhd op_mode=0x0002
 diff --git a/target/linux/nexell-s5p6818/config-4.14 b/target/linux/nexell-s5p6818/config-4.14
 new file mode 100644
-index 00000000..fd627d6a
+index 0000000..fd627d6
 --- /dev/null
 +++ b/target/linux/nexell-s5p6818/config-4.14
 @@ -0,0 +1,546 @@
@@ -18772,7 +18771,7 @@ index 00000000..fd627d6a
 +CONFIG_XPS=y
 diff --git a/target/linux/nexell-s5p6818/image/Makefile b/target/linux/nexell-s5p6818/image/Makefile
 new file mode 100644
-index 00000000..203f0ea5
+index 0000000..203f0ea
 --- /dev/null
 +++ b/target/linux/nexell-s5p6818/image/Makefile
 @@ -0,0 +1,21 @@
@@ -18799,7 +18798,7 @@ index 00000000..203f0ea5
 +$(eval $(call BuildImage))
 diff --git a/target/linux/nexell-s5p6818/patches-4.14/0001-net-thunderx-add-support-for-rgmii-internal-delay-mo.patch b/target/linux/nexell-s5p6818/patches-4.14/0001-net-thunderx-add-support-for-rgmii-internal-delay-mo.patch
 new file mode 100644
-index 00000000..efd13da5
+index 0000000..efd13da
 --- /dev/null
 +++ b/target/linux/nexell-s5p6818/patches-4.14/0001-net-thunderx-add-support-for-rgmii-internal-delay-mo.patch
 @@ -0,0 +1,139 @@
@@ -18944,7 +18943,7 @@ index 00000000..efd13da5
 + 	/* Enable compensation controller and force the
 diff --git a/target/linux/nexell-s5p6818/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch b/target/linux/nexell-s5p6818/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
 new file mode 100644
-index 00000000..ef7aef3a
+index 0000000..ef7aef3
 --- /dev/null
 +++ b/target/linux/nexell-s5p6818/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
 @@ -0,0 +1,110 @@
@@ -19060,7 +19059,7 @@ index 00000000..ef7aef3a
 + #define BGX_MSIX_VEC_0_29_CTL		0x400008
 diff --git a/target/linux/nexell-s5p6818/profiles/00-default.mk b/target/linux/nexell-s5p6818/profiles/00-default.mk
 new file mode 100644
-index 00000000..5f985721
+index 0000000..5f98572
 --- /dev/null
 +++ b/target/linux/nexell-s5p6818/profiles/00-default.mk
 @@ -0,0 +1,17 @@
@@ -19083,7 +19082,7 @@ index 00000000..5f985721
 +$(eval $(call Profile,Default))
 diff --git a/target/linux/rockchip-rk3399/Makefile b/target/linux/rockchip-rk3399/Makefile
 new file mode 100644
-index 00000000..8290698e
+index 0000000..8290698
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/Makefile
 @@ -0,0 +1,26 @@
@@ -19115,7 +19114,7 @@ index 00000000..8290698e
 +$(eval $(call BuildTarget))
 diff --git a/target/linux/rockchip-rk3399/base-files/etc/board.d/01_leds b/target/linux/rockchip-rk3399/base-files/etc/board.d/01_leds
 new file mode 100755
-index 00000000..3839f05d
+index 0000000..3839f05
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/base-files/etc/board.d/01_leds
 @@ -0,0 +1,16 @@
@@ -19137,7 +19136,7 @@ index 00000000..3839f05d
 +exit 0
 diff --git a/target/linux/rockchip-rk3399/base-files/etc/board.d/02_network b/target/linux/rockchip-rk3399/base-files/etc/board.d/02_network
 new file mode 100755
-index 00000000..41cb761d
+index 0000000..41cb761
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/base-files/etc/board.d/02_network
 @@ -0,0 +1,24 @@
@@ -19167,7 +19166,7 @@ index 00000000..41cb761d
 +exit 0
 diff --git a/target/linux/rockchip-rk3399/base-files/etc/hotplug.d/iface/12-disable-rk3399-eth-offloading b/target/linux/rockchip-rk3399/base-files/etc/hotplug.d/iface/12-disable-rk3399-eth-offloading
 new file mode 100644
-index 00000000..ae462b10
+index 0000000..ae462b1
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/base-files/etc/hotplug.d/iface/12-disable-rk3399-eth-offloading
 @@ -0,0 +1,22 @@
@@ -19195,7 +19194,7 @@ index 00000000..ae462b10
 +exit 0
 diff --git a/target/linux/rockchip-rk3399/base-files/etc/init.d/fa-rk3399-pwmfan b/target/linux/rockchip-rk3399/base-files/etc/init.d/fa-rk3399-pwmfan
 new file mode 100755
-index 00000000..84c019d1
+index 0000000..84c019d
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/base-files/etc/init.d/fa-rk3399-pwmfan
 @@ -0,0 +1,9 @@
@@ -19210,7 +19209,7 @@ index 00000000..84c019d1
 +
 diff --git a/target/linux/rockchip-rk3399/base-files/etc/inittab b/target/linux/rockchip-rk3399/base-files/etc/inittab
 new file mode 100644
-index 00000000..bbb5ac89
+index 0000000..bbb5ac8
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/base-files/etc/inittab
 @@ -0,0 +1,5 @@
@@ -19221,14 +19220,14 @@ index 00000000..bbb5ac89
 +tty1::askfirst:/usr/libexec/login.sh
 diff --git a/target/linux/rockchip-rk3399/base-files/etc/modules.d/10-bcmdhd b/target/linux/rockchip-rk3399/base-files/etc/modules.d/10-bcmdhd
 new file mode 100644
-index 00000000..383470a6
+index 0000000..383470a
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/base-files/etc/modules.d/10-bcmdhd
 @@ -0,0 +1 @@
 +bcmdhd op_mode=0x0002
 diff --git a/target/linux/rockchip-rk3399/base-files/etc/rc.d/S96fa-rk3399-pwmfan b/target/linux/rockchip-rk3399/base-files/etc/rc.d/S96fa-rk3399-pwmfan
 new file mode 120000
-index 00000000..bf647625
+index 0000000..bf64762
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/base-files/etc/rc.d/S96fa-rk3399-pwmfan
 @@ -0,0 +1 @@
@@ -19236,7 +19235,7 @@ index 00000000..bf647625
 \ No newline at end of file
 diff --git a/target/linux/rockchip-rk3399/base-files/usr/bin/start-rk3399-pwm-fan.sh b/target/linux/rockchip-rk3399/base-files/usr/bin/start-rk3399-pwm-fan.sh
 new file mode 100755
-index 00000000..311b4c15
+index 0000000..311b4c1
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/base-files/usr/bin/start-rk3399-pwm-fan.sh
 @@ -0,0 +1,59 @@
@@ -19301,7 +19300,7 @@ index 00000000..311b4c15
 +done
 diff --git a/target/linux/rockchip-rk3399/config-4.14 b/target/linux/rockchip-rk3399/config-4.14
 new file mode 100644
-index 00000000..fd627d6a
+index 0000000..fd627d6
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/config-4.14
 @@ -0,0 +1,546 @@
@@ -19853,7 +19852,7 @@ index 00000000..fd627d6a
 +CONFIG_XPS=y
 diff --git a/target/linux/rockchip-rk3399/image/Makefile b/target/linux/rockchip-rk3399/image/Makefile
 new file mode 100644
-index 00000000..203f0ea5
+index 0000000..203f0ea
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/image/Makefile
 @@ -0,0 +1,21 @@
@@ -19880,7 +19879,7 @@ index 00000000..203f0ea5
 +$(eval $(call BuildImage))
 diff --git a/target/linux/rockchip-rk3399/patches-4.14/0001-net-thunderx-add-support-for-rgmii-internal-delay-mo.patch b/target/linux/rockchip-rk3399/patches-4.14/0001-net-thunderx-add-support-for-rgmii-internal-delay-mo.patch
 new file mode 100644
-index 00000000..efd13da5
+index 0000000..efd13da
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/patches-4.14/0001-net-thunderx-add-support-for-rgmii-internal-delay-mo.patch
 @@ -0,0 +1,139 @@
@@ -20025,7 +20024,7 @@ index 00000000..efd13da5
 + 	/* Enable compensation controller and force the
 diff --git a/target/linux/rockchip-rk3399/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch b/target/linux/rockchip-rk3399/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
 new file mode 100644
-index 00000000..ef7aef3a
+index 0000000..ef7aef3
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
 @@ -0,0 +1,110 @@
@@ -20141,7 +20140,7 @@ index 00000000..ef7aef3a
 + #define BGX_MSIX_VEC_0_29_CTL		0x400008
 diff --git a/target/linux/rockchip-rk3399/profiles/00-default.mk b/target/linux/rockchip-rk3399/profiles/00-default.mk
 new file mode 100644
-index 00000000..5f985721
+index 0000000..5f98572
 --- /dev/null
 +++ b/target/linux/rockchip-rk3399/profiles/00-default.mk
 @@ -0,0 +1,17 @@
@@ -20164,7 +20163,7 @@ index 00000000..5f985721
 +$(eval $(call Profile,Default))
 diff --git a/target/linux/sunxi/base-files/etc/board.d/01_leds b/target/linux/sunxi/base-files/etc/board.d/01_leds
 new file mode 100755
-index 00000000..8b58ef09
+index 0000000..8b58ef0
 --- /dev/null
 +++ b/target/linux/sunxi/base-files/etc/board.d/01_leds
 @@ -0,0 +1,20 @@
@@ -20189,7 +20188,7 @@ index 00000000..8b58ef09
 +
 +exit 0
 diff --git a/target/linux/sunxi/base-files/etc/board.d/02_network b/target/linux/sunxi/base-files/etc/board.d/02_network
-index 984d5b3b..67a93b93 100755
+index 984d5b3..67a93b9 100755
 --- a/target/linux/sunxi/base-files/etc/board.d/02_network
 +++ b/target/linux/sunxi/base-files/etc/board.d/02_network
 @@ -18,6 +18,33 @@ case "$(board_name)" in
@@ -20228,7 +20227,7 @@ index 984d5b3b..67a93b93 100755
  	;;
 diff --git a/target/linux/sunxi/base-files/usr/bin/cpu_freq b/target/linux/sunxi/base-files/usr/bin/cpu_freq
 new file mode 100755
-index 00000000..4b010058
+index 0000000..4b01005
 --- /dev/null
 +++ b/target/linux/sunxi/base-files/usr/bin/cpu_freq
 @@ -0,0 +1,120 @@
@@ -20354,7 +20353,7 @@ index 00000000..4b010058
 +fi
 \ No newline at end of file
 diff --git a/target/linux/sunxi/image/cortex-a53.mk b/target/linux/sunxi/image/cortex-a53.mk
-index 65551407..e5aa41bc 100644
+index 6555140..e5aa41b 100644
 --- a/target/linux/sunxi/image/cortex-a53.mk
 +++ b/target/linux/sunxi/image/cortex-a53.mk
 @@ -9,6 +9,9 @@ ifeq ($(SUBTARGET),cortexa53)
@@ -20368,5 +20367,5 @@ index 65551407..e5aa41bc 100644
    SUNXI_DTS:=allwinner/sun50i-h5-nanopi-neo-plus2
    KERNEL_NAME := Image
 -- 
-2.17.1
+1.8.3.1
 
