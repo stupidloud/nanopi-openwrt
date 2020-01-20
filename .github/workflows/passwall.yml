@@ -37,6 +37,7 @@ jobs:
           rm .repo/manifests/h5.xml
           cp ../passwall.xml .repo/manifests/h5.xml
           repo sync -c  --no-clone-bundle
+          cd friendlywrt && git apply ../../0001-nanopi-patch.patch
           
       - name: Custom Configure File
         run: |
