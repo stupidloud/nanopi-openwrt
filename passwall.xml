@@ -23,7 +23,7 @@
   </project>
 
   <!-- friendlywrt source code -->
-  <project path="friendlywrt" name="openwrt" remote="self" revision="refs/heads/master" />
+  <project path="friendlywrt" name="openwrt" remote="self" revision="refs/heads/my-19.07-full" />
 
   <!-- toolchain -->
   <project path="toolchain" name="prebuilts" remote="origin" revision="refs/heads/master" />
