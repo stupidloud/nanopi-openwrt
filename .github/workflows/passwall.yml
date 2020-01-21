@@ -1,4 +1,4 @@
-name: NanoPi-R1S H5 passwall Build
+name: NanoPi-R1S H5 passwall Build 
 
 on:
   push:
