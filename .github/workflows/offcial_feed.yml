@@ -59,7 +59,7 @@ jobs:
         run: |
           cd friendlywrt-h5
           rm -f friendlywrt/.config*
-          cp ../lede.config.seed ./configs/config_h5
+          cp ../2 ./configs/config_h5
           
       - name: Build FriendlyWrt
         run: |
