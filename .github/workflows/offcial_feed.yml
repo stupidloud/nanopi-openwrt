@@ -1,4 +1,4 @@
-name: NanoPi-R1S H5 Openwrt(lean) Build
+name: NanoPi-R1S H5 Openwrt(lean) Build  
 
 on:
   push:
