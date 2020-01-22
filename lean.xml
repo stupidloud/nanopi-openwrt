@@ -14,7 +14,7 @@
   </project>
 
   <!-- friendlyelec device configs -->
-  <project path="device/friendlyelec" name="friendlywrt_device_h5" remote="origin" revision="refs/heads/master-v18.06.1" />
+  <project path="device/friendlyelec" name="friendlywrt_device_h5" remote="origin" />
   <project path="configs" name="friendlywrt_configs" remote="origin" />
 
   <!-- friendlyelec scripts -->
