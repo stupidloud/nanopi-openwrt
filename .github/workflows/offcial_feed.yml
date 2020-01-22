@@ -61,6 +61,7 @@ jobs:
           rm -f friendlywrt/.config*
           echo >> ./configs/config_h5
           echo 'CONFIG_PACKAGE_openssl-util=y' >> ./configs/config_h5
+          sed -i '/DISPLAY/d' ./configs/config_h5
           
       - name: Build FriendlyWrt
         run: |
