@@ -3,7 +3,7 @@
   <remote name="origin"
           fetch="."
           revision="refs/heads/master" />
-  <remote name="self" fetch="https://github.com/coolsnowwolf" />
+  <remote name="self" fetch="https://github.com/klever1988" />
 
   <project path="kernel" name="linux" remote="origin" revision="refs/heads/sunxi-4.14.y" />
   <project path="u-boot" name="u-boot" remote="origin" revision="refs/heads/sunxi-v2017.x" />
