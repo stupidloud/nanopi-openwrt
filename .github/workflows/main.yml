@@ -53,15 +53,8 @@ jobs:
       - name: Update Feeds
         run: |
           cd friendlywrt-h5/friendlywrt
-          ./scripts/feeds update -a
-          ./scripts/feeds install -a
-      
-      - name: Download package
-        if: always()
-        run: |
-          cd friendlywrt-h5/friendlywrt
-          make download -j8
-          
+          ./scripts/feeds clean -a
+                    
       - name: Build FriendlyWrt
         run: |
           cd friendlywrt-h5
