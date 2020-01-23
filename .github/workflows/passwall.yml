@@ -45,9 +45,10 @@ jobs:
           cp ../h5-19.07.xml .repo/manifests/h5.xml
           repo sync -c  --no-clone-bundle
           cp ../passwall.seed configs/config_h5
-          sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
-          echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
-          ./scripts/feeds clean -a
+          cd friendlywrt
+          sed -i 's/dnsmasq /dnsmasq-full /' include/target.mk
+          echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> feeds.conf.default
+          ./scripts/feeds clean
                     
       - name: Build FriendlyWrt
         run: |
