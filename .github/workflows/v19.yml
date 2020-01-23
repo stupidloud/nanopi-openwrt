@@ -46,6 +46,7 @@ jobs:
           rm -f .repo/manifests/h5.xml
           cp ../h5-19.07.xml .repo/manifests/h5.xml
           repo sync -c  --no-clone-bundle
+          cp ../19ori configs/config_h5
           
       - name: Update Target.mk
         run: |
