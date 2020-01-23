@@ -48,6 +48,7 @@ jobs:
           cd friendlywrt
           sed -i 's/dnsmasq /dnsmasq-full /' include/target.mk
           echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> feeds.conf.default
+          echo 'src-git darkmatter https://github.com/Lienol/luci-theme-darkmatter;luci-18.06' >> feeds.conf.default
           ./scripts/feeds clean
                     
       - name: Build FriendlyWrt
