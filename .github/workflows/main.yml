@@ -38,18 +38,15 @@ jobs:
           cd friendlywrt-h5
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m h5.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
           
-      - name: Merge UpStearm OpenWrt
+      - name: Mods
         run: |
           cd friendlywrt-h5
           rm -f .repo/manifests/h5.xml
           cp ../original.xml .repo/manifests/h5.xml
           repo sync -c  --no-clone-bundle
-          
-      - name: Update Target.mk
-        run: |
-          cd friendlywrt-h5/
+          sed -i '/=m/d;/CONFIG_ALL_KMODS/d;/CONFIG_ALL_NONSHARED/d;/CONFIG_DEVEL/d;/docker/d;/DOCKER/d;/CONFIG_DISPLAY_SUPPORT/d' configs/config_h5
           sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
-                    
+          
       - name: Update Feeds
         run: |
           cd friendlywrt-h5/friendlywrt
