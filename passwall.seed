@@ -917,6 +917,7 @@ CONFIG_PACKAGE_luci-theme-argon-mod=y
 CONFIG_PACKAGE_luci-theme-bootstrap=y
 CONFIG_PACKAGE_luci-theme-bootstrap-mod=y
 CONFIG_PACKAGE_luci-theme-netgear-mc=y
+CONFIG_PACKAGE_luci-theme-darkmatter=y
 CONFIG_PACKAGE_lxc=y
 CONFIG_PACKAGE_lxc-attach=y
 CONFIG_PACKAGE_lxc-common=y
