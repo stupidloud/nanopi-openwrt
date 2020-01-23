@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote name="origin"
+          fetch="."
+          revision="refs/heads/master" />
+  <remote name="self" fetch="https://github.com/klever1988" />
+
+  <project path="kernel" name="linux" remote="origin" revision="refs/heads/sunxi-4.14.y" />
+  <project path="u-boot" name="u-boot" remote="origin" revision="refs/heads/sunxi-v2017.x" />
+
+  <!-- img tools for h5 -->
+  <project path="scripts/sd-fuse" name="sd-fuse_h5" remote="origin" >
+          <linkfile dest="out" src="out"/>
+  </project>
+
+  <!-- friendlyelec device configs -->
+  <project path="device/friendlyelec" name="friendlywrt_device_h5" remote="origin" />
+  <project path="configs" name="friendlywrt_configs" remote="origin" />
+
+  <!-- friendlyelec scripts -->
+  <project path="scripts" name="friendlywrt_scripts" remote="origin">
+          <linkfile dest="build.sh" src="build.sh"/>
+  </project>
+
+  <!-- friendlywrt source code -->
+  <project path="friendlywrt" name="friendlywrt" remote="self" revision="refs/heads/master" />
+
+  <!-- toolchain -->
+  <project path="toolchain" name="prebuilts" remote="origin" revision="refs/heads/master" />
+</manifest>
