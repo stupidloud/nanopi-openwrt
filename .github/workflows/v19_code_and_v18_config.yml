@@ -47,7 +47,7 @@ jobs:
           repo sync -c  --no-clone-bundle
           sed -i '/=m/d;/CONFIG_ALL_KMODS/d;/CONFIG_ALL_NONSHARED/d;/CONFIG_DEVEL/d;/docker/d;/DOCKER/d;/CONFIG_DISPLAY_SUPPORT/d' configs/config_h5
           sed -i '/CONFIG_TARGET_MULTI_PROFILE/d' configs/config_h5
-          sed -i 's/CONFIG_TARGET_DEVICE/CONFIG_TARGET' configs/config_h5
+          sed -i 's/CONFIG_TARGET_DEVICE/CONFIG_TARGET/' configs/config_h5
           sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
           
       - name: Clean Feeds
