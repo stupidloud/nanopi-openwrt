@@ -47,7 +47,7 @@ jobs:
           cp ../19s_master_config.xml .repo/manifests/h5.xml
           repo sync -c  --no-clone-bundle
           curl 'https://raw.githubusercontent.com/friendlyarm/friendlywrt_device_h5/286a065e7832458ccd17a5d4cf4dd52a547fa34d/h5/nanopi_r1s.mk' > device/friendlyelec/h5/nanopi_r1s.mk
-          curl 'https://github.com/friendlyarm/friendlywrt_device_h5/raw/a198d92e1d64bcde2d4169f2e680f5fff1dc80a9/h5/common-files/etc/opkg/distfeeds.conf' > device/friendlyelec/h5/common-files/etc/opkg/distfeeds.conf
+          curl 'https://raw.githubusercontent.com/friendlyarm/friendlywrt_device_h5/a198d92e1d64bcde2d4169f2e680f5fff1dc80a9/h5/common-files/etc/opkg/distfeeds.conf' > device/friendlyelec/h5/common-files/etc/opkg/distfeeds.conf
           sed -i '/=m/d;/CONFIG_ALL_KMODS/d;/CONFIG_ALL_NONSHARED/d;/CONFIG_DEVEL/d;/docker/d;/DOCKER/d;/CONFIG_DISPLAY_SUPPORT/d' configs/config_h5
           sed -i '1cCONFIG_TARGET_sunxi=y' configs/config_h5
           sed -i '2cCONFIG_TARGET_sunxi_cortexa53=y' configs/config_h5
