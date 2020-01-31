@@ -5,13 +5,9 @@ on:
     paths:
       - '.github/workflows/v19_code_and_v18_config.yml'
 
-
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
 
       - name: Checkout
