@@ -5,15 +5,14 @@ on:
     paths: 
       - '.github/workflows/master_code_and_master_config.yml'  
 
-
 jobs:
 
   build:
-
+    
     runs-on: ubuntu-latest
-
+    
     steps:
-
+      
       - name: Checkout
         uses: actions/checkout@master
         with:
