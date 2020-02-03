@@ -1,4 +1,4 @@
-name: original Build
+name: neo2 Build
 
 on:
   push:
@@ -45,7 +45,7 @@ jobs:
           cp ../original.xml .repo/manifests/h5.xml
           repo sync -c  --no-clone-bundle
           sed -i '/=m/d;/CONFIG_ALL_KMODS/d;/CONFIG_ALL_NONSHARED/d;/CONFIG_DEVEL/d;/docker/d;/DOCKER/d;/CONFIG_DISPLAY_SUPPORT/d' configs/config_h5
-          sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
+          #sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
           
       - name: Clean Feeds
         run: |
