@@ -33,7 +33,7 @@ jobs:
           git clone https://github.com/friendlyarm/repo
           sudo cp repo/repo /usr/bin/
           
-      - name: Download Source
+      - name: Init Source
         run: |
           mkdir friendlywrt-rk3328
           cd friendlywrt-rk3328
@@ -45,7 +45,7 @@ jobs:
           rm -f .repo/manifests/rk3328.xml
           cp ../rk3328.xml .repo/manifests/rk3328.xml
           repo sync -c  --no-clone-bundle
-          sed -i '/=m/d;/CONFIG_ALL_KMODS/d;/CONFIG_ALL_NONSHARED/d;/CONFIG_DEVEL/d;/docker/d;/DOCKER/d;/CONFIG_DISPLAY_SUPPORT/d' configs/config_rk3328
+          sed -i '/=m/d;/CONFIG_AUTOREMOVE/d;/CONFIG_BUILDBOT/d;/CONFIG_ALL_KMODS/d;/CONFIG_ALL_NONSHARED/d;/CONFIG_DEVEL/d;/docker/d;/DOCKER/d;/CONFIG_DISPLAY_SUPPORT/d' configs/config_rk3328
           sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
           
       - name: Clean Feeds
