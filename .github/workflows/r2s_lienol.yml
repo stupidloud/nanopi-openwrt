@@ -64,7 +64,7 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
-          ./build.sh nanopi_r2s.mk
+          yes no | ./build.sh nanopi_r2s.mk
       
       - name: Zip Files
         run: |
