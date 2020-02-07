@@ -49,7 +49,10 @@ jobs:
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
-          git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/my-19.07-full -X theirs
+          git checkout upstream/my-19.07-full -b tmp
+          git mv README.md README && git commit -m 'undo rename readme for rebasing'
+          git checkout master
+          git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto tmp -X theirs
           git checkout upstream/my-19.07-full -- feeds.conf.default
           
       - name: Clean Feeds
