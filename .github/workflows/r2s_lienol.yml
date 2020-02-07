@@ -46,6 +46,7 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           sed -i '/=m/d;/CONFIG_AUTOREMOVE/d;/CONFIG_BUILDBOT/d;/CONFIG_ALL_KMODS/d;/CONFIG_ALL_NONSHARED/d;/CONFIG_DEVEL/d;/docker/d;/DOCKER/d;/CONFIG_DISPLAY_SUPPORT/d' configs/config_rk3328
+          sed -i '/CONFIG_KERNEL_CGROUP_PERF/i\CONFIG_KERNEL_CGROUPS=y' configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
@@ -64,7 +65,6 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
-          sed -i 's/make -j/echo | make -j/' scripts/mk-friendlywrt.sh
           ./build.sh nanopi_r2s.mk
       
       - name: Zip Files
