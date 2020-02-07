@@ -1,4 +1,4 @@
-name: r2s Passwall Build
+name: r2s Lienol(Passwall) Build
 
 on:
   push:
