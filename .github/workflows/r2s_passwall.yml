@@ -1,4 +1,4 @@
-name: r2s Passwall Build
+name: r2s Passwall Build 原版friendlywrt合并passwall插件
 
 on:
   push:
