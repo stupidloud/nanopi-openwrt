@@ -1,4 +1,3 @@
-
 CONFIG_TARGET_allwinner_h5=y
 CONFIG_TARGET_allwinner_h5_Default=y
 CONFIG_TARGET_BOARD="allwinner-h5"
