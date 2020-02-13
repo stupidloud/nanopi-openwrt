@@ -1,4 +1,4 @@
-name: r2s Lienol(Passwall) Build
+name: r2s Lienol(Passwall) Build Lienol版openwrt(自带Passwall)
 
 on:
   push:
