@@ -1,4 +1,4 @@
-name: r2s original Build
+name: r2s original Build 原版friendlywrt
 
 on:
   push:
