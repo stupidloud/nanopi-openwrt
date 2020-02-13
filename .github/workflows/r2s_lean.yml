@@ -1,4 +1,4 @@
-name: r2s lean Build
+name: r2s Lean版openwrt
 
 on:
   push:
