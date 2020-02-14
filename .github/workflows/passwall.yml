@@ -1,6 +1,8 @@
 name: NanoPi-R1S H5 passwall Build
 
 on:
+  schedule:
+    - cron: 0 20 * * *
   push:
     paths:
       - '.github/workflows/passwall.yml'
