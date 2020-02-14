@@ -6,6 +6,7 @@ on:
   push:
     paths:
       - '.github/workflows/passwall.yml'
+      - 'passwall.seed'
 
 jobs:
 
