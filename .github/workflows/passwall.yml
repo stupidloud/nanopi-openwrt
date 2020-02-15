@@ -46,8 +46,10 @@ jobs:
         run: |
           cd friendlywrt-h5
           rm -f .repo/manifests/h5.xml
-          cp ../original.xml .repo/manifests/h5.xml
+          cp ../19s_master_config.xml .repo/manifests/h5.xml
           repo sync -c  --no-clone-bundle
+          curl 'https://raw.githubusercontent.com/friendlyarm/friendlywrt_device_h5/286a065e7832458ccd17a5d4cf4dd52a547fa34d/h5/nanopi_r1s.mk' > device/friendlyelec/h5/nanopi_r1s.mk
+          curl 'https://raw.githubusercontent.com/friendlyarm/friendlywrt_device_h5/a198d92e1d64bcde2d4169f2e680f5fff1dc80a9/h5/common-files/etc/opkg/distfeeds.conf' > device/friendlyelec/h5/common-files/etc/opkg/distfeeds.conf
           sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
           echo >> friendlywrt/feeds.conf.default && echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
           echo 'src-git darkmatter https://github.com/Lienol/luci-theme-darkmatter;luci-18.06' >> friendlywrt/feeds.conf.default
