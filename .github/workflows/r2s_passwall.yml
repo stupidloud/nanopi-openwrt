@@ -3,6 +3,7 @@ name: r2s Passwall Build 原版friendlywrt合并passwall插件
 on:
   push:
     paths:
+      - 'r2s_passwall.seed'
       - '.github/workflows/r2s_passwall.yml'
   schedule:
     - cron: '10 13 * * *'
@@ -49,7 +50,7 @@ jobs:
           repo sync -c  --no-clone-bundle
           sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
           echo >> friendlywrt/feeds.conf.default && echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
-          cp ../r2s.config.seed configs/config_rk3328
+          cp ../r2s_passwall.seed configs/config_rk3328
           
       - name: Clean Feeds
         run: |
