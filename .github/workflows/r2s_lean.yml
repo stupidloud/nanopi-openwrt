@@ -99,7 +99,7 @@ jobs:
           CONFIG_boost-compile-visibility-hidden=y
           CONFIG_boost-runtime-shared=y
           CONFIG_boost-static-and-shared-libs=y
-          CONFIG_boost-variant-release=y' >> configs/config_rk3328
+          CONFIG_boost-variant-release=y' >> configs/config_rk3328.t
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
