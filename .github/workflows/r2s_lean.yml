@@ -45,7 +45,7 @@ jobs:
       - name: Mods
         run: |
           cd friendlywrt-rk3328
-          sed -i '/=m/d;/CONFIG_AUTOREMOVE/d;/CONFIG_BUILDBOT/d;/CONFIG_ALL_KMODS/d;/CONFIG_ALL_NONSHARED/d;/CONFIG_DEVEL/d;/docker/d;/DOCKER/d;/CONFIG_DISPLAY_SUPPORT/d' configs/config_rk3328
+          cp ../r2s.config.seed configs/config_rk3328
           sed -i '/iptparser/d' configs/config_rk3328
           echo '
           CONFIG_LIBSODIUM_MINIMAL=y
