@@ -106,7 +106,7 @@ jobs:
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/master -X theirs
           git checkout upstream/master -- feeds.conf.default
-          git commit -m 'update feeds' && git apply ../0001-fix-upx.patch
+          git commit -m 'update feeds' && git apply ../../0001-fix-upx.patch
           
       - name: Clean Feeds
         run: |
