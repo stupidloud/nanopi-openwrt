@@ -100,7 +100,7 @@ jobs:
           CONFIG_boost-runtime-shared=y
           CONFIG_boost-static-and-shared-libs=y
           CONFIG_boost-variant-release=y
-          # CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_rk3328.t
+          # CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
