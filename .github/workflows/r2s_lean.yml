@@ -106,7 +106,7 @@ jobs:
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/master -X theirs
           git checkout upstream/master -- feeds.conf.default
-          git revert 9477f7695cec4beefa34aaf6a0bfb619520c48d6
+          git revert --no-edit 9477f7695cec4beefa34aaf6a0bfb619520c48d6
           
       - name: Clean Feeds
         run: |
