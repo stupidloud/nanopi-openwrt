@@ -47,6 +47,7 @@ jobs:
         run: |
           cd friendlywrt-h5
           cp ../r1s_lienol.seed configs/config_h5
+          sed -i '/CONFIG_KERNEL_CGROUP_PERF/i\CONFIG_KERNEL_CGROUPS=y' configs/config_h5
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
