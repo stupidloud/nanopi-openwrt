@@ -56,6 +56,7 @@ jobs:
           git checkout origin/master
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto tmp -X theirs
           git checkout upstream/dev-19.07 -- feeds.conf.default
+          git commit -m 'update feeds' && git apply ../../0001-fix-upx.patch
           
       - name: Clean Feeds
         run: |
