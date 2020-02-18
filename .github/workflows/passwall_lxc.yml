@@ -5,8 +5,8 @@ on:
   #  - cron: 0 20 * * *
   push:
     paths:
-      - '.github/workflows/passwall_lxc.yml'
-      - 'passwall_lxc.seed'
+      - '.github/workflows/r1s_lienol.yml'
+      - 'r1s_lienol.seed'
 
 jobs:
 
@@ -41,19 +41,64 @@ jobs:
           mkdir friendlywrt-h5
           cd friendlywrt-h5
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m h5.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
+          repo sync -c  --no-clone-bundle
           
       - name: Mods
         run: |
-          cd friendlywrt-h5
-          rm -f .repo/manifests/h5.xml
-          cp ../19s_master_config.xml .repo/manifests/h5.xml
-          repo sync -c  --no-clone-bundle
-          curl 'https://raw.githubusercontent.com/friendlyarm/friendlywrt_device_h5/286a065e7832458ccd17a5d4cf4dd52a547fa34d/h5/nanopi_r1s.mk' > device/friendlyelec/h5/nanopi_r1s.mk
-          curl 'https://raw.githubusercontent.com/friendlyarm/friendlywrt_device_h5/a198d92e1d64bcde2d4169f2e680f5fff1dc80a9/h5/common-files/etc/opkg/distfeeds.conf' > device/friendlyelec/h5/common-files/etc/opkg/distfeeds.conf
-          sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
-          echo >> friendlywrt/feeds.conf.default && echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
-          echo 'src-git darkmatter https://github.com/Lienol/luci-theme-darkmatter;luci-18.06' >> friendlywrt/feeds.conf.default
-          cp ../passwall_lxc.seed configs/config_h5
+          cd friendlywrt-rk3328
+          cp ../r2s.config.seed configs/config_rk3328
+          sed -i '/CONFIG_KERNEL_CGROUP_PERF/i\CONFIG_KERNEL_CGROUPS=y' configs/config_rk3328
+          echo '
+          CONFIG_OPENSSL_OPTIMIZE_SPEED=y
+          CONFIG_OPENSSL_WITH_DTLS=y
+          CONFIG_OPENSSL_WITH_EC2M=y
+          CONFIG_OPENSSL_WITH_NPN=y
+          CONFIG_PACKAGE_UnblockNeteaseMusic=y
+          # CONFIG_PACKAGE_iptables-mod-filter is not set
+          CONFIG_PACKAGE_kmod-crypto-authenc=y
+          # CONFIG_PACKAGE_kmod-crypto-ecb is not set
+          # CONFIG_PACKAGE_kmod-crypto-sha1 is not set
+          CONFIG_PACKAGE_kmod-cryptodev=y
+          # CONFIG_PACKAGE_kmod-gre is not set
+          # CONFIG_PACKAGE_kmod-ipt-filter is not set
+          # CONFIG_PACKAGE_kmod-lib-textsearch is not set
+          # CONFIG_PACKAGE_kmod-mppe is not set
+          CONFIG_PACKAGE_libgd=y
+          CONFIG_PACKAGE_libhttp-parser=y
+          CONFIG_PACKAGE_libjpeg=y
+          CONFIG_PACKAGE_libnghttp2=y
+          CONFIG_PACKAGE_libopenssl-conf=y
+          CONFIG_PACKAGE_libopenssl-devcrypto=y
+          CONFIG_PACKAGE_libpng=y
+          CONFIG_PACKAGE_libstdcpp=y
+          CONFIG_PACKAGE_luci-app-adguardhome=y
+          # CONFIG_PACKAGE_luci-app-control-mia is not set
+          # CONFIG_PACKAGE_luci-app-control-timewol is not set
+          # CONFIG_PACKAGE_luci-app-control-webrestriction is not set
+          # CONFIG_PACKAGE_luci-app-control-weburl is not set
+          # CONFIG_PACKAGE_luci-app-pppoe-relay is not set
+          # CONFIG_PACKAGE_luci-app-pppoe-server is not set
+          # CONFIG_PACKAGE_luci-app-pptp-vpnserver-manyusers is not set
+          CONFIG_PACKAGE_luci-app-unblockmusic=y
+          CONFIG_PACKAGE_luci-app-vnstat=y
+          CONFIG_PACKAGE_luci-i18n-vnstat-zh-cn=y
+          CONFIG_PACKAGE_luci-theme-argon-dark-mod=y
+          CONFIG_PACKAGE_luci-theme-argon-light-mod=y
+          CONFIG_PACKAGE_node=y
+          # CONFIG_PACKAGE_pptpd is not set
+          # CONFIG_PACKAGE_rp-pppoe-common is not set
+          # CONFIG_PACKAGE_rp-pppoe-relay is not set
+          # CONFIG_PACKAGE_rp-pppoe-server is not set
+          CONFIG_PACKAGE_vnstat=y
+          CONFIG_PACKAGE_vnstati=y' >> configs/config_rk3328
+          cd friendlywrt
+          git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
+          git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
+          git checkout upstream/dev-19.07 -b tmp
+          git mv README.md README && git commit -m 'undo rename readme for rebasing'
+          git checkout origin/master
+          git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto tmp -X theirs
+          git checkout upstream/dev-19.07 -- feeds.conf.default
           
       - name: Clean Feeds
         run: |
