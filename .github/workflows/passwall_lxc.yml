@@ -1,8 +1,8 @@
 name: NanoPi-R1S H5 passwall(with lxc) Build
 
 on:
-  schedule:
-    - cron: 0 20 * * *
+  #schedule:
+  #  - cron: 0 20 * * *
   push:
     paths:
       - '.github/workflows/passwall_lxc.yml'
