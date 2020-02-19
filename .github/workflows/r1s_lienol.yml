@@ -47,28 +47,26 @@ jobs:
           cd friendlywrt-h5
           . ../remove_used_config.sh
           sed -i '/CONFIG_KERNEL_CGROUP_PERF/i\CONFIG_KERNEL_CGROUPS=y' configs/config_h5
-          echo >> configs/config_h5 && echo '
+          echo '
           CONFIG_OPENSSL_ENGINE_BUILTIN=y
-          CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO=y
           CONFIG_OPENSSL_OPTIMIZE_SPEED=y
           CONFIG_OPENSSL_WITH_DTLS=y
           CONFIG_OPENSSL_WITH_EC2M=y
           CONFIG_OPENSSL_WITH_NPN=y
           CONFIG_PACKAGE_ca-bundle=y
           CONFIG_PACKAGE_curl=y
-          CONFIG_PACKAGE_kmod-crypto-authenc=y
-          CONFIG_PACKAGE_kmod-cryptodev=y
           CONFIG_PACKAGE_libcurl=y
-          CONFIG_PACKAGE_libopenssl-conf=y
+          CONFIG_PACKAGE_luci-app-netdata=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-app-smartdns=y
+          CONFIG_PACKAGE_luci-i18n-netdata-zh-cn=y
           CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn=y
           CONFIG_PACKAGE_luci-theme-argon-dark-mod=y
           CONFIG_PACKAGE_luci-theme-argon-light-mod=y
           CONFIG_PACKAGE_luci-theme-freifunk-generic=y
           CONFIG_PACKAGE_luci-theme-material=y
           CONFIG_PACKAGE_luci-theme-netgear-mc=y
-          CONFIG_PACKAGE_luci-theme-openwrt=y
-          CONFIG_PACKAGE_smartdns=y' >> configs/config_h5
+          CONFIG_PACKAGE_luci-theme-openwrt=y' >> configs/config_h5
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
