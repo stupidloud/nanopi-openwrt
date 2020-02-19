@@ -46,7 +46,6 @@ jobs:
         run: |
           cd friendlywrt-h5
           . ../remove_used_config.sh
-          sed -i '/CONFIG_KERNEL_CGROUP_PERF/i\CONFIG_KERNEL_CGROUPS=y' configs/config_h5
           echo '
           CONFIG_OPENSSL_ENGINE_BUILTIN=y
           CONFIG_OPENSSL_OPTIMIZE_SPEED=y
@@ -77,6 +76,7 @@ jobs:
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto tmp -X theirs
           git checkout upstream/dev-19.07 -- feeds.conf.default
           sed -i '/exit/i\echo "iptables -t nat -I POSTROUTING -j MASQUERADE" >> /etc/firewall.user' package/default-settings/files/zzz-default-settings
+          sed -i 's/option fullcone	1/option fullcone	0/' package/network/config/firewall/files/firewall.config
           
       - name: Clean Feeds
         run: |
