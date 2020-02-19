@@ -79,7 +79,7 @@ jobs:
         run: |
           cd friendlywrt-h5
           sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
-          ./build.sh nanopi_r2s.mk
+          ./build.sh nanopi_r1s.mk
       
       - name: Zip Files
         run: |
