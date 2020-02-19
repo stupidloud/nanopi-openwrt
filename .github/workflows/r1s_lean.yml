@@ -66,7 +66,6 @@ jobs:
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-theme-material=y
           CONFIG_PACKAGE_luci-theme-netgear=y
-          CONFIG_PACKAGE_smartdns=y
           # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set' >> configs/config_h5
           # CONFIG_V2RAY_COMPRESS_UPX is not set
           cd friendlywrt
