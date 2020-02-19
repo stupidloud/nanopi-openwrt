@@ -47,12 +47,15 @@ jobs:
           rm -f .repo/manifests/h5.xml
           cp ../19s_master_config.xml .repo/manifests/h5.xml
           repo sync -c  --no-clone-bundle
+          sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
           curl 'https://raw.githubusercontent.com/friendlyarm/friendlywrt_device_h5/286a065e7832458ccd17a5d4cf4dd52a547fa34d/h5/nanopi_r1s.mk' > device/friendlyelec/h5/nanopi_r1s.mk
           curl 'https://raw.githubusercontent.com/friendlyarm/friendlywrt_device_h5/a198d92e1d64bcde2d4169f2e680f5fff1dc80a9/h5/common-files/etc/opkg/distfeeds.conf' > device/friendlyelec/h5/common-files/etc/opkg/distfeeds.conf
-          sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
-          echo >> friendlywrt/feeds.conf.default && echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
+          echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
           echo 'src-git darkmatter https://github.com/Lienol/luci-theme-darkmatter;luci-18.06' >> friendlywrt/feeds.conf.default
           . ../remove_used_config.sh
+          sed -i '1cCONFIG_TARGET_sunxi=y' configs/config_h5
+          sed -i '2cCONFIG_TARGET_sunxi_cortexa53=y' configs/config_h5
+          sed -i '3cCONFIG_TARGET_sunxi_cortexa53_DEVICE_sun50i-h5-nanopi-neo-plus2=y' configs/config_h5
           sed -i 's/_zh-cn/_zh_Hans/' configs/config_h5
           sed -i 's/_zh-tw/_zh_Hant/' configs/config_h5
           echo '
