@@ -74,7 +74,10 @@ jobs:
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/master -X theirs
           git checkout upstream/master -- feeds.conf.default
           git apply ../../0001-fix-upx.patch
-          sed -i '/exit/i\echo "iptables -t nat -I POSTROUTING -j MASQUERADE" >> /etc/firewall.user' package/lean/default-settings/files/zzz-default-settings
+          #sed -i '/exit/i\echo "iptables -t nat -I POSTROUTING -j MASQUERADE" >> /etc/firewall.user' package/lean/default-settings/files/zzz-default-settings
+          sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
+          sed -i 's/option fullcone	1/option fullcone	0/' package/network/config/firewall/files/firewall.config
+          
           
       - name: Clean Feeds
         run: |
