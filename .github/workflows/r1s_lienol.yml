@@ -6,7 +6,6 @@ on:
   push:
     paths:
       - '.github/workflows/r1s_lienol.yml'
-      - 'r1s_lienol.seed'
 
 jobs:
 
@@ -46,13 +45,37 @@ jobs:
       - name: Mods
         run: |
           cd friendlywrt-h5
-          cp ../r1s_lienol.seed configs/config_h5
+          . ../remove_used_config.sh
           sed -i '/CONFIG_KERNEL_CGROUP_PERF/i\CONFIG_KERNEL_CGROUPS=y' configs/config_h5
+          echo >> configs/config_h5 && echo '
+          CONFIG_OPENSSL_ENGINE_BUILTIN=y
+          CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO=y
+          CONFIG_OPENSSL_OPTIMIZE_SPEED=y
+          CONFIG_OPENSSL_WITH_DTLS=y
+          CONFIG_OPENSSL_WITH_EC2M=y
+          CONFIG_OPENSSL_WITH_NPN=y
+          CONFIG_PACKAGE_ca-bundle=y
+          CONFIG_PACKAGE_curl=y
+          # CONFIG_PACKAGE_dns2socks is not set
+          CONFIG_PACKAGE_kmod-crypto-authenc=y
+          CONFIG_PACKAGE_kmod-cryptodev=y
+          CONFIG_PACKAGE_libcurl=y
+          CONFIG_PACKAGE_libopenssl-conf=y
+          # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_dns2socks is not set
+          CONFIG_PACKAGE_luci-app-smartdns=y
+          CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn=y
+          CONFIG_PACKAGE_luci-theme-argon-dark-mod=y
+          CONFIG_PACKAGE_luci-theme-argon-light-mod=y
+          CONFIG_PACKAGE_luci-theme-freifunk-generic=y
+          CONFIG_PACKAGE_luci-theme-material=y
+          CONFIG_PACKAGE_luci-theme-netgear-mc=y
+          CONFIG_PACKAGE_luci-theme-openwrt=y
+          CONFIG_PACKAGE_smartdns=y' >> configs/config_h5
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
           git checkout upstream/dev-19.07 -b tmp
-          git revert 2202533d29c1494ad5645f87a7429e70f85a0110
+          git revert --no-edit 2202533d29c1494ad5645f87a7429e70f85a0110
           git mv README.md README && git commit -m 'undo rename readme for rebasing'
           git checkout origin/master
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto tmp -X theirs
