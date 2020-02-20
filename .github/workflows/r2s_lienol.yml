@@ -40,6 +40,7 @@ jobs:
           mkdir friendlywrt-rk3328
           cd friendlywrt-rk3328
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
+          cp ../rk3328-19.xml .repo/manifests/rk3328.xml
           repo sync -c  --no-clone-bundle
           
       - name: Mods
@@ -73,7 +74,8 @@ jobs:
           git revert --no-edit 2202533d29c1494ad5645f87a7429e70f85a0110
           git mv README.md README && git commit -m 'undo rename readme for rebasing'
           git checkout origin/master
-          git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto tmp -X theirs
+          git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
+          git cherry-pick origin/master 8f734f05f11b9f94af3cf1469537587ef102e5f2^...origin/HEAD
           git checkout upstream/dev-19.07 -- feeds.conf.default
           #sed -i '/exit/i\echo "iptables -t nat -I POSTROUTING -j MASQUERADE" >> /etc/firewall.user' package/default-settings/files/zzz-default-settings
           sed -i 's/option fullcone	1/option fullcone	0/' package/network/config/firewall/files/firewall.config
