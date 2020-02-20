@@ -42,6 +42,8 @@ jobs:
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
           cp ../rk3328-19.xml .repo/manifests/rk3328.xml
           repo sync -c  --no-clone-bundle
+          rm -rf friendlywrt/
+          git clone https://github.com/friendlyarm/friendlywrt
           
       - name: Mods
         run: |
@@ -73,7 +75,7 @@ jobs:
           git checkout upstream/dev-19.07 -b tmp
           git revert --no-edit 2202533d29c1494ad5645f87a7429e70f85a0110
           git mv README.md README && git commit -m 'undo rename readme for rebasing'
-          git checkout origin/master
+          git checkout origin/master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
           git cherry-pick origin/master 8f734f05f11b9f94af3cf1469537587ef102e5f2^...origin/HEAD
           git checkout upstream/dev-19.07 -- feeds.conf.default
