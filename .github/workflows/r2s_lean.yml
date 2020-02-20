@@ -66,8 +66,11 @@ jobs:
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-theme-material=y
           CONFIG_PACKAGE_luci-theme-netgear=y
-          # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set' >> configs/config_rk3328
+          # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
           # CONFIG_V2RAY_COMPRESS_UPX is not set
+          CONFIG_PACKAGE_luci-app-syncdial=y
+          CONFIG_PACKAGE_luci-app-ttyd=y
+          CONFIG_PACKAGE_luci-i18n-ttyd-zh-cn' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
