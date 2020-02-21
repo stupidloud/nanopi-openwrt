@@ -45,7 +45,7 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           rm -f .repo/manifests/rk3328.xml
-          cp ../rk3328.xml .repo/manifests/rk3328.xml
+          cp ../rk3328-19.xml .repo/manifests/rk3328.xml
           repo sync -c  --no-clone-bundle
           sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
           echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
