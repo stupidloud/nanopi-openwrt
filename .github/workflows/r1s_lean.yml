@@ -48,6 +48,9 @@ jobs:
           . ../remove_used_config.sh
           sed -i '/iptparser/d' configs/config_h5
           echo '
+          CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
+          CONFIG_PACKAGE_ipv6helper=y
+          CONFIG_PACKAGE_curl=y
           CONFIG_OPENSSL_ENGINE_BUILTIN=y
           CONFIG_OPENSSL_WITH_DTLS=y
           CONFIG_OPENSSL_WITH_EC2M=y
