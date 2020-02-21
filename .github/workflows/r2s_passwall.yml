@@ -82,6 +82,7 @@ jobs:
           CONFIG_PACKAGE_luci-theme-openwrt=y
           CONFIG_PACKAGE_luci-theme-rosy=y
           # CONFIG_OPENSSL_PREFER_CHACHA_OVER_GCM is not set' >> configs/config_rk3328
+          sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           
       - name: Clean Feeds
         run: |
