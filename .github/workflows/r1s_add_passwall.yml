@@ -49,7 +49,7 @@ jobs:
           repo sync -c  --no-clone-bundle
           sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
           #curl 'https://raw.githubusercontent.com/friendlyarm/friendlywrt_device_h5/286a065e7832458ccd17a5d4cf4dd52a547fa34d/h5/nanopi_r1s.mk' > device/friendlyelec/h5/nanopi_r1s.mk
-          #curl 'https://raw.githubusercontent.com/friendlyarm/friendlywrt_device_h5/a198d92e1d64bcde2d4169f2e680f5fff1dc80a9/h5/common-files/etc/opkg/distfeeds.conf' > device/friendlyelec/h5/common-files/etc/opkg/distfeeds.conf
+          curl 'https://raw.githubusercontent.com/friendlyarm/friendlywrt_device_h5/a198d92e1d64bcde2d4169f2e680f5fff1dc80a9/h5/common-files/etc/opkg/distfeeds.conf' > device/friendlyelec/h5/common-files/etc/opkg/distfeeds.conf
           echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
           echo 'src-git darkmatter https://github.com/Lienol/luci-theme-darkmatter;luci-18.06' >> friendlywrt/feeds.conf.default
           . ../remove_used_config.sh
