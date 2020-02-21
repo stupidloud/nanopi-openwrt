@@ -1,8 +1,8 @@
 name: r1s 原版friendlywrt合并passwall插件
 
 on:
-  schedule:
-    - cron: 0 20 * * *
+#  schedule:
+#    - cron: 0 20 * * *
   push:
     paths:
       - '.github/workflows/r1s_add_passwall.yml'
