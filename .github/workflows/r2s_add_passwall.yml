@@ -41,6 +41,12 @@ jobs:
           cd friendlywrt-rk3328
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
           
+      - name: Add plugins
+        run: |
+          cd friendlywrt-rk3328/friendlywrt
+          git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
+          git checkout upstream/master package/lean/luci-app-netdata
+          
       - name: Mods
         run: |
           cd friendlywrt-rk3328
@@ -51,8 +57,10 @@ jobs:
           echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
           echo 'src-git darkmatter https://github.com/Lienol/luci-theme-darkmatter;luci-18.06' >> friendlywrt/feeds.conf.default
           . ../remove_used_config.sh
-          sed -i 's/_zh-cn/_zh_Hans/' configs/config_rk3328
-          sed -i 's/_zh-tw/_zh_Hant/' configs/config_rk3328
+          #sed -i 's/_zh-cn/_zh_Hans/' configs/config_rk3328
+          #sed -i 's/_zh-tw/_zh_Hant/' configs/config_rk3328
+          sed -i '/CONFIG_LUCI_LANG_en/i\CONFIG_LUCI_LANG_zh_Hans=y' configs/config_rk3328
+          sed -i '/CONFIG_LUCI_LANG_en/i\CONFIG_LUCI_LANG_zh_Hant=y' configs/config_rk3328
           echo '
           CONFIG_OPENSSL_ENGINE=y
           CONFIG_OPENSSL_ENGINE_BUILTIN=y
@@ -70,6 +78,7 @@ jobs:
           CONFIG_OPENSSL_WITH_TLS13=y
           CONFIG_PACKAGE_curl=y
           CONFIG_PACKAGE_libopenssl=y
+          CONFIG_PACKAGE_tcping=y
           CONFIG_PACKAGE_luci-app-passwall=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-theme-argon-dark-mod=y
@@ -81,7 +90,9 @@ jobs:
           CONFIG_PACKAGE_luci-theme-netgear-mc=y
           CONFIG_PACKAGE_luci-theme-openwrt=y
           CONFIG_PACKAGE_luci-theme-rosy=y
+          CONFIG_PACKAGE_luci-app-netdata=y
           # CONFIG_OPENSSL_PREFER_CHACHA_OVER_GCM is not set' >> configs/config_rk3328
+          sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
           sed -i '/8.8.8.8/d' friendlywrt/package/base-files/files/root/setup.sh
           
       - name: Clean Feeds
