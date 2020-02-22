@@ -43,16 +43,16 @@ jobs:
           
       - name: Add plugins
         run: |
-          cd friendlywrt-rk3328/friendlywrt
+          rm -f .repo/manifests/rk3328.xml
+          cp ../rk3328-19.xml .repo/manifests/rk3328.xml
+          repo sync -c  --no-clone-bundle
+          cd friendlywrt
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git checkout upstream/master package/lean/luci-app-netdata
           
       - name: Mods
         run: |
           cd friendlywrt-rk3328
-          rm -f .repo/manifests/rk3328.xml
-          cp ../rk3328-19.xml .repo/manifests/rk3328.xml
-          repo sync -c  --no-clone-bundle
           sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
           echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
           echo 'src-git darkmatter https://github.com/Lienol/luci-theme-darkmatter;luci-18.06' >> friendlywrt/feeds.conf.default
