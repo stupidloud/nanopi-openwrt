@@ -51,47 +51,29 @@ jobs:
           . ../remove_used_config.sh
           echo '
           CONFIG_OPENSSL_ENGINE_BUILTIN=y
-          CONFIG_OPENSSL_WITH_DTLS=y
-          CONFIG_OPENSSL_WITH_EC2M=y
-          CONFIG_OPENSSL_WITH_NPN=y
-          # CONFIG_PACKAGE_UnblockNeteaseMusic is not set
-          CONFIG_PACKAGE_ca-bundle=y
+          CONFIG_PACKAGE_collectd=y
+          CONFIG_PACKAGE_collectd-mod-thermal=y
           CONFIG_PACKAGE_curl=y
           CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
           CONFIG_PACKAGE_ipv6helper=y
-          # CONFIG_PACKAGE_kmod-crypto-authenc is not set
-          # CONFIG_PACKAGE_kmod-cryptodev is not set
-          CONFIG_PACKAGE_kmod-macvlan=y
-          CONFIG_PACKAGE_libcap=y
-          CONFIG_PACKAGE_libcurl=y
-          # CONFIG_PACKAGE_libhttp-parser is not set
-          # CONFIG_PACKAGE_libnghttp2 is not set
-          # CONFIG_PACKAGE_libopenssl-devcrypto is not set
-          CONFIG_PACKAGE_libuci-lua=y
-          CONFIG_PACKAGE_libwebsockets-full=y
+          CONFIG_PACKAGE_luci-app-cifsd=y
           CONFIG_PACKAGE_luci-app-mwan3=y
           CONFIG_PACKAGE_luci-app-netdata=y
+          CONFIG_PACKAGE_luci-app-statistics=y
           CONFIG_PACKAGE_luci-app-syncdial=y
           CONFIG_PACKAGE_luci-app-ttyd=y
-          # CONFIG_PACKAGE_luci-app-unblockmusic is not set
           CONFIG_PACKAGE_luci-app-unblockneteasemusic-mini=y
-          CONFIG_PACKAGE_luci-i18n-mwan3-zh-cn=y
-          CONFIG_PACKAGE_luci-i18n-netdata-zh-cn=y
-          CONFIG_PACKAGE_luci-i18n-ttyd-zh-cn=y
+          CONFIG_PACKAGE_luci-theme-argon-dark-mod=y
+          CONFIG_PACKAGE_luci-theme-argon-light-mod=y
           CONFIG_PACKAGE_luci-theme-material=y
-          CONFIG_PACKAGE_luci-theme-openwrt=y
-          CONFIG_PACKAGE_luci-theme-rosy=y
-          CONFIG_PACKAGE_mwan3=y
-          CONFIG_PACKAGE_netdata=y
-          # CONFIG_PACKAGE_node is not set
-          CONFIG_PACKAGE_ttyd=y
           # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
+          # CONFIG_PACKAGE_libopenssl-devcrypto is not set
           # CONFIG_PACKAGE_kmod-crypto-authenc is not set
           # CONFIG_PACKAGE_kmod-cryptodev is not set' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
-          git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/dev-lean-lede
+          git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/dev-lean-lede -X theirs
           git checkout upstream/dev-lean-lede -- feeds.conf.default
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
