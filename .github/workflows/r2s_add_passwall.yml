@@ -43,6 +43,7 @@ jobs:
           
       - name: Add plugins
         run: |
+          cd friendlywrt-rk3328
           rm -f .repo/manifests/rk3328.xml
           cp ../rk3328-19.xml .repo/manifests/rk3328.xml
           repo sync -c  --no-clone-bundle
