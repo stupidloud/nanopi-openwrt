@@ -77,7 +77,7 @@ jobs:
           git mv README.md README && git commit -m 'undo rename readme for rebasing'
           git checkout origin/master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
-          git cherry-pick origin/master 8f734f05f11b9f94af3cf1469537587ef102e5f2^...origin/HEAD
+          #git cherry-pick origin/master 8f734f05f11b9f94af3cf1469537587ef102e5f2^...origin/HEAD
           git checkout upstream/dev-19.07 -- feeds.conf.default
           #sed -i '/exit/i\echo "iptables -t nat -I POSTROUTING -j MASQUERADE" >> /etc/firewall.user' package/default-settings/files/zzz-default-settings
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
