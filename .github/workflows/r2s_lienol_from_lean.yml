@@ -1,4 +1,4 @@
-name: r2s Lienol版openwrt
+name: r2s Lienol版openwrt based on Lean
 
 on:
   push:
@@ -75,6 +75,7 @@ jobs:
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/dev-lean-lede -X theirs
           git checkout upstream/dev-lean-lede -- feeds.conf.default
+          sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
 
