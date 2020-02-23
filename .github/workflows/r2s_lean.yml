@@ -82,7 +82,7 @@ jobs:
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
-          git commit -m 'for rebasing'
+          git add . && git commit -m 'for rebasing'
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/master -X theirs
           git checkout upstream/master -- feeds.conf.default
           git apply ../../0001-fix-upx.patch
