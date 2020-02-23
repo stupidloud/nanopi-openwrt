@@ -47,21 +47,27 @@ jobs:
       - name: Mods
         run: |
           cd friendlywrt-h5
-          . ../remove_used_config.sh
+          . ../remove_unused_config.sh
           echo '
           CONFIG_OPENSSL_ENGINE_BUILTIN=y
           CONFIG_OPENSSL_OPTIMIZE_SPEED=y
           CONFIG_OPENSSL_WITH_DTLS=y
           CONFIG_OPENSSL_WITH_EC2M=y
           CONFIG_OPENSSL_WITH_NPN=y
-          CONFIG_PACKAGE_ca-bundle=y
+          CONFIG_PACKAGE_ipv6helper=y
           CONFIG_PACKAGE_curl=y
-          CONFIG_PACKAGE_libcurl=y
+          CONFIG_PACKAGE_htop=y
+          CONFIG_PACKAGE_lrzsz=y
+          CONFIG_PACKAGE_nano=y
+          CONFIG_PACKAGE_vim-fuller=y
+          CONFIG_PACKAGE_luci-app-cifsd=y
           CONFIG_PACKAGE_luci-app-netdata=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
           CONFIG_PACKAGE_luci-app-smartdns=y
-          CONFIG_PACKAGE_luci-i18n-netdata-zh-cn=y
-          CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn=y
           CONFIG_PACKAGE_luci-theme-argon-dark-mod=y
           CONFIG_PACKAGE_luci-theme-argon-light-mod=y
           CONFIG_PACKAGE_luci-theme-freifunk-generic=y
@@ -76,11 +82,11 @@ jobs:
           git mv README.md README && git commit -m 'undo rename readme for rebasing'
           git checkout origin/master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
-          git cherry-pick origin/master 8f734f05f11b9f94af3cf1469537587ef102e5f2^...origin/HEAD
           git checkout upstream/dev-19.07 -- feeds.conf.default
-          #sed -i '/exit/i\echo "iptables -t nat -I POSTROUTING -j MASQUERADE" >> /etc/firewall.user' package/default-settings/files/zzz-default-settings
+          sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/default-settings/files/zzz-default-settings
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
+          echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
           
       - name: Clean Feeds
         run: |
@@ -102,8 +108,26 @@ jobs:
           mkdir -p ./artifact/
           mv friendlywrt-h5/out/*img* ./artifact/
           cp friendlywrt-h5/friendlywrt/.config ./artifact/
-      - name: Upload Artifact
-        uses: actions/upload-artifact@master
+          zip -r artifact.zip ./artifact/
+          release_tag="R1S-Lienol-$(date +%Y-%m-%d)"
+          echo "##[set-output name=date_tag;]$date_tag"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: FriendlyWrt_NanoPi-R1S
-          path: ./artifact/
+          tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}
+          release_name: 自动发布 ${{ steps.assemble_artifact.outputs.release_tag }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./artifact.zip
+          asset_name: ${{ steps.assemble_artifact.outputs.release_tag }}-ROM.zip
+          asset_content_type: application/zip
