@@ -49,18 +49,25 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           . ../remove_used_config.sh
-          sed -i 's/CONFIG_BPFILTER=y/CONFIG_BPFILTER=n/' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
           echo '
           CONFIG_OPENSSL_ENGINE_BUILTIN=y
           CONFIG_OPENSSL_OPTIMIZE_SPEED=y
           CONFIG_OPENSSL_WITH_DTLS=y
           CONFIG_OPENSSL_WITH_EC2M=y
           CONFIG_OPENSSL_WITH_NPN=y
-          CONFIG_PACKAGE_ca-bundle=y
+          CONFIG_PACKAGE_ipv6helper=y
           CONFIG_PACKAGE_curl=y
-          CONFIG_PACKAGE_libcurl=y
+          CONFIG_PACKAGE_htop=y
+          CONFIG_PACKAGE_lrzsz=y
+          CONFIG_PACKAGE_nano=y
+          CONFIG_PACKAGE_vim-fuller=y
+          CONFIG_PACKAGE_luci-app-cifsd=y
           CONFIG_PACKAGE_luci-app-netdata=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
           CONFIG_PACKAGE_luci-app-smartdns=y
           CONFIG_PACKAGE_luci-i18n-netdata-zh-cn=y
           CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn=y
@@ -78,9 +85,8 @@ jobs:
           git mv README.md README && git commit -m 'undo rename readme for rebasing'
           git checkout origin/master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
-          #git cherry-pick origin/master 8f734f05f11b9f94af3cf1469537587ef102e5f2^...origin/HEAD
           git checkout upstream/dev-19.07 -- feeds.conf.default
-          #sed -i '/exit/i\echo "iptables -t nat -I POSTROUTING -j MASQUERADE" >> /etc/firewall.user' package/default-settings/files/zzz-default-settings
+          sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/default-settings/files/zzz-default-settings
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           
