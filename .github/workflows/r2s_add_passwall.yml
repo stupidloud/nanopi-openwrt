@@ -4,8 +4,8 @@ on:
   push:
     paths:
       - '.github/workflows/r2s_add_passwall.yml'
-  schedule:
-    - cron: '10 13 * * *'
+#  schedule:
+#    - cron: '10 13 * * *'
 
 jobs:
 
@@ -57,10 +57,7 @@ jobs:
           sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
           echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
           echo 'src-git darkmatter https://github.com/Lienol/luci-theme-darkmatter;luci-18.06' >> friendlywrt/feeds.conf.default
-          . ../remove_used_config.sh
-          sed -i 's/CONFIG_BPFILTER=y/CONFIG_BPFILTER=n/' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
-          #sed -i 's/_zh-cn/_zh_Hans/' configs/config_rk3328
-          #sed -i 's/_zh-tw/_zh_Hant/' configs/config_rk3328
+          . ../remove_unused_config.sh
           sed -i '/CONFIG_LUCI_LANG_en/i\CONFIG_LUCI_LANG_zh_Hans=y' configs/config_rk3328
           sed -i '/CONFIG_LUCI_LANG_en/i\CONFIG_LUCI_LANG_zh_Hant=y' configs/config_rk3328
           echo '
@@ -79,10 +76,17 @@ jobs:
           CONFIG_OPENSSL_WITH_SRP=y
           CONFIG_OPENSSL_WITH_TLS13=y
           CONFIG_PACKAGE_curl=y
-          CONFIG_PACKAGE_libopenssl=y
+          CONFIG_PACKAGE_htop=y
+          CONFIG_PACKAGE_lrzsz=y
+          CONFIG_PACKAGE_nano=y
+          CONFIG_PACKAGE_vim-fuller=y
           CONFIG_PACKAGE_tcping=y
           CONFIG_PACKAGE_luci-app-passwall=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
           CONFIG_PACKAGE_luci-theme-argon-dark-mod=y
           CONFIG_PACKAGE_luci-theme-argon-light-mod=y
           CONFIG_PACKAGE_luci-theme-bootstrap=y
@@ -94,8 +98,9 @@ jobs:
           CONFIG_PACKAGE_luci-theme-rosy=y
           CONFIG_PACKAGE_luci-app-netdata=y
           # CONFIG_OPENSSL_PREFER_CHACHA_OVER_GCM is not set' >> configs/config_rk3328
-          #sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' friendlywrt/package/default-settings/files/zzz-default-settings
+          echo -e '\nchown -R root:root /usr/share/netdata/web' >> friendlywrt/package/base-files/files/root/setup.sh
           sed -i '/8.8.8.8/d' friendlywrt/package/base-files/files/root/setup.sh
+          echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
           
       - name: Clean Feeds
         run: |
