@@ -46,6 +46,7 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           . ../remove_used_config.sh
+          sed -i 's/CONFIG_BPFILTER=y/CONFIG_BPFILTER=n/' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
           sed -i '/iptparser/d' configs/config_rk3328
           echo '
           CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
