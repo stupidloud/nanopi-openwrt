@@ -49,6 +49,7 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           . ../remove_used_config.sh
+          sed -i '/samba/d;/SAMBA/d' configs/config_rk3328
           echo '
           CONFIG_OPENSSL_ENGINE_BUILTIN=y
           CONFIG_PACKAGE_collectd=y
