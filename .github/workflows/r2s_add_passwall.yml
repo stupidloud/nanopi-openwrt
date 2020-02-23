@@ -98,8 +98,9 @@ jobs:
           CONFIG_PACKAGE_luci-theme-rosy=y
           CONFIG_PACKAGE_luci-app-netdata=y
           # CONFIG_OPENSSL_PREFER_CHACHA_OVER_GCM is not set' >> configs/config_rk3328
-          echo -e '\nchown -R root:root /usr/share/netdata/web' >> friendlywrt/package/base-files/files/root/setup.sh
-          sed -i '/8.8.8.8/d' friendlywrt/package/base-files/files/root/setup.sh
+          cd friendlywrt
+          echo -e '\nchown -R root:root /usr/share/netdata/web' >> package/base-files/files/root/setup.sh
+          sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
           
       - name: Clean Feeds
