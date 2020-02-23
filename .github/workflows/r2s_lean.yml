@@ -105,13 +105,32 @@ jobs:
         run: |
           gzip friendlywrt-rk3328/out/*.img
       - name: Assemble Artifact
+        id: assemble_artifact
         run: |
           rm -rf ./artifact/
           mkdir -p ./artifact/
           mv friendlywrt-rk3328/out/*img* ./artifact/
           cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
-      - name: Upload Artifact
-        uses: actions/upload-artifact@master
+          zip -r artifact.zip ./artifact/
+          release_tag="R2S-Lean-$(date +%Y-%m-%d)"
+          echo "##[set-output name=date_tag;]$date_tag"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: FriendlyWrt_NanoPi-R2S
-          path: ./artifact/
+          tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}
+          release_name: 自动发布 ${{ steps.assemble_artifact.outputs.release_tag }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./artifact.zip
+          asset_name: 固件包${{ steps.assemble_artifact.outputs.release_tag }}.zip
+          asset_content_type: application/zip
