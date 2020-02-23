@@ -58,6 +58,7 @@ jobs:
           echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
           echo 'src-git darkmatter https://github.com/Lienol/luci-theme-darkmatter;luci-18.06' >> friendlywrt/feeds.conf.default
           . ../remove_used_config.sh
+          sed -i 's/CONFIG_BPFILTER=y/CONFIG_BPFILTER=n/' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
           #sed -i 's/_zh-cn/_zh_Hans/' configs/config_rk3328
           #sed -i 's/_zh-tw/_zh_Hant/' configs/config_rk3328
           sed -i '/CONFIG_LUCI_LANG_en/i\CONFIG_LUCI_LANG_zh_Hans=y' configs/config_rk3328
