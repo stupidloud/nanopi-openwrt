@@ -33,6 +33,7 @@ jobs:
           
       - name: Mods
         run: |
+          exit 0
           cd friendlywrt-rk3328
           . ../remove_unused_config.sh
           sed -i '/iptparser/d' configs/config_rk3328
