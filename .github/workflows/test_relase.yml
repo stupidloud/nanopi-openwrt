@@ -82,7 +82,7 @@ jobs:
           
       - name: Clean Feeds
         run: |
-          cd friendlywrt-rk3328/friendlywrt
+          cd friendlywrt-rk3328/
           #./scripts/feeds clean -a
                     
       - name: Build FriendlyWrt
