@@ -1,11 +1,11 @@
 name: r1s Lienol版openwrt
 
 on:
-  #schedule:
-  #  - cron: 0 20 * * *
-  push:
-    paths:
-      - '.github/workflows/r1s_lienol.yml'
+  schedule:
+    - cron: 0 0 * * *
+#  push:
+#    paths:
+#      - '.github/workflows/r1s_lienol.yml'
 
 jobs:
 
