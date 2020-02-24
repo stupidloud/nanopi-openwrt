@@ -80,7 +80,7 @@ jobs:
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
           git checkout upstream/dev-19.07 -b tmp
           #git revert --no-edit 2202533d29c1494ad5645f87a7429e70f85a0110
-          sed -i '/ucl upx/d' tools/Makefile
+          sed -i '/ucl upx/d' tools/Makefile && git add tools/Makefile
           git mv README.md README && git commit -m 'undo rename readme for rebasing'
           git checkout origin/master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
