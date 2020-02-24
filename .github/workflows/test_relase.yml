@@ -93,7 +93,7 @@ jobs:
       
       - name: Zip Files
         run: |
-          gzip friendlywrt-rk3328/out/*.img
+          gzip friendlywrt-rk3328
       - name: Assemble Artifact
         id: assemble_artifact
         run: |
