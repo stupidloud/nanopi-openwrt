@@ -89,7 +89,7 @@ jobs:
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/master -X theirs
           #git cherry-pick origin/master-v19.07.1 aea926c37bf7fbaf6a9fd4142d29b2f9c659cc01^...origin/master-v19.07.1
           git cherry-pick origin/master-v19.07.1 a18e60350ef732682b6ffcce9769d3c23e8794e3
-          git cherry-pick origin/master-v19.07.1 42ae7dc2b47cc32a9543dd50ccfe600538159a99
+          #git cherry-pick origin/master-v19.07.1 42ae7dc2b47cc32a9543dd50ccfe600538159a99
           git checkout upstream/master -- feeds.conf.default
           git apply ../../0001-fix-upx.patch
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
