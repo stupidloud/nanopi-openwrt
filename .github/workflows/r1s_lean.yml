@@ -2,6 +2,8 @@ name: r1s Lean版openwrt
 
 on:
   push:
+    branches: 
+      - master
     paths:
       - '.github/workflows/r1s_lean.yml'
   schedule:
