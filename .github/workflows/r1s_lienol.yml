@@ -89,10 +89,12 @@ jobs:
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
           
-      - name: Clean Feeds
+      - name: Mod luci
         run: |
-          cd friendlywrt-h5/friendlywrt
-          ./scripts/feeds clean -a
+          cd friendlywrt-rk3328/friendlywrt
+          #./scripts/feeds clean -a
+          ./scripts/feeds update -a && ./scripts/feeds install -a
+          sed -i '/Load Average/i\<tr><td width="33%"><%:CPU Temperature%></td><td><%=luci.sys.exec("cut -c1-2 /sys/class/thermal/thermal_zone0/temp")%></td></tr>' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
                     
       - name: Build FriendlyWrt
         run: |
