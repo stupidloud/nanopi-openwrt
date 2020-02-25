@@ -57,7 +57,7 @@ jobs:
           wget -q ${url_fullconenat_patch}
           wget -q ${url_flowoffload_patch}
           git apply add_fullconenat.diff
-          git apply add_flowoffload.diff
+          #git apply add_flowoffload.diff
           cd ..
           . ../remove_unused_config.sh
           sed -i '/iptparser/d' configs/config_rk3328
