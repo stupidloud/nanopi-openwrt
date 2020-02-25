@@ -43,6 +43,7 @@ jobs:
           cd friendlywrt-rk3328
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
           repo sync -c  --no-clone-bundle
+          curl https://github.com/friendlyarm/friendlywrt_configs/raw/master-v19.07.1/config_rk3328 > configs/config_rk3328
           
       - name: Mods
         run: |
