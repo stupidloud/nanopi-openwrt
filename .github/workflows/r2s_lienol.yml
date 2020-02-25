@@ -2,6 +2,8 @@ name: r2s Lienol版openwrt
 
 on:
   push:
+    branches: 
+      - master
     paths:
       - '.github/workflows/r2s_lienol.yml'
   schedule:
