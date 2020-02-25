@@ -1,9 +1,11 @@
 name: original Build
 
 on:
-#  push:
-#    paths: 
-#      - '.github/workflows/master_code_and_master_config.yml'  
+  push:
+    branches: 
+      - master
+    paths: 
+      - '.github/workflows/master_code_and_master_config.yml'  
 
 jobs:
 
