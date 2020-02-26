@@ -83,12 +83,20 @@ jobs:
           CONFIG_PACKAGE_nano=y
           CONFIG_PACKAGE_vim-fuller=y
           CONFIG_PACKAGE_tcping=y
+          CONFIG_PACKAGE_luci-app-netdata=y
           CONFIG_PACKAGE_luci-app-passwall=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
+          CONFIG_PACKAGE_luci-app-smartdns=y
+		      CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Simple_obfs=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray_plugin=y
           CONFIG_PACKAGE_luci-theme-argon-dark-mod=y
           CONFIG_PACKAGE_luci-theme-argon-light-mod=y
           CONFIG_PACKAGE_luci-theme-bootstrap=y
@@ -98,7 +106,7 @@ jobs:
           CONFIG_PACKAGE_luci-theme-netgear-mc=y
           CONFIG_PACKAGE_luci-theme-openwrt=y
           CONFIG_PACKAGE_luci-theme-rosy=y
-          CONFIG_PACKAGE_luci-app-netdata=y
+          CONFIG_PACKAGE_luci-app-ttyd=y          
           # CONFIG_OPENSSL_PREFER_CHACHA_OVER_GCM is not set' >> configs/config_rk3328
           cd friendlywrt
           echo -e '\nchown -R root:root /usr/share/netdata/web' >> package/base-files/files/root/setup.sh
