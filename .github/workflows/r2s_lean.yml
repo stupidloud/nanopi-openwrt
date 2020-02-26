@@ -5,7 +5,7 @@ on:
     branches: 
       - master
     paths:
-      - '.github/workflows/r2s_lean.yml'
+      - '.github/workflows/r2s_lean.yml_'
   schedule:
     - cron: '10 09 * * *'
 
@@ -101,6 +101,7 @@ jobs:
           #git cherry-pick origin/master-v19.07.1 42ae7dc2b47cc32a9543dd50ccfe600538159a99
           git checkout upstream/master -- feeds.conf.default
           git apply ../../0001-fix-upx.patch
+          sed -i '/exit/i\mv /etc/rc.d/S25dockerd /etc/rc.d/S92dockerd && sed -i "s/START=25/START=92/g" S92dockerd' zzz-default-settings
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
           #sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
