@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/r2s_add_passwall.yml'
 #  schedule:
-#    - cron: '10 13 * * *'
+#    - cron: '56 17 * * *'
 
 jobs:
 
