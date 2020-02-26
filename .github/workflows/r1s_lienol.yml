@@ -7,7 +7,7 @@ on:
     branches: 
       - master
     paths:
-      - '.github/workflows/r1s_lienol.yml'
+      - '.github/workflows/r1s_lienol.yml_'
 
 jobs:
 
@@ -42,7 +42,7 @@ jobs:
           mkdir friendlywrt-h5
           cd friendlywrt-h5
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m h5.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
-          repo sync -c  --no-clone-bundle
+          repo sync -c --no-clone-bundle
           rm -rf friendlywrt/
           git clone https://github.com/friendlyarm/friendlywrt
           
