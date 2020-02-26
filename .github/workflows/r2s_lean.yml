@@ -35,7 +35,7 @@ jobs:
       - name: Install Repo
         run: |
           git clone https://github.com/friendlyarm/repo
-          sudo cp repo/repo /usr/bin/
+          #sudo cp repo/repo /usr/bin/
           
       - name: Init Source
         run: |
