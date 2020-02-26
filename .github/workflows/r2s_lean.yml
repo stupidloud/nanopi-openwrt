@@ -41,11 +41,8 @@ jobs:
         run: |
           mkdir friendlywrt-rk3328
           cd friendlywrt-rk3328
-          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
-          #cp ../rk3328-19.xml .repo/manifests/rk3328.xml
-          repo sync -c  --no-clone-bundle
-          rm -rf friendlywrt/
-          git clone https://github.com/friendlyarm/friendlywrt
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
+          repo sync -c --no-clone-bundle
           
       - name: Mods
         env:
@@ -61,6 +58,8 @@ jobs:
           cd ..
           . ../remove_unused_config.sh
           sed -i '/iptparser/d' configs/config_rk3328
+          cat configs/config_rk3328 | grep "TARGET\|firmware\|kmod" >> ../base_rk3328.seed
+          cat ../base_rk3328.seed > configs/config_rk3328
           echo '
           CONFIG_OPENSSL_ENGINE_BUILTIN=y
           CONFIG_OPENSSL_WITH_DTLS=y
@@ -96,14 +95,14 @@ jobs:
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
-          git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/master -X theirs
+          git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
           #git cherry-pick origin/master-v19.07.1 aea926c37bf7fbaf6a9fd4142d29b2f9c659cc01^...origin/master-v19.07.1
-          git cherry-pick origin/master-v19.07.1 a18e60350ef732682b6ffcce9769d3c23e8794e3
+          #git cherry-pick origin/master-v19.07.1 a18e60350ef732682b6ffcce9769d3c23e8794e3
           #git cherry-pick origin/master-v19.07.1 42ae7dc2b47cc32a9543dd50ccfe600538159a99
           git checkout upstream/master -- feeds.conf.default
           git apply ../../0001-fix-upx.patch
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
-          sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
+          #sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
           
