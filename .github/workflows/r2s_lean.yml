@@ -73,7 +73,6 @@ jobs:
           CONFIG_PACKAGE_nano=y
           CONFIG_PACKAGE_vim-fuller=y
           CONFIG_PACKAGE_luci-app-frpc=y
-          CONFIG_PACKAGE_luci-app-cifsd=y
           CONFIG_PACKAGE_luci-app-dockerman=y
           CONFIG_PACKAGE_luci-app-ipsec-vpnd=y
           CONFIG_PACKAGE_luci-app-netdata=y
