@@ -5,7 +5,7 @@ on:
     branches: 
       - master
     paths:
-      - '.github/workflows/r2s_lean.yml'
+      - '.github/workflows/r2s_lean.yml_'
   schedule:
     - cron: '10 09 * * *'
 
@@ -77,12 +77,17 @@ jobs:
           CONFIG_PACKAGE_luci-app-ipsec-vpnd=y
           CONFIG_PACKAGE_luci-app-netdata=y
           CONFIG_PACKAGE_luci-app-pptp-server=y
+          CONFIG_PACKAGE_luci-app-unblockneteasemusic-mini=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Simple_obfs=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray_plugin=y
+          CONFIG_PACKAGE_luci-app-vssr=y
+          CONFIG_PACKAGE_luci-app-vssr_INCLUDE_V2ray=y
+          CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Trojan=y
+          CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Socks=y
           CONFIG_PACKAGE_luci-app-ttyd=y
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-theme-material=y
@@ -100,7 +105,22 @@ jobs:
           #git cherry-pick origin/master-v19.07.1 42ae7dc2b47cc32a9543dd50ccfe600538159a99
           git checkout upstream/master -- feeds.conf.default
           git apply ../../0001-fix-upx.patch
+          cd package/lean/
+          git clone https://github.com/jerrykuku/lua-maxminddb.git
+          git clone https://github.com/jerrykuku/luci-app-vssr.git
+          cd luci-app-vssr/root/etc/
+          echo 'china_ssr.txt
+          config/black.list
+          config/white.list
+          dnsmasq.oversea/oversea_list.conf
+          dnsmasq.ssr/ad.conf
+          dnsmasq.ssr/gfw_base.conf' | xargs rm
+          cd ../../../
+          rm -rf luci-theme-argon  
+          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
+          cd ../../
           sed -i '/exit/i\mv /etc/rc.d/S25dockerd /etc/rc.d/S92dockerd && sed -i "s/START=25/START=92/g" S92dockerd' package/lean/default-settings/files/zzz-default-settings
+          sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' package/lean/default-settings/files/zzz-default-settings
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
           #sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
