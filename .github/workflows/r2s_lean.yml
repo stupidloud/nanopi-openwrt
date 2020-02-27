@@ -58,7 +58,7 @@ jobs:
           cd ..
           . ../remove_unused_config.sh
           sed -i '/iptparser/d' configs/config_rk3328
-          cat configs/config_rk3328 | grep "TARGET\|firmware\|kmod" >> ../base_rk3328.seed
+          cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
           echo '
           CONFIG_OPENSSL_ENGINE_BUILTIN=y
