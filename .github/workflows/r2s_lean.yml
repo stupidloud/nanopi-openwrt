@@ -42,7 +42,7 @@ jobs:
           mkdir friendlywrt-rk3328
           cd friendlywrt-rk3328
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
-          repo sync -c --no-clone-bundle -j4
+          repo sync -c --no-clone-bundle -j8
           
       - name: Mods
         env:
@@ -100,9 +100,6 @@ jobs:
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
-          #git cherry-pick origin/master-v19.07.1 aea926c37bf7fbaf6a9fd4142d29b2f9c659cc01^...origin/master-v19.07.1
-          #git cherry-pick origin/master-v19.07.1 a18e60350ef732682b6ffcce9769d3c23e8794e3
-          #git cherry-pick origin/master-v19.07.1 42ae7dc2b47cc32a9543dd50ccfe600538159a99
           git checkout upstream/master -- feeds.conf.default
           git apply ../../0001-fix-upx.patch
           cd package/lean/
@@ -129,7 +126,6 @@ jobs:
       - name: Mod luci
         run: |
           cd friendlywrt-rk3328/friendlywrt
-          #./scripts/feeds clean -a
           ./scripts/feeds update -a && ./scripts/feeds install -a
           sed -i '/Load Average/i\<tr><td width="33%"><%:CPU Temperature%></td><td><%=luci.sys.exec("cut -c1-2 /sys/class/thermal/thermal_zone0/temp")%></td></tr>' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
           sed -i 's/pcdata(boardinfo.system or "?")/"ARMv8"/' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
