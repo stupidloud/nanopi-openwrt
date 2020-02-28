@@ -74,6 +74,7 @@ jobs:
           CONFIG_PACKAGE_nano=y
           CONFIG_PACKAGE_vim-fuller=y
           CONFIG_PACKAGE_luci-app-netdata=y
+          CONFIG_PACKAGE_luci-app-adguardhome=y
           CONFIG_PACKAGE_luci-app-unblockneteasemusic-mini=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks=y
