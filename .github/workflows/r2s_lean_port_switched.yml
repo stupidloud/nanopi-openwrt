@@ -150,7 +150,7 @@ jobs:
           mv friendlywrt-rk3328/out/*img* ./artifact/
           cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
           zip -r artifact.zip ./artifact/
-          release_tag="R2S-Lean-$(date +%Y-%m-%d)"
+          release_tag="R2S-Lean-$(date +%Y-%m-%d)-port-switched"
           echo "##[set-output name=release_tag;]$release_tag"
       - name: Create Release
         id: create_release
@@ -159,7 +159,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.sec_token }}
         with:
           tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}
-          release_name: 自动发布 ${{ steps.assemble_artifact.outputs.release_tag }}
+          release_name: 自动发布 ${{ steps.assemble_artifact.outputs.release_tag }} 端口对调测试版
           draft: false
           prerelease: false
       - name: Upload Release Asset
