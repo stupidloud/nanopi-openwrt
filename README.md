@@ -4,7 +4,7 @@
 
 https://github.com/klever1988/nanopi-openwrt/releases
 
-请记得下载zip包之后解压出里头的固件包在刷
+(请记得下载zip包之后解压出里头的固件包再刷)
 
 ### 更新说明:
 
