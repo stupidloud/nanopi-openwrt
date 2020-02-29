@@ -3,7 +3,7 @@
 
 ## 2020-02-29
 
-- lean版添加了一个临时分支版本（建议先测试），具体就是端口对调，据测有蜜汁性能提升
+- lean版添加了一个临时分支版本（建议先测试），具体就是端口对调，据测有蜜汁性能提升(仅针对把r2s用作旁路由的用户)
 - [commit](https://github.com/friendlyarm/uboot-rockchip/commit/bd263a5cedaea8f2c5214bdca02a2fd0af29dcd0)，修复了路由器重启时windows提示连接到新网络的错误提示
 
 ## 2020-02-28
