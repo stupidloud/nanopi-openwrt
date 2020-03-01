@@ -4,10 +4,10 @@ on:
   push:
     branches: 
       - master
-    paths:
-      - '.github/workflows/r1s_lienol.yml_'
-  schedule:
-    - cron: 0 0 * * *
+#    paths:
+#      - '.github/workflows/r1s_lienol.yml_'
+#  schedule:
+#    - cron: 0 0 * * *
 
 jobs:
 
@@ -80,34 +80,16 @@ jobs:
       
       - name: Zip Files
         run: |
-          gzip friendlywrt-h5/out/*.img
+          find friendlywrt-h5/out/ -name "FriendlyWrt_*img*" | xargs -i zip -r {}.zip {}
+          
       - name: Assemble Artifact
-        id: assemble_artifact
         run: |
           rm -rf ./artifact/
           mkdir -p ./artifact/
-          mv friendlywrt-h5/out/*img* ./artifact/
-          cp friendlywrt-h5/friendlywrt/.config ./artifact/
-          zip -r artifact.zip ./artifact/
-          release_tag="R1S-Lienol-$(date +%Y-%m-%d)"
-          echo "##[set-output name=release_tag;]$release_tag"
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.sec_token }}
+          find friendlywrt-h5/out/ -name "FriendlyWrt_*img.zip*" | xargs -i mv -f {} ./artifact/
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@master
         with:
-          tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}
-          release_name: 自动发布 ${{ steps.assemble_artifact.outputs.release_tag }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.sec_token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./artifact.zip
-          asset_name: ${{ steps.assemble_artifact.outputs.release_tag }}-ROM.zip
-          asset_content_type: application/zip
+          name: NanoPi-R1S H5 Lienol By GeekerXu
+          path: ./artifact/
