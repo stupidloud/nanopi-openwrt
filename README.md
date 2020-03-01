@@ -1,11 +1,22 @@
-## Nanopi r1s(h5) r2s openwrt 固件自动编译
+Actions 在线编译 Lienol 大神版本 NanoPi-R1S 固件
+=
 
-### 发布地址：
+说明
+-
+在 klever1988 大佬 r1s_lienol.yml 自动编译编辑的基础上增加了个人使用的插件，去掉自动发布。
 
-https://github.com/klever1988/nanopi-openwrt/releases
+如果需要增加新功能，可自行在yml文件中尝试增加编译。
 
-(请记得下载zip包之后解压出里头的固件包再刷)
+因上游代码更新频率较高，有可能编译失败。如果失败，还需要跟大神们学习。
 
-### 更新说明:
 
-https://github.com/klever1988/nanopi-openwrt/blob/master/CHANGELOG.md
+代码贡献：
+-
+
+感谢 Lienol 大神 https://github.com/Lienol
+
+感谢 Lean 大神 https://github.com/coolsnowwolf
+
+感谢 klever1988 大神 https://github.com/klever1988/
+
+感谢 skytotwo 大神 https://github.com/skytotwo
