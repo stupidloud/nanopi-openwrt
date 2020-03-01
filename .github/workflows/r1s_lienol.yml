@@ -41,48 +41,19 @@ jobs:
         run: |
           mkdir friendlywrt-h5
           cd friendlywrt-h5
-          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m h5.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m h5.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
           repo sync -c --no-clone-bundle -j8
-          rm -rf friendlywrt/
-          git clone https://github.com/friendlyarm/friendlywrt
+          cd friendlywrt/ && git fetch
           
       - name: Mods
         run: |
           cd friendlywrt-h5
           . ../remove_unused_config.sh
-          echo '
-          CONFIG_OPENSSL_ENGINE_BUILTIN=y
-          CONFIG_OPENSSL_OPTIMIZE_SPEED=y
-          CONFIG_OPENSSL_WITH_DTLS=y
-          CONFIG_OPENSSL_WITH_EC2M=y
-          CONFIG_OPENSSL_WITH_NPN=y
-          CONFIG_PACKAGE_ipv6helper=y
-          CONFIG_PACKAGE_curl=y
-          CONFIG_PACKAGE_htop=y
-          CONFIG_PACKAGE_lrzsz=y
-          CONFIG_PACKAGE_nano=y
-          CONFIG_PACKAGE_vim-fuller=y
-          CONFIG_PACKAGE_luci-app-netdata=y
-          CONFIG_PACKAGE_luci-app-adbyby-plus=y
-          CONFIG_PACKAGE_luci-app-adguardhome=y
-          CONFIG_PACKAGE_luci-app-unblockneteasemusic-mini=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
-          CONFIG_PACKAGE_luci-app-smartdns=y
-          CONFIG_PACKAGE_luci-theme-argon-dark-mod=y
-          CONFIG_PACKAGE_luci-theme-argon-light-mod=y
-          CONFIG_PACKAGE_luci-theme-freifunk-generic=y
-          CONFIG_PACKAGE_luci-theme-material=y
-          CONFIG_PACKAGE_luci-theme-netgear-mc=y
-          CONFIG_PACKAGE_luci-theme-openwrt=y' >> configs/config_h5
+          cat ../app_config.seed >> configs/config_h5
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
           git checkout upstream/dev-19.07 -b tmp
-          #git revert --no-edit 2202533d29c1494ad5645f87a7429e70f85a0110
           sed -i '/ucl upx/d' tools/Makefile && git add tools/Makefile
           git mv README.md README && git commit -m 'undo rename readme for rebasing'
           git checkout origin/master-v19.07.1
@@ -96,7 +67,6 @@ jobs:
       - name: Mod luci
         run: |
           cd friendlywrt-h5/friendlywrt
-          #./scripts/feeds clean -a
           ./scripts/feeds update -a && ./scripts/feeds install -a
           sed -i '/Load Average/i\<div class="tr"><div class="td left" width="33%"><%:CPU Temperature%></div><div class="td left" id="_cputemp"><%=luci.sys.exec("cut -c1-2 /sys/class/thermal/thermal_zone0/temp")%></div></div>' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
           sed -i 's/pcdata(boardinfo.system or "?")/"ARMv8"/' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
