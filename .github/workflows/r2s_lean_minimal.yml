@@ -1,4 +1,4 @@
-name: r2s Lean版openwrt minimal
+name: r2s Lean版openwrt minimal 
 
 on:
   push:
