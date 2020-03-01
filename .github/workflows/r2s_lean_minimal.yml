@@ -1,13 +1,13 @@
-name: r2s Lean版openwrt 端口对调版 测试用
+name: r2s Lean版openwrt minimal
 
 on:
   push:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s_lean_port_switched.yml'
+      - '.github/workflows/r2s_lean_minimal.yml'
   schedule:
-    - cron: '10 09 * * *'
+    - cron: '10 08 * * *'
 
 jobs:
 
@@ -55,7 +55,6 @@ jobs:
           wget -q ${url_flowoffload_patch}
           git apply add_fullconenat.diff
           #git apply add_flowoffload.diff
-          [ -f arch/arm64/configs/nanopi-r2_linux_defconfig ] && sed -i '/BPFILTER/d' arch/arm64/configs/nanopi-r2_linux_defconfig
           cd ..
           . ../remove_unused_config.sh
           #sed -i '/iptparser/d' configs/config_rk3328
@@ -66,21 +65,14 @@ jobs:
           CONFIG_OPENSSL_WITH_DTLS=y
           CONFIG_OPENSSL_WITH_EC2M=y
           CONFIG_OPENSSL_WITH_NPN=y
-          CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
-          CONFIG_PACKAGE_ipv6helper=y
-          CONFIG_PACKAGE_curl=y
           CONFIG_PACKAGE_htop=y
-          CONFIG_PACKAGE_lrzsz=y
-          CONFIG_PACKAGE_nano=y
-          CONFIG_PACKAGE_vim-fuller=y
-          CONFIG_PACKAGE_luci-app-frpc=y
-          CONFIG_PACKAGE_luci-app-dockerman=y
-          CONFIG_PACKAGE_luci-app-ipsec-vpnd=y
+          CONFIG_PACKAGE_luci-app-uhttpd=y
           CONFIG_PACKAGE_luci-app-netdata=y
-          CONFIG_PACKAGE_luci-app-pptp-server=y
-          CONFIG_PACKAGE_luci-app-unblockneteasemusic-mini=y
+          CONFIG_PACKAGE_luci-app-v2ray-server=y
+          CONFIG_PACKAGE_luci-app-ssrserver-python=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Simple_obfs=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
@@ -89,13 +81,36 @@ jobs:
           CONFIG_PACKAGE_luci-app-vssr_INCLUDE_V2ray=y
           CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Socks=y
-          CONFIG_PACKAGE_luci-app-ttyd=y
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-theme-material=y
           CONFIG_PACKAGE_luci-theme-netgear=y
           # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
           # CONFIG_PACKAGE_kmod-cryptodev is not set
           # CONFIG_PACKAGE_libopenssl-devcrypto is not set
+          # CONFIG_PACKAGE_iptables-mod-conntrack-extra is not set
+          # CONFIG_PACKAGE_iptables-mod-ipopt is not set
+          # CONFIG_PACKAGE_kmod-ifb is not set
+          # CONFIG_PACKAGE_kmod-ipt-conntrack-extra is not set
+          # CONFIG_PACKAGE_kmod-ipt-ipopt is not set
+          # CONFIG_PACKAGE_kmod-nf-conntrack-netlink is not set
+          # CONFIG_PACKAGE_kmod-sched-cake is not set
+          # CONFIG_PACKAGE_kmod-sched-core is not set
+          # CONFIG_PACKAGE_kmod-tun is not set
+          # CONFIG_PACKAGE_libminiupnpc is not set
+          # CONFIG_PACKAGE_libnatpmp is not set
+          # CONFIG_PACKAGE_luci-app-accesscontrol is not set
+          # CONFIG_PACKAGE_luci-app-arpbind is not set
+          # CONFIG_PACKAGE_luci-app-nlbwmon is not set
+          # CONFIG_PACKAGE_luci-app-sqm is not set
+          # CONFIG_PACKAGE_luci-app-vsftpd is not set
+          # CONFIG_PACKAGE_luci-app-zerotier is not set
+          # CONFIG_PACKAGE_nlbwmon is not set
+          # CONFIG_PACKAGE_sqm-scripts is not set
+          # CONFIG_PACKAGE_tc is not set
+          # CONFIG_PACKAGE_vsftpd-alt is not set
+          # CONFIG_PACKAGE_zerotier is not set
+          # CONFIG_TARGET_ROOTFS_TARGZ is not set
+          ' >> configs/config_rk3328
           # CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
@@ -118,7 +133,6 @@ jobs:
           rm -rf luci-theme-argon
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
           cd ../../
-          sed -i 's/ucidef_set_interfaces_lan_wan "eth1" "eth0"/ucidef_set_interfaces_lan_wan "eth0" "eth1"/' target/linux/rockchip-rk3328/base-files/etc/board.d/02_network
           sed -i '/exit/i\mv /etc/rc.d/S25dockerd /etc/rc.d/S92dockerd && sed -i "s/START=25/START=92/g" S92dockerd' package/lean/default-settings/files/zzz-default-settings
           sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' package/lean/default-settings/files/zzz-default-settings
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
@@ -150,7 +164,7 @@ jobs:
           mv friendlywrt-rk3328/out/*img* ./artifact/
           cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
           zip -r artifact.zip ./artifact/
-          release_tag="R2S-Lean-$(date +%Y-%m-%d)-port-switched"
+          release_tag="R2S-Lean-$(date +%Y-%m-%d)-minimal"
           echo "##[set-output name=release_tag;]$release_tag"
       - name: Create Release
         id: create_release
@@ -159,7 +173,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.sec_token }}
         with:
           tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}
-          release_name: 自动发布 ${{ steps.assemble_artifact.outputs.release_tag }} 端口对调测试版
+          release_name: 自动发布 ${{ steps.assemble_artifact.outputs.release_tag }} minimal
           draft: false
           prerelease: false
       - name: Upload Release Asset
