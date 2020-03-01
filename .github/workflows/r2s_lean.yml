@@ -59,43 +59,9 @@ jobs:
           . ../remove_unused_config.sh
           #sed -i '/iptparser/d' configs/config_rk3328
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
+          cat ../app_config.seed >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
-          echo '
-          CONFIG_OPENSSL_ENGINE_BUILTIN=y
-          CONFIG_OPENSSL_WITH_DTLS=y
-          CONFIG_OPENSSL_WITH_EC2M=y
-          CONFIG_OPENSSL_WITH_NPN=y
-          CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
-          CONFIG_PACKAGE_ipv6helper=y
-          CONFIG_PACKAGE_curl=y
-          CONFIG_PACKAGE_htop=y
-          CONFIG_PACKAGE_lrzsz=y
-          CONFIG_PACKAGE_nano=y
-          CONFIG_PACKAGE_vim-fuller=y
-          CONFIG_PACKAGE_luci-app-frpc=y
-          CONFIG_PACKAGE_luci-app-dockerman=y
-          CONFIG_PACKAGE_luci-app-ipsec-vpnd=y
-          CONFIG_PACKAGE_luci-app-netdata=y
-          CONFIG_PACKAGE_luci-app-pptp-server=y
-          CONFIG_PACKAGE_luci-app-unblockneteasemusic-mini=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Simple_obfs=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray_plugin=y
-          CONFIG_PACKAGE_luci-app-vssr=y
-          CONFIG_PACKAGE_luci-app-vssr_INCLUDE_V2ray=y
-          CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Trojan=y
-          CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Socks=y
-          CONFIG_PACKAGE_luci-app-ttyd=y
-          CONFIG_PACKAGE_luci-theme-argon=y
-          CONFIG_PACKAGE_luci-theme-material=y
-          CONFIG_PACKAGE_luci-theme-netgear=y
-          # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
-          # CONFIG_PACKAGE_kmod-cryptodev is not set
-          # CONFIG_PACKAGE_libopenssl-devcrypto is not set
-          # CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_rk3328
+          echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
