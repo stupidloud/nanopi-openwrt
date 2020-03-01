@@ -5,7 +5,7 @@ on:
     branches: 
       - master
     paths:
-      - '.github/workflows/r2s_lean.yml_'
+      - '.github/workflows/r2s_lean.yml'
   schedule:
     - cron: '10 09 * * *'
 
@@ -69,7 +69,7 @@ jobs:
           git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
           git checkout upstream/master -- feeds.conf.default
           #git apply ../../0001-fix-upx.patch
-          sed -i '/ucl upx/d' tools/Makefile
+          #sed -i '/ucl upx/d' tools/Makefile
           cd package/lean/
           git clone https://github.com/jerrykuku/lua-maxminddb.git
           git clone https://github.com/jerrykuku/luci-app-vssr.git
