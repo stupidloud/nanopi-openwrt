@@ -59,20 +59,19 @@ jobs:
           cd ..
           . ../remove_unused_config.sh
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
+          cat ../app_config.seed >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
-          cat ../app_config.seed >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
           git checkout upstream/dev-19.07 -b tmp
-          #git revert --no-edit 2202533d29c1494ad5645f87a7429e70f85a0110
           sed -i '/ucl upx/d' tools/Makefile && git add tools/Makefile
           git mv README.md README && git commit -m 'undo rename readme for rebasing'
           git checkout origin/master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
           git checkout upstream/dev-19.07 -- feeds.conf.default
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/default-settings/files/zzz-default-settings
-          sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
+          #sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
           
