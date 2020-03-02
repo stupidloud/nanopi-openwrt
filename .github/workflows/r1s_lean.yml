@@ -56,7 +56,8 @@ jobs:
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/master -X theirs
           git checkout upstream/master -- feeds.conf.default
-          git apply ../../0001-fix-upx.patch
+          #git apply ../../0001-fix-upx.patch
+          #sed -i '/ucl upx/d' tools/Makefile
           cd package/lean/
           rm -rf luci-theme-argon
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git

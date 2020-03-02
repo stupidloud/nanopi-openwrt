@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/r2s_lean_minimal.yml'
   schedule:
-    - cron: '10 08 * * *'
+    - cron: '10 08 * * 3'
 
 jobs:
 
@@ -110,7 +110,6 @@ jobs:
           # CONFIG_PACKAGE_vsftpd-alt is not set
           # CONFIG_PACKAGE_zerotier is not set
           # CONFIG_TARGET_ROOTFS_TARGZ is not set
-          ' >> configs/config_rk3328
           # CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
@@ -118,7 +117,8 @@ jobs:
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
           git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
           git checkout upstream/master -- feeds.conf.default
-          git apply ../../0001-fix-upx.patch
+          #git apply ../../0001-fix-upx.patch
+          #sed -i '/ucl upx/d' tools/Makefile
           cd package/lean/
           git clone https://github.com/jerrykuku/lua-maxminddb.git
           git clone https://github.com/jerrykuku/luci-app-vssr.git
