@@ -60,8 +60,6 @@ jobs:
           git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
           git checkout upstream/dev-19.07 -- feeds.conf.default
           #sed -i '/ucl upx/d' tools/Makefile
-          #ln -s /usr/bin/upx staging_dir/host/bin/upx
-          ls -l && exit 1
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/default-settings/files/zzz-default-settings
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
@@ -71,6 +69,7 @@ jobs:
         run: |
           cd friendlywrt-h5/friendlywrt
           ./scripts/feeds update -a && ./scripts/feeds install -a
+          ln -s /usr/bin/upx staging_dir/host/bin/upx
           sed -i '/Load Average/i\<div class="tr"><div class="td left" width="33%"><%:CPU Temperature%></div><div class="td left" id="_cputemp"><%=luci.sys.exec("cut -c1-2 /sys/class/thermal/thermal_zone0/temp")%></div></div>' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
           sed -i 's/pcdata(boardinfo.system or "?")/"ARMv8"/' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
 
