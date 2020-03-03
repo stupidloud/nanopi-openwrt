@@ -5,9 +5,9 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s_lean_minimal.yml'
+      - '.github/workflows/r2s_lean_minimal.yml_'
   schedule:
-    - cron: '10 08 * * 3'
+    - cron: '10 08 * * *'
 
 jobs:
 
@@ -84,6 +84,7 @@ jobs:
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-theme-material=y
           CONFIG_PACKAGE_luci-theme-netgear=y
+          CONFIG_PACKAGE_luci-app-unblockneteasemusic-mini=y
           # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
           # CONFIG_PACKAGE_kmod-cryptodev is not set
           # CONFIG_PACKAGE_libopenssl-devcrypto is not set
