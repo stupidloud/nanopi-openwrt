@@ -2,6 +2,12 @@
 # 更新日志
 ###### （如果没有特别说明，更新内容就是上游Lean和Lienol两位大佬的代码更新）
 
+## 2020-03-04
+
+- 今天暂停更新其他版本，只更新minimal版。内核打入Openwrt官方的鸡血补丁，NAT性能有了炸天的表现。
+
+![boom](https://raw.githubusercontent.com/klever1988/nanopi-openwrt/master/assets/boom.jpg)
+
 ## 2020-03-01
 
 - 增加一版功能简单，但是性能更加优秀的minimal版本。如果对插件没有特殊需求，建议使用此版固件。后续遇到插件需求，我倾向于在两位大佬版本的固件上增加。
