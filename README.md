@@ -26,3 +26,4 @@ https://github.com/klever1988/nanopi-openwrt/blob/master/CHANGELOG.md
 #### 本固件(minimal版本)NAT基准性能测试：
 
 ![NAT](https://github.com/klever1988/nanopi-openwrt/raw/master/assets/NAT.jpg)
+![Acc](https://raw.githubusercontent.com/klever1988/nanopi-openwrt/master/assets/Acc.jpg)
