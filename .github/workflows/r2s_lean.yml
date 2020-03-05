@@ -62,6 +62,7 @@ jobs:
           
       - name: Mods
         run: |
+          cd friendlywrt-rk3328
           . ../remove_unused_config.sh
           #sed -i '/iptparser/d' configs/config_rk3328
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
