@@ -68,6 +68,8 @@ jobs:
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
           echo '
+          CONFIG_PACKAGE_ipv6helper=y
+          CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
           CONFIG_OPENSSL_ENGINE_BUILTIN=y
           CONFIG_OPENSSL_WITH_DTLS=y
           CONFIG_OPENSSL_WITH_EC2M=y
