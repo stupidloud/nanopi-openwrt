@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/r1s_lean.yml'
   schedule:
-    - cron: '10 10 * * *'
+    - cron: '10 10 */2 * *'
 
 jobs:
 
@@ -48,8 +48,9 @@ jobs:
         run: |
           cd friendlywrt-h5
           . ../remove_unused_config.sh
-          sed -i '/iptparser/d' configs/config_h5
-          cat ../app_config.seed >> configs/config_h5
+          #sed -i '/iptparser/d' configs/config_h5
+          cat configs/config_h5 | grep "TARGET" >> ../app_config.seed	
+          cat ../app_config.seed > configs/config_h5
           echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h5
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
