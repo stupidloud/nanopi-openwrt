@@ -5,7 +5,7 @@ on:
     branches: 
       - master
     paths:
-      - '.github/workflows/r2s_lean.yml'
+      - '.github/workflows/r2s_lean.yml_'
   schedule:
     - cron: '10 09 * * *'
 
@@ -44,18 +44,24 @@ jobs:
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
           repo sync -c --no-clone-bundle -j8
           
-      - name: Mods
-        env:
-          url_fullconenat_patch: ${{ secrets.url1 }}
-          url_flowoffload_patch: ${{ secrets.url2 }}
+      - name: Patch Kernel
         run: |
           cd friendlywrt-rk3328
-          cd kernel
-          wget -q ${url_fullconenat_patch}
-          wget -q ${url_flowoffload_patch}
-          git apply add_fullconenat.diff
-          #git apply add_flowoffload.diff
-          cd ..
+          cd kernel/ && git apply ../../add_fullconenat.diff && cd ../
+          git clone https://github.com/openwrt/openwrt
+          rm openwrt/target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
+          rm openwrt/target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
+          cd openwrt/
+          ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
+          ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
+          ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-5.4
+          cd ../
+          wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh && chmod +x merge_config.sh
+          grep -i '_NETFILTER_\|FLOW' ../.config.override > .config.override
+          ./merge_config.sh -m .config.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig && mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
+          
+      - name: Mods
+        run: |
           . ../remove_unused_config.sh
           #sed -i '/iptparser/d' configs/config_rk3328
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
@@ -90,6 +96,7 @@ jobs:
           #sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
+          rm target/linux/rockchip-rk3328/base-files/etc/modules.d/10-rtl8821cu
           
       - name: Mod luci
         run: |
