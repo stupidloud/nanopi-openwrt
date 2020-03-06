@@ -80,25 +80,25 @@ jobs:
           cd friendlywrt
           make defconfig && make download -j8 && make -s -j$(nproc)
           	
-      - name: Patch Kernel
-        run: |
-          cd friendlywrt-h5
-          #cd kernel/ && git apply ../../add_fullconenat.diff && cd ../
-          git clone https://github.com/openwrt/openwrt
-          cd openwrt/
-          git checkout 5387bc9cbb9ed205f08766523a296f21dfa83b56
-          rm target/linux/generic/backport-4.14/400-v4.16-leds-trigger-Introduce-a-NETDEV-trigger.patch
-          rm target/linux/generic/pending-4.14/403-mtd-hook-mtdsplit-to-Kbuild.patch
-          rm target/linux/generic/hack-4.14/700-swconfig_switch_drivers.patch
-          ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-4.14
-          ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-4.14
-          ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-4.14
-          cd ../kernel && git checkout -- drivers/mtd/ && cd ../
-          wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh && chmod +x merge_config.sh
-          find friendlywrt/ -type f -name .config.override -exec cp {} ../ \;
-          grep -i 'FILTER_\|FLOW' ../.config.override > .config.override
-          ./merge_config.sh -m .config.override kernel/arch/arm64/configs/sunxi_arm64_defconfig && mv .config kernel/arch/arm64/configs/sunxi_arm64_defconfig
-          sed -i '/_CONNTRACK_BROADCAST/d;/_CONNTRACK_CHAIN_EVENTS/d;/_CONNTRACK_MARK/d;/_CONNTRACK_RTCACHE/d;/_CONNTRACK_RTCACHE/d;/_CONNTRACK_ZONES/d' kernel/arch/arm64/configs/sunxi_arm64_defconfig
+      #- name: Patch Kernel
+      #  run: |
+      #    cd friendlywrt-h5
+      #    #cd kernel/ && git apply ../../add_fullconenat.diff && cd ../
+      #    git clone https://github.com/openwrt/openwrt
+      #    cd openwrt/
+      #    git checkout 5387bc9cbb9ed205f08766523a296f21dfa83b56
+      #    rm target/linux/generic/backport-4.14/400-v4.16-leds-trigger-Introduce-a-NETDEV-trigger.patch
+      #    rm target/linux/generic/pending-4.14/403-mtd-hook-mtdsplit-to-Kbuild.patch
+      #    rm target/linux/generic/hack-4.14/700-swconfig_switch_drivers.patch
+      #    ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-4.14
+      #    ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-4.14
+      #    ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-4.14
+      #    cd ../kernel && git checkout -- drivers/mtd/ && cd ../
+      #    wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh && chmod +x merge_config.sh
+      #    find friendlywrt/ -type f -name .config.override -exec cp {} ../ \;
+      #    grep -i 'FILTER_\|FLOW' ../.config.override > .config.override
+      #    ./merge_config.sh -m .config.override kernel/arch/arm64/configs/sunxi_arm64_defconfig && mv .config kernel/arch/arm64/configs/sunxi_arm64_defconfig
+      #    sed -i '/_CONNTRACK_BROADCAST/d;/_CONNTRACK_CHAIN_EVENTS/d;/_CONNTRACK_MARK/d;/_CONNTRACK_RTCACHE/d;/_CONNTRACK_RTCACHE/d;/_CONNTRACK_ZONES/d' kernel/arch/arm64/configs/sunxi_arm64_defconfig
           
       - name: Build SD img
         run: |
