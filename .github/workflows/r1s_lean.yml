@@ -112,6 +112,7 @@ jobs:
           find friendlywrt/ -type f -name .config.override -exec cp {} ../ \;
           grep -i 'FILTER_\|FLOW' ../.config.override > .config.override
           ./merge_config.sh -m .config.override kernel/arch/arm64/configs/sunxi_arm64_defconfig && mv .config kernel/arch/arm64/configs/sunxi_arm64_defconfig
+          sed -i '/_CONNTRACK_BROADCAST/d;/_CONNTRACK_CHAIN_EVENTS/d;/_CONNTRACK_MARK/d;/_CONNTRACK_RTCACHE/d;/_CONNTRACK_RTCACHE/d;/_CONNTRACK_ZONES/d' kernel/arch/arm64/configs/sunxi_arm64_defconfig
 
       - name: Build SD img
         run: |
