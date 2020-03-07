@@ -76,32 +76,30 @@ jobs:
           CONFIG_OPENSSL_WITH_NPN=y
           CONFIG_PACKAGE_htop=y
           CONFIG_PACKAGE_luci-app-frpc=y
-          CONFIG_PACKAGE_luci-app-uhttpd=y
           CONFIG_PACKAGE_luci-app-netdata=y
-          CONFIG_PACKAGE_luci-app-v2ray-server=y
-          CONFIG_PACKAGE_luci-app-ssrserver-python=y
+          CONFIG_LIBSODIUM_MINIMAL=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_DNS2SOCKS=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Redsocks2=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Simple_obfs=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray_plugin=y
+          CONFIG_PACKAGE_luci-app-ssrserver-python=y
+          CONFIG_PACKAGE_luci-app-uhttpd=y
+          CONFIG_PACKAGE_luci-app-unblockmusic=y
+          CONFIG_PACKAGE_luci-app-v2ray-server=y
           CONFIG_PACKAGE_luci-app-vssr=y
-          CONFIG_PACKAGE_luci-app-vssr_INCLUDE_V2ray=y
-          CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Trojan=y
-          CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Socks=y
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-theme-material=y
           CONFIG_PACKAGE_luci-theme-netgear=y
           CONFIG_PACKAGE_luci-app-unblockmusic=y
           CONFIG_UnblockNeteaseMusic_Go=y
           CONFIG_UnblockNeteaseMusic_NodeJS=y
-          # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
-          # CONFIG_PACKAGE_kmod-cryptodev is not set
-          # CONFIG_PACKAGE_libopenssl-devcrypto is not set
           # CONFIG_PACKAGE_iptables-mod-conntrack-extra is not set
           # CONFIG_PACKAGE_iptables-mod-ipopt is not set
+          # CONFIG_PACKAGE_kmod-crypto-authenc is not set
+          # CONFIG_PACKAGE_kmod-cryptodev is not set
           # CONFIG_PACKAGE_kmod-ifb is not set
           # CONFIG_PACKAGE_kmod-ipt-conntrack-extra is not set
           # CONFIG_PACKAGE_kmod-ipt-ipopt is not set
@@ -111,11 +109,12 @@ jobs:
           # CONFIG_PACKAGE_kmod-tun is not set
           # CONFIG_PACKAGE_libminiupnpc is not set
           # CONFIG_PACKAGE_libnatpmp is not set
+          # CONFIG_PACKAGE_libopenssl-devcrypto is not set
           # CONFIG_PACKAGE_luci-app-accesscontrol is not set
-          # CONFIG_PACKAGE_luci-app-arpbind is not set
           # CONFIG_PACKAGE_luci-app-nlbwmon is not set
           # CONFIG_PACKAGE_luci-app-sqm is not set
           # CONFIG_PACKAGE_luci-app-vsftpd is not set
+          # CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Socks is not set
           # CONFIG_PACKAGE_luci-app-zerotier is not set
           # CONFIG_PACKAGE_nlbwmon is not set
           # CONFIG_PACKAGE_sqm-scripts is not set
@@ -123,7 +122,11 @@ jobs:
           # CONFIG_PACKAGE_vsftpd-alt is not set
           # CONFIG_PACKAGE_zerotier is not set
           # CONFIG_TARGET_ROOTFS_TARGZ is not set
-          # CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_rk3328
+          # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
+          # CONFIG_PACKAGE_kmod-crypto-authenc is not set
+          # CONFIG_PACKAGE_kmod-cryptodev is not set
+          # CONFIG_V2RAY_COMPRESS_UPX is not set
+          ' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
