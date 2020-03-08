@@ -48,9 +48,9 @@ jobs:
         run: |
           cd friendlywrt-h5
           . ../remove_unused_config.sh
-          #sed -i '/iptparser/d' configs/config_h5
           #cat configs/config_h5 | grep "TARGET" >> ../app_config.seed	
           cat ../app_config.seed >> configs/config_h5
+          sed -i '/docker/Id' configs/config_h5
           echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h5
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
@@ -60,16 +60,16 @@ jobs:
           #git apply ../../0001-fix-upx.patch
           #sed -i '/ucl upx/d' tools/Makefile
           cd package/lean/
-          #git clone https://github.com/jerrykuku/lua-maxminddb.git
-          #git clone https://github.com/jerrykuku/luci-app-vssr.git
-          #cd luci-app-vssr/root/etc/
-          #echo 'china_ssr.txt
-          #config/black.list
-          #config/white.list
-          #dnsmasq.oversea/oversea_list.conf
-          #dnsmasq.ssr/ad.conf
-          #dnsmasq.ssr/gfw_base.conf' | xargs rm
-          #cd ../../../
+          git clone https://github.com/jerrykuku/lua-maxminddb.git
+          git clone https://github.com/jerrykuku/luci-app-vssr.git
+          cd luci-app-vssr/root/etc/
+          echo 'china_ssr.txt
+          config/black.list
+          config/white.list
+          dnsmasq.oversea/oversea_list.conf
+          dnsmasq.ssr/ad.conf
+          dnsmasq.ssr/gfw_base.conf' | xargs rm
+          cd ../../../
           rm -rf luci-theme-argon
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
           cd ../../
