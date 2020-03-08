@@ -5,7 +5,7 @@ on:
     branches: 
       - master
     paths:
-      - '.github/workflows/r1s_lean.yml'
+      - '.github/workflows/r1s_lean.yml_'
   schedule:
     - cron: '10 10 */2 * *'
 
@@ -56,20 +56,18 @@ jobs:
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/master -X theirs
           git checkout upstream/master -- feeds.conf.default
-          #git apply ../../0001-fix-upx.patch
-          #sed -i '/ucl upx/d' tools/Makefile
           cd package/lean/
-          git clone https://github.com/jerrykuku/lua-maxminddb.git
-          git clone https://github.com/jerrykuku/luci-app-vssr.git
-          cd luci-app-vssr/root/etc/
-          echo 'china_ssr.txt
-          config/black.list
-          config/white.list
-          dnsmasq.oversea/oversea_list.conf
-          dnsmasq.ssr/ad.conf
-          dnsmasq.ssr/gfw_base.conf
-          dnsmasq.ssr/gfw_list.conf' | xargs rm
-          cd ../../../
+          #git clone https://github.com/jerrykuku/lua-maxminddb.git
+          #git clone https://github.com/jerrykuku/luci-app-vssr.git
+          #cd luci-app-vssr/root/etc/
+          #echo 'china_ssr.txt
+          #config/black.list
+          #config/white.list
+          #dnsmasq.oversea/oversea_list.conf
+          #dnsmasq.ssr/ad.conf
+          #dnsmasq.ssr/gfw_base.conf
+          #dnsmasq.ssr/gfw_list.conf' | xargs rm
+          #cd ../../../
           rm -rf luci-theme-argon
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
           cd ../../
