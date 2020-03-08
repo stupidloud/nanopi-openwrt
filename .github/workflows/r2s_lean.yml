@@ -64,7 +64,6 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           . ../remove_unused_config.sh
-          #sed -i '/iptparser/d' configs/config_rk3328
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
           cat ../app_config.seed >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
@@ -75,19 +74,17 @@ jobs:
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
           git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
           git checkout upstream/master -- feeds.conf.default
-          #git apply ../../0001-fix-upx.patch
-          #sed -i '/ucl upx/d' tools/Makefile
           cd package/lean/
-          git clone https://github.com/jerrykuku/lua-maxminddb.git
-          git clone https://github.com/jerrykuku/luci-app-vssr.git
-          cd luci-app-vssr/root/etc/
-          echo 'china_ssr.txt
-          config/black.list
-          config/white.list
-          dnsmasq.oversea/oversea_list.conf
-          dnsmasq.ssr/ad.conf
-          dnsmasq.ssr/gfw_base.conf' | xargs rm
-          cd ../../../
+          #git clone https://github.com/jerrykuku/lua-maxminddb.git
+          #git clone https://github.com/jerrykuku/luci-app-vssr.git
+          #cd luci-app-vssr/root/etc/
+          #echo 'china_ssr.txt
+          #config/black.list
+          #config/white.list
+          #dnsmasq.oversea/oversea_list.conf
+          #dnsmasq.ssr/ad.conf
+          #dnsmasq.ssr/gfw_base.conf' | xargs rm
+          #cd ../../../
           rm -rf luci-theme-argon  
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
           cd ../../
