@@ -48,9 +48,8 @@ jobs:
         run: |
           cd friendlywrt-h5
           . ../remove_unused_config.sh
-          #cat configs/config_h5 | grep "TARGET" >> ../app_config.seed	
           cat ../app_config.seed >> configs/config_h5
-          sed -i '/docker/Id' configs/config_h5
+          sed -i '/docker/Id;/containerd/Id;/runc/Id' configs/config_h5 #fix compile error
           echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h5
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
