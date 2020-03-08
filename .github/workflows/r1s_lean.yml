@@ -5,7 +5,7 @@ on:
     branches: 
       - master
     paths:
-      - '.github/workflows/r1s_lean.yml'
+      - '.github/workflows/r1s_lean.yml_'
   schedule:
     - cron: '10 10 */2 * *'
 
@@ -49,8 +49,8 @@ jobs:
           cd friendlywrt-h5
           . ../remove_unused_config.sh
           cat ../app_config.seed >> configs/config_h5
-          sed -i '/docker/Id;/containerd/Id;/runc/Id' configs/config_h5 #fix compile error
           echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h5
+          sed -i '/docker/Id;/containerd/Id;/runc/Id;/iptparser/Id' configs/config_h5 #fix compile error
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
@@ -67,7 +67,8 @@ jobs:
           config/white.list
           dnsmasq.oversea/oversea_list.conf
           dnsmasq.ssr/ad.conf
-          dnsmasq.ssr/gfw_base.conf' | xargs rm
+          dnsmasq.ssr/gfw_base.conf
+          dnsmasq.ssr/gfw_list.conf' | xargs rm
           cd ../../../
           rm -rf luci-theme-argon
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
