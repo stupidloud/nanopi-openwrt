@@ -41,7 +41,7 @@ jobs:
         run: |
           mkdir friendlywrt-h3
           cd friendlywrt-h3
-          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m h5.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m h3.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
           repo sync -c --no-clone-bundle -j8
           
       - name: Mods
@@ -56,7 +56,7 @@ jobs:
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
-          git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/master -X theirs
+          git rebase 52a38e950de0686cb5a2d3e8e05c38027a8e3d0d^ --onto upstream/master -X theirs
           git checkout upstream/master -- feeds.conf.default
           cd package/lean/
           #git clone https://github.com/jerrykuku/lua-maxminddb.git
