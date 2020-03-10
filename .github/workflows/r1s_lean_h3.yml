@@ -48,7 +48,7 @@ jobs:
         run: |
           cd friendlywrt-h3
           sed -i 's/CONFIG_TARGET_MULTI_PROFILE/CONFIG_TARGET_sunxi_cortexa7_Default/' configs/config_h3
-          sed -d '/CONFIG_TARGET_DEVICE/d' configs/config_h3
+          sed -i '/CONFIG_TARGET_DEVICE/d' configs/config_h3
           . ../remove_unused_config.sh
           cat ../app_config.seed >> configs/config_h3
           echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h3
