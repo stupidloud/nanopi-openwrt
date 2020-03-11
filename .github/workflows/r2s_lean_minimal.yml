@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s_lean_minimal.yml'
+      - '.github/workflows/r2s_lean_minimal.yml_'
   schedule:
     - cron: '10 08 * * *'
 
@@ -154,8 +154,7 @@ jobs:
           #sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
-          rm target/linux/rockchip-rk3328/base-files/etc/modules.d/10-rtl8821cu
-
+          
       - name: Mod luci
         run: |
           cd friendlywrt-rk3328/friendlywrt
