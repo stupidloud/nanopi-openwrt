@@ -74,6 +74,8 @@ jobs:
           CONFIG_OPENSSL_WITH_EC2M=y
           CONFIG_OPENSSL_WITH_NPN=y
           CONFIG_PACKAGE_htop=y
+          CONFIG_PACKAGE_diffutils=y
+          CONFIG_PACKAGE_vim-fuller=y
           CONFIG_PACKAGE_luci-app-frpc=y
           CONFIG_PACKAGE_luci-app-netdata=y
           CONFIG_LIBSODIUM_MINIMAL=y
