@@ -96,21 +96,6 @@ jobs:
           CONFIG_PACKAGE_luci-app-unblockmusic=y
           CONFIG_UnblockNeteaseMusic_Go=y
           CONFIG_UnblockNeteaseMusic_NodeJS=y
-          CONFIG_PACKAGE_iw=y
-          CONFIG_PACKAGE_iwinfo=y
-          CONFIG_PACKAGE_hostapd=y
-          CONFIG_PACKAGE_hostapd-basic=y
-          CONFIG_PACKAGE_hostapd-utils=y
-          CONFIG_PACKAGE_wpad=y
-          CONFIG_PACKAGE_wpad-mini=y
-          CONFIG_PACKAGE_wpa-supplicant=y
-          CONFIG_DRIVER_11N_SUPPORT=y
-          CONFIG_DRIVER_11AC_SUPPORT=y
-          CONFIG_DRIVER_11W_SUPPORT=y
-          CONFIG_PACKAGE_kmod-brcmfmac=y
-          CONFIG_PACKAGE_kmod-cfg80211=y
-          CONFIG_PACKAGE_kmod-mmc=y
-          CONFIG_PACKAGE_kmod-ikconfig=y
           # CONFIG_PACKAGE_iptables-mod-conntrack-extra is not set
           # CONFIG_PACKAGE_iptables-mod-ipopt is not set
           # CONFIG_PACKAGE_kmod-crypto-authenc is not set
