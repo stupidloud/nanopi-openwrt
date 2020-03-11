@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s_lean_minimal.yml_'
+      - '.github/workflows/r2s_lean_minimal.yml'
   schedule:
     - cron: '10 08 * * *'
 
@@ -98,10 +98,15 @@ jobs:
           CONFIG_UnblockNeteaseMusic_NodeJS=y
           CONFIG_PACKAGE_iw=y
           CONFIG_PACKAGE_iwinfo=y
-          CONFIG_PACKAGE_iw-full=y
           CONFIG_PACKAGE_hostapd=y
+          CONFIG_PACKAGE_hostapd-basic=y
           CONFIG_PACKAGE_hostapd-utils=y
+          CONFIG_PACKAGE_wpad=y
           CONFIG_PACKAGE_wpad-mini=y
+          CONFIG_PACKAGE_wpa-supplicant=y
+          CONFIG_DRIVER_11N_SUPPORT=y
+          CONFIG_DRIVER_11AC_SUPPORT=y
+          CONFIG_DRIVER_11W_SUPPORT=y
           CONFIG_PACKAGE_kmod-brcmfmac=y
           CONFIG_PACKAGE_kmod-cfg80211=y
           CONFIG_PACKAGE_kmod-mmc=y
