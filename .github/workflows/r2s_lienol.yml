@@ -68,7 +68,7 @@ jobs:
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
           cat ../app_config.seed >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
-          echo -e "\nCONFIG_KERNEL_CGROUPS=n" >> configs/config_rk3328 #try fix
+          echo -e "# CONFIG_KERNEL_CGROUPS is not set" >> configs/config_rk3328 #try fix
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
