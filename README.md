@@ -1,4 +1,4 @@
-## Nanopi r1s(h5) r2s openwrt 固件自动编译
+## Nanopi r1s r2s openwrt 固件自动编译
 
 ### 发布地址：
 
