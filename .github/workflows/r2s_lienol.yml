@@ -47,20 +47,8 @@ jobs:
           
       - name: Patch Kernel
         run: |
-          cd friendlywrt-rk3328
-          cd kernel/ && git apply ../../add_fullconenat.diff && cd ../
-          git clone https://github.com/openwrt/openwrt
-          rm openwrt/target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
-          rm openwrt/target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
-          cd openwrt/
-          ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
-          ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
-          ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-5.4
-          cd ../
-          wget https://github.com/torvalds/linux/raw/master/scripts/kconfig/merge_config.sh && chmod +x merge_config.sh
-          grep -i '_NETFILTER_\|FLOW' ../.config.override > .config.override
-          ./merge_config.sh -m .config.override kernel/arch/arm64/configs/nanopi-r2_linux_defconfig && mv .config kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
-          
+          . ../patch_kernel_5.4.22.sh
+                    
       - name: Mods
         run: |
           cd friendlywrt-rk3328
@@ -68,7 +56,6 @@ jobs:
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
           cat ../app_config.seed >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
-          sed -i '/CONFIG_CGROUPS/Id' friendlywrt/target/linux/rockchip-rk3328/config-4.14 #try fix
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
@@ -84,6 +71,7 @@ jobs:
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
           #rm target/linux/rockchip-rk3328/base-files/etc/modules.d/10-rtl8821cu
+          sed -i '/CONFIG_CGROUPS/Id' friendlywrt/target/linux/rockchip-rk3328/config-4.14 #fix compile error
           
       - name: Mod luci
         run: |
