@@ -44,6 +44,7 @@ CONFIG_PACKAGE_luci-app-pptp-server=y
 CONFIG_PACKAGE_luci-app-samba=y
 CONFIG_PACKAGE_luci-app-softethervpn=y
 CONFIG_PACKAGE_luci-app-ssrserver-python=y
+CONFIG_PACKAGE_luci-app-ssr-plus=y
 CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_DNS2SOCKS=y
 CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Redsocks2=y
 CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
