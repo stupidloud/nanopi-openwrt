@@ -66,13 +66,14 @@ jobs:
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
           git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
           git checkout upstream/dev-19.07 -- feeds.conf.default
+          git apply ../../enable_autocore.diff
           #sed -i '/ucl upx/d' tools/Makefile
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/default-settings/files/zzz-default-settings
           #sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
           #rm target/linux/rockchip-rk3328/base-files/etc/modules.d/10-rtl8821cu
-          sed -i '/CGROUP/Id' target/linux/rockchip-rk3328/config-4.14 #fix compile error
+          sed -i '/CGROUP/Id;/CPUSETS/Id;/MEMCG/Id;/_BLK_/Id' target/linux/rockchip-rk3328/config-4.14 #fix compile error
           
       - name: Mod luci
         run: |
