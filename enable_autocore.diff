@@ -12,10 +12,18 @@ index 5a3ea113..1f52537b 100644
  
  define Package/autocore/description
 diff --git a/package/lean/autocore/files/autocore b/package/lean/autocore/files/autocore
-index 55cd519f..63274a80 100755
+index 55cd519f..92873a1c 100755
 --- a/package/lean/autocore/files/autocore
 +++ b/package/lean/autocore/files/autocore
-@@ -50,5 +50,5 @@ start()
+@@ -31,6 +31,7 @@ start()
+ 	e=$(cat /proc/cpuinfo | grep 'processor' | wc -l)
+ 	f=$(echo -n ' Thread ')
+ 	g=${a}${b}${c}${d}${e}${f}
++	g='FriendlyElec NanoPi R2S'${b}${e}${d}
+ 
+ 	mkdir -p /tmp/sysinfo
+ 	echo $g > /tmp/sysinfo/model
+@@ -50,5 +51,5 @@ start()
  		ethtool -K $c ufo on >/dev/null 2>&1
  	done
  
