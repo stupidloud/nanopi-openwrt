@@ -5,7 +5,7 @@ on:
     branches: 
       - master
     paths:
-      - '.github/workflows/r2s_lean.yml_'
+      - '.github/workflows/r2s_lean.yml'
   schedule:
     - cron: '10 09 * * *'
 
@@ -14,7 +14,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    if: github.event.repository.owner.id == 56048681
+    if: github.repository.owner.id == 56048681
 
     steps:
 
