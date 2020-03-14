@@ -81,4 +81,5 @@ CONFIG_PACKAGE_luci-theme-material=y
 CONFIG_PACKAGE_luci-theme-netgear-mc=y
 CONFIG_PACKAGE_luci-theme-openwrt=y
 
+CONFIG_PACKAGE_autocore=y
 CONFIG_PACKAGE_luci-app-smartdns=y
