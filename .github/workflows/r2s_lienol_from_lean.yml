@@ -3,7 +3,7 @@ name: r2s Lienol版openwrt based on Lean
 on:
   push:
     paths:
-      - '.github/workflows/r2s_lienol_from_lean.yml'
+      - '.github/workflows/r2s_lienol_from_lean.yml_'
   schedule:
     - cron: '30 12 * * *'
 
@@ -12,7 +12,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    if: github.event.repository.owner.id == 56048681
+    if: github.repository == 'klever1988/nanopi-openwrt'
 
     steps:
 
