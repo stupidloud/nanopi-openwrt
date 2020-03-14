@@ -1,0 +1,24 @@
+diff --git a/package/lean/autocore/Makefile b/package/lean/autocore/Makefile
+index 5a3ea113..1f52537b 100644
+--- a/package/lean/autocore/Makefile
++++ b/package/lean/autocore/Makefile
+@@ -17,7 +17,7 @@ include $(INCLUDE_DIR)/package.mk
+ define Package/autocore
+   TITLE:=x86/x64 auto core loadbalance script.
+   MAINTAINER:=Lean
+-  DEPENDS:=@TARGET_x86 +bc +lm-sensors +ethtool
++  DEPENDS:=+bc +lm-sensors +ethtool
+ endef
+ 
+ define Package/autocore/description
+diff --git a/package/lean/autocore/files/autocore b/package/lean/autocore/files/autocore
+index 55cd519f..63274a80 100755
+--- a/package/lean/autocore/files/autocore
++++ b/package/lean/autocore/files/autocore
+@@ -50,5 +50,5 @@ start()
+ 		ethtool -K $c ufo on >/dev/null 2>&1
+ 	done
+ 
+-	[ -f /etc/index.htm ] && mv /etc/index.htm /usr/lib/lua/luci/view/admin_status/index.htm
++	#[ -f /etc/index.htm ] && mv /etc/index.htm /usr/lib/lua/luci/view/admin_status/index.htm
+ }
