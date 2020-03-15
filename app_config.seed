@@ -7,7 +7,6 @@ CONFIG_OPENSSL_WITH_NPN=y
 # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
 # CONFIG_PACKAGE_kmod-cryptodev is not set
 # CONFIG_PACKAGE_libopenssl-devcrypto is not set
-# CONFIG_PACKAGE_luci-app-cpufreq is not set
 CONFIG_PACKAGE_ipv6helper=y
 CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
 CONFIG_PACKAGE_collectd-mod-cpu=y

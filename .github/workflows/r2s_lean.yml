@@ -79,6 +79,7 @@ jobs:
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
           cd ../../
           git apply ../../enable_autocore.diff
+          git apply ../../fix_cpufreq.diff
           #sed -i '/exit/i\mv /etc/rc.d/S25dockerd /etc/rc.d/S92dockerd && sed -i "s/START=25/START=92/g" S92dockerd' package/lean/default-settings/files/zzz-default-settings
           sed -i '/exit/i\/etc/init.d/dockerd disabled' package/lean/default-settings/files/zzz-default-settings
           sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' package/lean/default-settings/files/zzz-default-settings
