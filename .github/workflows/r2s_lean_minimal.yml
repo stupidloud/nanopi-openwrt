@@ -120,8 +120,8 @@ jobs:
           # CONFIG_PACKAGE_kmod-crypto-authenc is not set
           # CONFIG_PACKAGE_kmod-cryptodev is not set
           # CONFIG_V2RAY_COMPRESS_UPX is not set
-          # CONFIG_PACKAGE_luci-app-cpufreq is not set
           ' >> configs/config_rk3328
+          # CONFIG_PACKAGE_luci-app-cpufreq is not set
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
@@ -129,6 +129,7 @@ jobs:
           git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
           git checkout upstream/master -- feeds.conf.default
           git apply ../../enable_autocore.diff
+          git apply ../../fix_cpufreq.diff
           cd package/lean/
           #git clone https://github.com/jerrykuku/lua-maxminddb.git
           #git clone https://github.com/jerrykuku/luci-app-vssr.git
