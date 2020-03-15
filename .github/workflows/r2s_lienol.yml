@@ -72,7 +72,8 @@ jobs:
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
           #rm target/linux/rockchip-rk3328/base-files/etc/modules.d/10-rtl8821cu
-          sed -i '/CGROUP/d;/FREEZER/d;/CPUSET/d;/MEMCG/d;/_BLK_/d;/SPARSEMEM/d;/DEFAULT_NOOP/d;/#/d' target/linux/rockchip-rk3328/config-4.14 #fix compile error
+          sed -i '/#/d' target/linux/rockchip-rk3328/config-4.14 #fix compile error
+          sed -i '/CONFIG_KERNEL_CGROUP_PERF/i\CONFIG_KERNEL_CGROUPS=y' target/linux/rockchip-rk3328/config-4.14 #as above
           
       - name: Mod luci
         run: |
