@@ -70,6 +70,7 @@ jobs:
           CONFIG_PACKAGE_luci-app-frpc=y
           CONFIG_PACKAGE_luci-app-netdata=y
           CONFIG_LIBSODIUM_MINIMAL=y
+          CONFIG_PACKAGE_luci-app-ssr-plus=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_DNS2SOCKS=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Redsocks2=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
@@ -94,6 +95,11 @@ jobs:
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs=y
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
+          # CONFIG_PACKAGE_luci-app-pppoe-relay is not set
+          # CONFIG_PACKAGE_luci-app-pppoe-server is not set
+          # CONFIG_PACKAGE_luci-app-pptp-vpnserver-manyusers is not set
+          # CONFIG_PACKAGE_luci-app-ssr-python-pro-server is not set
+          # CONFIG_PACKAGE_luci-app-v2ray-server is not set
           # CONFIG_PACKAGE_iptables-mod-conntrack-extra is not set
           # CONFIG_PACKAGE_iptables-mod-ipopt is not set
           # CONFIG_PACKAGE_kmod-crypto-authenc is not set
