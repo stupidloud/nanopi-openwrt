@@ -12,7 +12,7 @@ index 5a3ea113..1f52537b 100644
  
  define Package/autocore/description
 diff --git a/package/lean/autocore/files/autocore b/package/lean/autocore/files/autocore
-index 55cd519f..5aabbb63 100755
+index 55cd519f..06d202c0 100755
 --- a/package/lean/autocore/files/autocore
 +++ b/package/lean/autocore/files/autocore
 @@ -33,7 +33,7 @@ start()
@@ -24,8 +24,17 @@ index 55cd519f..5aabbb63 100755
  
  	a=$(ip address | grep ^[0-9] | awk -F: '{print $2}' | sed "s/ //g" | grep '^[e]' | grep -v "@" | grep -v "\.")
  	b=$(echo "$a" | wc -l)
+@@ -44,7 +44,7 @@ start()
+ 		ethtool -K $c tx-checksum-ip-generic on >/dev/null 2>&1 || (
+ 		ethtool -K $c tx-checksum-ipv4 on >/dev/null 2>&1
+ 		ethtool -K $c tx-checksum-ipv6 on >/dev/null 2>&1)
+-		ethtool -K $c tx-scatter-gather on >/dev/null 2>&1
++		#ethtool -K $c tx-scatter-gather on >/dev/null 2>&1
+ 		ethtool -K $c gso on >/dev/null 2>&1
+ 		ethtool -K $c tso on >/dev/null 2>&1
+ 		ethtool -K $c ufo on >/dev/null 2>&1
 diff --git a/package/lean/autocore/files/sbin/cpuinfo b/package/lean/autocore/files/sbin/cpuinfo
-index 19ea5fb2..3ca62011 100755
+index 19ea5fb2..60e7acda 100755
 --- a/package/lean/autocore/files/sbin/cpuinfo
 +++ b/package/lean/autocore/files/sbin/cpuinfo
 @@ -2,7 +2,7 @@
@@ -33,7 +42,7 @@ index 19ea5fb2..3ca62011 100755
  info()
  {
 -	MHz=`grep 'MHz' /proc/cpuinfo | cut -c11- |sed -n '1p'`
-+	MHz=`echo "$(cat /sys/devices/system/cpu/cpu[04]/cpufreq/cpuinfo_cur_freq) /1000" | bc`
++	MHz=`echo "$(cat /sys/devices/system/cpu/cpu[04]/cpufreq/cpuinfo_cur_freq)/1000" | bc`
  	#获取CPU工作频率
  
  	sensors >/dev/null
@@ -42,7 +51,7 @@ index 19ea5fb2..3ca62011 100755
  
  	else
 -		a=""
-+		a=`echo "scale=2; $(cat /sys/class/thermal/thermal_zone0/temp) / 1000" | bc`°
++		a=`echo "scale=2; $(cat /sys/class/thermal/thermal_zone0/temp)/1000" | bc`°
  	fi
  }
  
