@@ -73,7 +73,7 @@ jobs:
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
           #rm target/linux/rockchip-rk3328/base-files/etc/modules.d/10-rtl8821cu
           sed -i '/#/d' target/linux/rockchip-rk3328/config-4.14 #fix compile error
-          sed -i '/CONFIG_BLK_CGROUP/i\DEBUG_BLK_CGROUP=y' target/linux/rockchip-rk3328/config-4.14 #as above
+          sed -i '/CONFIG_BLK_CGROUP/i\CONFIG_DEBUG_BLK_CGROUP=y' target/linux/rockchip-rk3328/config-4.14 #as above
           
       - name: Mod luci
         run: |
