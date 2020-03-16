@@ -75,6 +75,7 @@ jobs:
           sed -i '/#/d' target/linux/rockchip-rk3328/config-4.14 #fix compile error
           sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_DEBUG_BLK_CGROUP=y' target/linux/rockchip-rk3328/config-4.14 #as above
           sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_CFS_BANDWIDTH=y' target/linux/rockchip-rk3328/config-4.14 #as above
+          sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_RT_GROUP_SCHED=y' target/linux/rockchip-rk3328/config-4.14 #as above
           
       - name: Mod luci
         run: |
