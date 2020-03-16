@@ -66,17 +66,15 @@ jobs:
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
           git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
           git checkout upstream/dev-19.07 -- feeds.conf.default
-          #sed -i '/ucl upx/d' tools/Makefile
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/default-settings/files/zzz-default-settings
-          #sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
+          sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
-          #rm target/linux/rockchip-rk3328/base-files/etc/modules.d/10-rtl8821cu
-          sed -i '/#/d' target/linux/rockchip-rk3328/config-4.14 #fix compile error
-          sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_DEBUG_BLK_CGROUP=y' target/linux/rockchip-rk3328/config-4.14 #as above
-          sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_CFS_BANDWIDTH=y' target/linux/rockchip-rk3328/config-4.14 #as above
-          sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_RT_GROUP_SCHED=y' target/linux/rockchip-rk3328/config-4.14 #as above
-          sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_CGROUP_FREEZER=y' target/linux/rockchip-rk3328/config-4.14 #as above
+          #sed -i '/#/d' target/linux/rockchip-rk3328/config-4.14 #fix compile error
+          #sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_DEBUG_BLK_CGROUP=y' target/linux/rockchip-rk3328/config-4.14 #as above
+          #sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_CFS_BANDWIDTH=y' target/linux/rockchip-rk3328/config-4.14 #as above
+          #sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_RT_GROUP_SCHED=y' target/linux/rockchip-rk3328/config-4.14 #as above
+          #sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_CGROUP_FREEZER=y' target/linux/rockchip-rk3328/config-4.14 #as above
           sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_CGROUP_PERF=y' target/linux/rockchip-rk3328/config-4.14 #as above
           
       - name: Mod luci
