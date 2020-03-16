@@ -5,7 +5,7 @@ on:
     branches: 
       - master
     paths:
-      - '.github/workflows/r1s_lean_h3.yml'
+      - '.github/workflows/r1s_lean_h3.yml_'
   schedule:
     - cron: '10 10 */2 * *'
 
@@ -14,6 +14,7 @@ jobs:
   build:
     
     runs-on: ubuntu-latest
+    if: github.repository == 'klever1988/nanopi-openwrt'
     
     steps:
       
