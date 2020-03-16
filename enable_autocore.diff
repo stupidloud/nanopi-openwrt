@@ -33,7 +33,7 @@ index 19ea5fb2..3ca62011 100755
  info()
  {
 -	MHz=`grep 'MHz' /proc/cpuinfo | cut -c11- |sed -n '1p'`
-+	MHz=`cat /sys/devices/system/cpu/cpu[04]/cpufreq/cpuinfo_cur_freq`
++	MHz=`echo "$(cat /sys/devices/system/cpu/cpu[04]/cpufreq/cpuinfo_cur_freq) /1000" | bc`
  	#获取CPU工作频率
  
  	sensors >/dev/null
