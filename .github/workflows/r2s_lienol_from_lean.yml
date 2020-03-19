@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s_lienol_from_lean.yml_'
+      - '.github/workflows/r2s_lienol_from_lean.yml'
 #  schedule:
 #    - cron: '30 12 * * *'
 
@@ -49,6 +49,7 @@ jobs:
       - name: Patch Kernel
         run: |
           . patch_kernel_5.4.22.sh
+          sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
 
       - name: Mods
         run: |
