@@ -67,6 +67,8 @@ jobs:
           CONFIG_PACKAGE_htop=y
           CONFIG_PACKAGE_diffutils=y
           CONFIG_PACKAGE_vim-fuller=y
+          CONFIG_PACKAGE_pv=y
+          CONFIG_PACKAGE_unzip=y
           CONFIG_PACKAGE_luci-app-frpc=y
           CONFIG_PACKAGE_luci-app-netdata=y
           CONFIG_LIBSODIUM_MINIMAL=y
@@ -120,7 +122,6 @@ jobs:
           # CONFIG_PACKAGE_kmod-cryptodev is not set
           # CONFIG_V2RAY_COMPRESS_UPX is not set
           ' >> configs/config_rk3328
-          # CONFIG_PACKAGE_luci-app-cpufreq is not set
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
@@ -149,13 +150,6 @@ jobs:
           sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
-
-      - name: Mod luci
-        run: |
-          cd friendlywrt-rk3328/friendlywrt
-          ./scripts/feeds update -a && ./scripts/feeds install -a
-          sed -i '/Load Average/i\<tr><td width="33%"><%:CPU Temperature%></td><td><%=luci.sys.exec("cut -c1-2 /sys/class/thermal/thermal_zone0/temp")%></td></tr>' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
-          sed -i 's/pcdata(boardinfo.system or "?")/"ARMv8"/' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
 
       - name: Build FriendlyWrt
         run: |
@@ -196,3 +190,4 @@ jobs:
           asset_path: ./artifact.zip
           asset_name: ${{ steps.assemble_artifact.outputs.release_tag }}-ROM.zip
           asset_content_type: application/zip
+

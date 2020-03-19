@@ -42,9 +42,9 @@ jobs:
         run: |
           mkdir friendlywrt-h5
           cd friendlywrt-h5
-          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m h5.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle
-          repo sync -c --no-clone-bundle -j8
-          cd friendlywrt/ && git fetch
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v19.07.1 -m h5.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle --depth=1
+          repo sync -c --no-tags --no-clone-bundle -j8
+          cd friendlywrt/ && git fetch --unshallow
           
       - name: Mods
         run: |
@@ -60,19 +60,12 @@ jobs:
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
           git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
           git checkout upstream/dev-19.07 -- feeds.conf.default
+          git apply ../../enable_autocore.diff
           sed -i '/ucl upx/d' tools/Makefile
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/default-settings/files/zzz-default-settings
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
-          
-      - name: Mod luci
-        run: |
-          cd friendlywrt-h5/friendlywrt
-          ./scripts/feeds update -a && ./scripts/feeds install -a
-          ln -s /usr/bin/upx staging_dir/host/bin/upx
-          sed -i '/Load Average/i\<div class="tr"><div class="td left" width="33%"><%:CPU Temperature%></div><div class="td left" id="_cputemp"><%=luci.sys.exec("cut -c1-2 /sys/class/thermal/thermal_zone0/temp")%></div></div>' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
-          sed -i 's/pcdata(boardinfo.system or "?")/"ARMv8"/' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
 
       - name: Build FriendlyWrt
         run: |

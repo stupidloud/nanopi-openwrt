@@ -6,7 +6,7 @@ index 0443dc77..214d7cb8 100644
  
  config settings 'cpufreq'
 -	option maxfreq '716000'
-+	option maxfreq '0'
++	option maxfreq '1296000'
  	option upthreshold '50'
  	option factor '10'
  	option minifreq '300000'
@@ -19,7 +19,7 @@ index df42f3c7..c81e237d 100755
  	local governor=$(uci_get_by_type settings governor ondemand)
  	local minifreq=$(uci_get_by_type settings minifreq 48000)
 -	local maxfreq=$(uci_get_by_type settings maxfreq 716000)
-+	local maxfreq=$(uci_get_by_type settings maxfreq 0)
++	local maxfreq=$(uci_get_by_type settings maxfreq 1296000)
  	local upthreshold=$(uci_get_by_type settings upthreshold 50)
  	local factor=$(uci_get_by_type settings factor 10)
  	
