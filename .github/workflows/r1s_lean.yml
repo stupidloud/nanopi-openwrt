@@ -87,6 +87,7 @@ jobs:
           cp configs/config_h5 friendlywrt/.config
           cd friendlywrt
           make defconfig && make download -j8
+          make package/feeds/luci/luci-base/compile V=99
           make -s -j$(nproc) || make V=s -j1
 
       #- name: Patch Kernel
