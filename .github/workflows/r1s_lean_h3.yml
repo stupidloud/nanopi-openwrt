@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r1s_lean_h3.yml_'
+      - '.github/workflows/r1s_lean_h3.yml'
   schedule:
     - cron: '10 10 */4 * *'
 
@@ -44,6 +44,7 @@ jobs:
           cd friendlywrt-h3
           repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m h3.xml --repo-url=https://github.com/friendlyarm/repo --no-clone-bundle --depth=1
           repo sync -c --no-tags --no-clone-bundle -j8
+          cd friendlywrt/ && git fetch --unshallow
 
       - name: Mods
         run: |
