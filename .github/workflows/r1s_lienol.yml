@@ -79,7 +79,8 @@ jobs:
           cd friendlywrt-h5
           cp configs/config_h5 friendlywrt/.config
           cd friendlywrt
-          make defconfig && make download -j8 && make -s -j$(nproc)
+          make defconfig && make download -j8
+          make -s -j$(nproc) || make V=s -j1
 
       #- name: Patch Kernel
       #  run: |
