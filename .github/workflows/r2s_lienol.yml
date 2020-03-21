@@ -119,4 +119,3 @@ jobs:
           asset_path: ./artifact.zip
           asset_name: ${{ steps.assemble_artifact.outputs.release_tag }}-ROM.zip
           asset_content_type: application/zip
-
