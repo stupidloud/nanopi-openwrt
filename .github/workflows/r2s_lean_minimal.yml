@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s_lean_minimal.yml'
+      - '.github/workflows/r2s_lean_minimal.yml_'
   schedule:
     - cron: '10 08 * * *'
 
@@ -84,7 +84,6 @@ jobs:
           CONFIG_PACKAGE_luci-app-unblockmusic=y
           CONFIG_PACKAGE_luci-app-v2ray-server=y
           CONFIG_PACKAGE_luci-app-vssr=y
-          CONFIG_PACKAGE_luci-app-watchcat=y
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-theme-material=y
           CONFIG_PACKAGE_luci-theme-netgear=y
