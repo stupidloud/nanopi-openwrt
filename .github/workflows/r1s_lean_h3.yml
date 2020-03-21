@@ -89,6 +89,7 @@ jobs:
           cd friendlywrt-h3
           cp configs/config_h3 friendlywrt/.config
           cd friendlywrt
+          ./scripts/feeds update -a && ./scripts/feeds install -a
           make defconfig && make download -j8
           make -s -j$(nproc) || make V=s -j1
 
