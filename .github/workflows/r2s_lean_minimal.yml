@@ -68,7 +68,9 @@ jobs:
           CONFIG_PACKAGE_diffutils=y
           CONFIG_PACKAGE_vim-fuller=y
           CONFIG_PACKAGE_pv=y
+          CONFIG_PACKAGE_pigz=y
           CONFIG_PACKAGE_unzip=y
+          CONFIG_PACKAGE_losetup=y
           CONFIG_PACKAGE_luci-app-frpc=y
           CONFIG_PACKAGE_luci-app-netdata=y
           CONFIG_LIBSODIUM_MINIMAL=y
