@@ -6,8 +6,8 @@ on:
       - master
     paths:
       - '.github/workflows/r2s_lienol_from_lean.yml'
-#  schedule:
-#    - cron: '30 12 * * *'
+  schedule:
+    - cron: '09 08 * * *'
 
 jobs:
 
@@ -129,7 +129,7 @@ jobs:
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
           cd ../../
           git apply ../../enable_autocore.diff
-          git apply ../../fix_cpufreq.diff
+          #git apply ../../fix_cpufreq.diff
           sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' package/lean/default-settings/files/zzz-default-settings
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
           sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
@@ -143,7 +143,7 @@ jobs:
           mv OpenClash/luci-app-openclash friendlywrt-rk3328/friendlywrt/package
           cd friendlywrt-rk3328/friendlywrt/package/base-files/files
           mkdir -p etc/openclash && cd etc/openclash
-          curl -L https://github.com/Dreamacro/clash/releases/download/v0.18.0/clash-linux-armv8-v0.18.0.gz | gunzip > clash
+          curl -L https://github.com/Dreamacro/clash/releases/download/v0.19.0/clash-linux-armv8-v0.19.0.gz | gunzip > clash
           chmod +x clash
 
       - name: Build FriendlyWrt
@@ -163,7 +163,7 @@ jobs:
           mv friendlywrt-rk3328/out/*img* ./artifact/
           cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
           zip -r artifact.zip ./artifact/
-          release_tag="R2S-testcombined_with_openclash-$(date +%Y-%m-%d)"
+          release_tag="R2S-$(date +%Y-%m-%d)-Minimal"
           echo "##[set-output name=release_tag;]$release_tag"
       - name: Create Release
         id: create_release
@@ -185,4 +185,3 @@ jobs:
           asset_path: ./artifact.zip
           asset_name: ${{ steps.assemble_artifact.outputs.release_tag }}-ROM.zip
           asset_content_type: application/zip
-
