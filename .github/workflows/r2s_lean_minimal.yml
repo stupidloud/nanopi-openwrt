@@ -142,7 +142,7 @@ jobs:
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
           cd ../../
           git apply ../../enable_autocore.diff
-          git apply ../../fix_cpufreq.diff
+          #git apply ../../fix_cpufreq.diff
           sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' package/lean/default-settings/files/zzz-default-settings
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
           sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
