@@ -135,7 +135,7 @@ jobs:
           sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
-          mv ../../scripts/check_wan4.sh package/base-files/files/usr/bin && mv ../../scripts/check_wan4 package/base-files/files/etc/init.d && cd package/base-files/files/etc/rc.d && ln -s S95check_wan4 ../init.d/check_wan4 && cd ../../../../../
+          mv ../../scripts/check_wan4.sh package/base-files/files/usr/bin && mv ../../scripts/check_wan4 package/base-files/files/etc/init.d && cd package/base-files/files/etc/rc.d && ln -s ../init.d/check_wan4 S95check_wan4 && cd ../../../../../
           echo -e '\nDYC Build\n' >> package/base-files/files/etc/banner
 
       - name: Add OpenClash
