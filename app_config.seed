@@ -7,15 +7,9 @@ CONFIG_OPENSSL_WITH_NPN=y
 # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
 # CONFIG_PACKAGE_kmod-cryptodev is not set
 # CONFIG_PACKAGE_libopenssl-devcrypto is not set
+CONFIG_LIBSODIUM_MINIMAL=y
 CONFIG_PACKAGE_ipv6helper=y
 CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
-CONFIG_PACKAGE_collectd-mod-cpu=y
-CONFIG_PACKAGE_collectd-mod-interface=y
-CONFIG_PACKAGE_collectd-mod-iwinfo=y
-CONFIG_PACKAGE_collectd-mod-load=y
-CONFIG_PACKAGE_collectd-mod-memory=y
-CONFIG_PACKAGE_collectd-mod-network=y
-CONFIG_PACKAGE_collectd-mod-rrdtool=y
 CONFIG_PACKAGE_collectd-mod-thermal=y
 CONFIG_PACKAGE_collectd-mod-uptime=y
 CONFIG_PACKAGE_collectd-mod-wireless=y
