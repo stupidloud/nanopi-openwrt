@@ -1,0 +1,11 @@
+#!/bin/sh /etc/rc.common
+
+
+USE_PROCD=1
+START=95
+STOP=01
+start_service() {
+    procd_open_instance
+    procd_set_param command /bin/sh "/usr/bin/check_wan4.sh"
+    procd_close_instance
+}
