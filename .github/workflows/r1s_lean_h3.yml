@@ -1,4 +1,4 @@
-name: r1s(H3) Lean版openwrt 
+name: r1s(H3) Lean版openwrt
 
 on:
   push:
