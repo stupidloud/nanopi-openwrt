@@ -22,6 +22,12 @@ Lienol版默认用户名是root, 密码为空
 
 https://github.com/klever1988/nanopi-openwrt/blob/master/CHANGELOG.md
 
+### R2S在线升级方法(目前仅支持R2S):
+wget https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoupdate.sh
+chmod +x autoupdate.sh
+./autoupdate.sh
+
+(脚本由gary lau提供，非常感谢！)
 
 #### 本固件(minimal版本)NAT基准性能测试：
 
