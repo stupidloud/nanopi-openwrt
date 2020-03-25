@@ -22,7 +22,7 @@ Lienol版默认用户名是root, 密码为空
 
 https://github.com/klever1988/nanopi-openwrt/blob/master/CHANGELOG.md
 
-### R2S在线升级方法(目前仅支持R2S):
+### R2S在线升级方法(目前仅支持R2S，如果你使用的是Lienol版也不要用此方法升级):
 
 先安装好依赖
 
