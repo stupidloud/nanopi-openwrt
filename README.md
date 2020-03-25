@@ -24,6 +24,14 @@ https://github.com/klever1988/nanopi-openwrt/blob/master/CHANGELOG.md
 
 ### R2S在线升级方法(目前仅支持R2S):
 
+先安装好依赖
+
+opkg update
+
+opkg install zstd
+
+然后下载脚本执行
+
 wget https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoupdate.sh
 
 chmod +x autoupdate.sh
