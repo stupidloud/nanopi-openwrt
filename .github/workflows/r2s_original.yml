@@ -46,7 +46,7 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           rm -f .repo/manifests/rk3328.xml
-          cp ../rk3328.xml .repo/manifests/rk3328.xml
+          cp rk3328.xml .repo/manifests/rk3328.xml
           repo sync -c  --no-clone-bundle
           . ../remove_used_config.sh
           sed -i 's/CONFIG_BPFILTER=y/CONFIG_BPFILTER=n/' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
