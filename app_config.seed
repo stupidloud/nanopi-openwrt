@@ -57,6 +57,7 @@ CONFIG_PACKAGE_luci-app-v2ray-server=y
 CONFIG_PACKAGE_luci-app-vssr=y
 CONFIG_PACKAGE_luci-app-vssr_INCLUDE_Trojan=y
 CONFIG_PACKAGE_luci-app-vssr_INCLUDE_V2ray=y
+CONFIG_PACKAGE_luci-app-zerotier=y
 CONFIG_PACKAGE_luci-theme-argon=y
 CONFIG_PACKAGE_luci-theme-material=y
 CONFIG_PACKAGE_luci-theme-netgear=y
