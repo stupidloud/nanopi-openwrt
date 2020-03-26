@@ -6,8 +6,8 @@ on:
       - master
     paths:
       - '.github/workflows/r2s_add_passwall.yml'
-#  schedule:
-#    - cron: '10 13 * * *'
+  schedule:
+    - cron: '10 13 * * *'
 
 jobs:
 
@@ -47,7 +47,7 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           rm -f .repo/manifests/rk3328.xml
-          cp ../rk3328-19.xml .repo/manifests/rk3328.xml
+          cp ../rk3328.xml .repo/manifests/rk3328.xml
           repo sync -c  --no-clone-bundle
           cd friendlywrt
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
