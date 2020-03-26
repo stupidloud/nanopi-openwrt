@@ -37,5 +37,4 @@ chmod +x autoupdate.sh
 
 #### 本固件(minimal版本)NAT基准性能测试：
 
-![NAT](https://github.com/klever1988/nanopi-openwrt/raw/master/assets/NAT.jpg)
-![Acc](https://raw.githubusercontent.com/klever1988/nanopi-openwrt/master/assets/Acc.jpg)
+<img src="https://github.com/klever1988/nanopi-openwrt/raw/master/assets/NAT.jpg" width="600" /><img src="https://raw.githubusercontent.com/klever1988/nanopi-openwrt/master/assets/Acc.jpg" width="250" />
