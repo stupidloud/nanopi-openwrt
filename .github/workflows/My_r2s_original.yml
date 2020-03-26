@@ -40,7 +40,7 @@ jobs:
         run: |
           mkdir friendlywrt-rk3328
           cd friendlywrt-rk3328
-          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests/tree/master-v19.07.1 -b master -m rk3328.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
           
       - name: Mods
         run: |
