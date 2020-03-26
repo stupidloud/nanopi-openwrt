@@ -2,8 +2,7 @@
 
 ### 发布地址：
 
-https://github.com/klever1988/nanopi-openwrt/releases
-
+https://github.com/klever1988/nanopi-openwrt/releases  
 (请记得下载zip包之后解压出里头的固件包再刷，不要拿zip直刷，会失败的！)
 
 ### 编译方式：
@@ -12,8 +11,7 @@ https://github.com/klever1988/nanopi-openwrt/releases
 
 ### 温馨提示：
 
-Lean版的默认用户名是root, 密码是password
-
+Lean版的默认用户名是root, 密码是password  
 Lienol版默认用户名是root, 密码为空
 
 烧制完固件插入tf卡并启动完成，电脑端显示“网络（已连接）”之后，在浏览器输入 http://friendlywrt/ 可以直接打开路由器后台，无需修改本地连接设置或者查看IP地址。如果网络状态一直是未识别（上电超过5分钟），请直接插拔一次电源重启试试。
@@ -22,22 +20,19 @@ Lienol版默认用户名是root, 密码为空
 
 https://github.com/klever1988/nanopi-openwrt/blob/master/CHANGELOG.md
 
-### R2S在线升级方法(目前仅支持R2S，如果你使用的是Lienol版也不要用此方法升级):
-
+### R2S在线升级方法:
+(注意:目前仅支持R2S，仅能升级到minimal版本固件，如果你使用的是Lienol版也不要用此方法升级)  
 先安装好依赖
-
+```bash
 opkg update
-
 opkg install zstd
-
+```
 然后下载脚本执行
-
+```bash
 wget https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoupdate.sh
-
 chmod +x autoupdate.sh
-
 ./autoupdate.sh
-
+```
 (脚本由gary lau提供，非常感谢！)
 
 #### 本固件(minimal版本)NAT基准性能测试：
