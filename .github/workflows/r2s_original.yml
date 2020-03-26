@@ -44,8 +44,8 @@ jobs:
           
       - name: Mods
         run: |
-          rm -f .repo/manifests/rk3328.xml
-          cp -rf friendlywrt-rk3328/* .repo/manifests/
+          #rm -f .repo/manifests/rk3328.xml
+          #cp -rf friendlywrt-rk3328/* .repo/manifests/
           cd friendlywrt-rk3328
           repo sync -c  --no-clone-bundle
           . ../remove_used_config.sh
