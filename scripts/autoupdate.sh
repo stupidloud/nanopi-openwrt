@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd /mnt/mmcblk0p2
-rm -rf artifact R2S*.zip FriendlyWrt*.img
+rm -rf artifact R2S*.zip FriendlyWrt*img*
 wget https://github.com/klever1988/nanopi-openwrt/releases/download/R2S-Minimal-$(date +%Y-%m-%d)/R2S-Minimal-$(date +%Y-%m-%d)-ROM.zip
 if [ -f /mnt/mmcblk0p2/R2S*.zip ]; then
 	echo -e '\e[92m今天固件已下载，准备解压\e[0m'
