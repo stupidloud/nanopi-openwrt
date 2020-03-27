@@ -37,9 +37,9 @@ echo -e '\e[92m准备重新打包\e[0m'
 zstdmt /mnt/mmcblk0p2/FriendlyWrt.img -o /tmp/FriendlyWrtupdate.img.zst
 echo -e '\e[92m打包完毕，准备刷机\e[0m'
 if [ -f /tmp/FriendlyWrtupdate.img.zst ]; then
-	umount /
+	echo 1 > /proc/sys/kernel/sysrq
+	echo u > /proc/sysrq-trigger || umount /
 	pv /tmp/FriendlyWrtupdate.img.zst | zstdcat | dd of=/dev/mmcblk0 conv=fsync
 	echo -e '\e[92m刷机完毕，正在重启...\e[0m'	
-	echo 1 > /proc/sys/kernel/sysrq
 	echo b > /proc/sysrq-trigger
 fi
