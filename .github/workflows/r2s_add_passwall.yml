@@ -57,9 +57,8 @@ jobs:
         run: |
           cd friendlywrt-rk3328
           sed -i 's/dnsmasq /dnsmasq-full /' friendlywrt/include/target.mk
-          echo 'src-git lede https://github.com/coolsnowwolf/lede/tree/master/package' >> friendlywrt/feeds.conf.default
-          #echo 'src-git darkmatter https://github.com/Lienol/luci-theme-darkmatter;luci-18.06' >> friendlywrt/feeds.conf.default
-          . ../remove_used_config.sh
+          echo 'src-git lienol https://github.com/Lienol/openwrt-package' >> friendlywrt/feeds.conf.default
+          echo 'src-git darkmatter https://github.com/Lienol/luci-theme-darkmatter;luci-18.06' >> friendlywrt/feeds.conf.default          . ../remove_used_config.sh
           sed -i '/CONFIG_LUCI_LANG_en/i\CONFIG_LUCI_LANG_zh_Hans=y' configs/config_rk3328
           sed -i '/CONFIG_LUCI_LANG_en/i\CONFIG_LUCI_LANG_zh_Hant=y' configs/config_rk3328
           echo '
