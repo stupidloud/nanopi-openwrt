@@ -1,4 +1,4 @@
-name: r2s Lienol版openwrt based on Lean 
+name: r2s Lienol版openwrt based on Lean
 
 on:
   push:
@@ -121,7 +121,9 @@ jobs:
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
-          git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/dev-lean-lede -X theirs
+          git checkout upstream/dev-lean-lede -b tmp
+          git mv README.md README && git commit -m 'undo rename readme for rebasing'
+          git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
           git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
           git checkout upstream/dev-lean-lede -- feeds.conf.default
           cd package/lean/
