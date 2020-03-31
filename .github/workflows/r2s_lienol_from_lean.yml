@@ -3,11 +3,11 @@ name: r2s Lienol版openwrt based on Lean
 on:
   push:
     branches:
-      - master
+      master
     paths:
-      - '.github/workflows/r2s_lienol_from_lean.yml'
+      '.github/workflows/r2s_lienol_from_lean.yml'
   schedule:
-    - cron: '09 08 * * *'
+    cron: '09 08 * * *'
 
 jobs:
 
