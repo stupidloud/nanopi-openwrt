@@ -57,6 +57,7 @@ jobs:
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
           cat ../app_config.seed >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
+          echo 'CONFIG_KERNEL_CGROUPS=y' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
@@ -71,7 +72,7 @@ jobs:
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
-          sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_CGROUP_PERF=y' target/linux/rockchip-rk3328/config-4.14 #as above
+          #sed -i '/CONFIG_BLK_CGROUP/a\CONFIG_CGROUP_PERF=y' target/linux/rockchip-rk3328/config-4.14 #as above
           
       - name: Mod luci
         run: |
