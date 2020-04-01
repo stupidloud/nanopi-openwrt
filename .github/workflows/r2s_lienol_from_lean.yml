@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s_lienol_from_lean.yml'
+      - '.github/workflows/r2s_lienol_from_lean.yml_'
   schedule:
     - cron: '09 08 * * *'
 
@@ -139,6 +139,7 @@ jobs:
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           mv ../../scripts/check_wan4.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
+          mv ../../scripts/autoupdate.sh package/base-files/root/au.sh && chmod +x package/base-files/root/au.sh
           echo -e '\nDYC Build\n' >> package/base-files/files/etc/banner
 
       - name: Add OpenClash
