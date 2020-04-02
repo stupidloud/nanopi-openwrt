@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s_lienol.yml_'
+      - '.github/workflows/r2s_lienol.yml'
   schedule:
     - cron: '30 09 * * */3'
 
@@ -48,7 +48,7 @@ jobs:
 
       - name: Patch Kernel
         run: |
-          . patch_kernel_5.4.22.sh
+          . patch_kernel_5.4.sh
 
       - name: Mods
         run: |
