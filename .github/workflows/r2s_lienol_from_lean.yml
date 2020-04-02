@@ -158,6 +158,16 @@ jobs:
           sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
           ./build.sh nanopi_r2s.mk
 
+      - name: Fix FriendlyWrt rootfs owner and group
+        run: |
+          sudo losetup -o 100663296 /dev/loop99 friendlywrt-rk3328/out/*.img
+          sudo rm -rf /mnt/friendlywrt-tmp
+          sudo mkdir -p /mnt/friendlywrt-tmp
+          sudo mount /dev/loop99 /mnt/friendlywrt-tmp
+          sudo chown -R root:root /mnt/friendlywrt-tmp
+          sudo umount /mnt/friendlywrt-tmp
+          sudo losetup -d /dev/loop99
+
       - name: Zip Files
         run: |
           gzip friendlywrt-rk3328/out/*.img
