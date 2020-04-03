@@ -90,6 +90,7 @@ jobs:
           CONFIG_PACKAGE_luci-theme-material=y
           CONFIG_PACKAGE_luci-theme-netgear=y
           CONFIG_PACKAGE_luci-app-unblockmusic=y
+          CONFIG_PACKAGE_kmod-rtl8xxxu=y
           CONFIG_UnblockNeteaseMusic_Go=y
           CONFIG_UnblockNeteaseMusic_NodeJS=y
           # CONFIG_PACKAGE_iptables-mod-conntrack-extra is not set
