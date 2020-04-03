@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/r2s_lienol_from_lean.yml'
+      - '.github/workflows/r2s_lienol_from_lean.yml_'
   schedule:
     - cron: '09 08 * * *'
 
@@ -111,7 +111,6 @@ jobs:
           # CONFIG_PACKAGE_luci-app-v2ray-server is not set
           # CONFIG_PACKAGE_luci-app-vsftpd is not set
           # CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Socks is not set
-          # CONFIG_PACKAGE_luci-app-zerotier is not set
           # CONFIG_TARGET_ROOTFS_TARGZ is not set
           # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
           # CONFIG_PACKAGE_kmod-crypto-authenc is not set
