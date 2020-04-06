@@ -6,7 +6,7 @@ index 240a9bf57..9f8f37ca7 100644
  CONFIG_DEBUG_SPINLOCK=y
  CONFIG_FUNCTION_TRACER=y
  CONFIG_BLK_DEV_IO_TRACE=y
-+CONFIG_NETFILTER_XT_TARGET_FULLCONENAT=y
++CONFIG_IP_NF_TARGET_FULLCONENAT=y
 diff --git a/net/ipv4/netfilter/Kconfig b/net/ipv4/netfilter/Kconfig
 index f17b40211..99f691a67 100644
 --- a/net/ipv4/netfilter/Kconfig
