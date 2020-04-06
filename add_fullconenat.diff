@@ -1,12 +1,15 @@
 diff --git a/arch/arm64/configs/nanopi-r2_linux_defconfig b/arch/arm64/configs/nanopi-r2_linux_defconfig
-index 240a9bf57..9f8f37ca7 100644
+index a8de3f7e7..19d90338d 100644
 --- a/arch/arm64/configs/nanopi-r2_linux_defconfig
 +++ b/arch/arm64/configs/nanopi-r2_linux_defconfig
-@@ -1665,3 +1665,4 @@ CONFIG_SCHEDSTATS=y
- CONFIG_DEBUG_SPINLOCK=y
- CONFIG_FUNCTION_TRACER=y
- CONFIG_BLK_DEV_IO_TRACE=y
-+CONFIG_NETFILTER_XT_TARGET_FULLCONENAT=y
+@@ -345,6 +345,7 @@ CONFIG_IP_NF_TARGET_SYNPROXY=m
+ CONFIG_IP_NF_NAT=m
+ CONFIG_IP_NF_TARGET_MASQUERADE=m
+ CONFIG_IP_NF_TARGET_NETMAP=m
++CONFIG_IP_NF_TARGET_FULLCONENAT=m
+ CONFIG_IP_NF_TARGET_REDIRECT=m
+ CONFIG_IP_NF_MANGLE=m
+ CONFIG_IP_NF_TARGET_CLUSTERIP=m
 diff --git a/net/ipv4/netfilter/Kconfig b/net/ipv4/netfilter/Kconfig
 index f17b40211..99f691a67 100644
 --- a/net/ipv4/netfilter/Kconfig
@@ -47,16 +50,17 @@ index 91efae88e..17f5c748a 100644
  	tristate '"NFLOG" target support'
  	default m if NETFILTER_ADVANCED=n
 diff --git a/net/netfilter/Makefile b/net/netfilter/Makefile
-index 4fc075b61..2b588d5a5 100644
+index 4fc075b61..094b13245 100644
 --- a/net/netfilter/Makefile
 +++ b/net/netfilter/Makefile
-@@ -209,3 +209,6 @@ obj-$(CONFIG_IP_SET) += ipset/
-
- # IPVS
- obj-$(CONFIG_IP_VS) += ipvs/
-+
-+# Full cone NAT
+@@ -145,6 +145,7 @@ obj-$(CONFIG_NETFILTER_XT_TARGET_HMARK) += xt_HMARK.o
+ obj-$(CONFIG_NETFILTER_XT_TARGET_LED) += xt_LED.o
+ obj-$(CONFIG_NETFILTER_XT_TARGET_LOG) += xt_LOG.o
+ obj-$(CONFIG_NETFILTER_XT_TARGET_NETMAP) += xt_NETMAP.o
 +obj-$(CONFIG_NETFILTER_XT_TARGET_FULLCONENAT) += xt_FULLCONENAT.o
+ obj-$(CONFIG_NETFILTER_XT_TARGET_NFLOG) += xt_NFLOG.o
+ obj-$(CONFIG_NETFILTER_XT_TARGET_NFQUEUE) += xt_NFQUEUE.o
+ obj-$(CONFIG_NETFILTER_XT_TARGET_RATEEST) += xt_RATEEST.o
 diff --git a/net/netfilter/xt_FULLCONENAT.c b/net/netfilter/xt_FULLCONENAT.c
 new file mode 100644
 index 000000000..8555b54e2
