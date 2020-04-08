@@ -6,6 +6,7 @@ git apply RK3328-enable-1512mhz-opp.patch
 cd ../
 git clone https://github.com/openwrt/openwrt && cd openwrt/
 #git checkout 4e0c54bc5bc8381e031af5147b66b4dadeecc626
+rm target/linux/generic/pending-5.4/184-USB-serial-option-add-Wistron-Neweb-D19Q1.patch
 rm target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
 rm target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
 ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
