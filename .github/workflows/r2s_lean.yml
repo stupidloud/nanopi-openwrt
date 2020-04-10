@@ -1,8 +1,8 @@
-name: r2s Lean版openwrt 
+name: r2s Lean版openwrt
 
 on:
   push:
-    branches: 
+    branches:
       - master
     paths:
       - '.github/workflows/r2s_lean.yml'
@@ -62,7 +62,7 @@ jobs:
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
-          git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
+          sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
           git checkout upstream/master -- feeds.conf.default
           cd package/lean/
           #git clone https://github.com/jerrykuku/lua-maxminddb.git
@@ -127,4 +127,3 @@ jobs:
           asset_path: ./artifact.zip
           asset_name: ${{ steps.assemble_artifact.outputs.release_tag }}-ROM.zip
           asset_content_type: application/zip
-
