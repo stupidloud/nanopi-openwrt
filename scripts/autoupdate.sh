@@ -21,9 +21,10 @@ if [ -f /mnt/mmcblk0p2/artifact/FriendlyWrt*.img.gz ]; then
 	pv /mnt/mmcblk0p2/artifact/FriendlyWrt*.img.gz | gunzip -dc > FriendlyWrt.img
 	echo -e '\e[92m准备解压镜像文件\e[0m'
 fi
+lodev=$(losetup -f)
 mkdir /mnt/img
-losetup -o 100663296 /dev/loop0 /mnt/mmcblk0p2/FriendlyWrt.img
-mount /dev/loop0 /mnt/img
+losetup -o 100663296 $lodev /mnt/mmcblk0p2/FriendlyWrt.img
+mount $lodev /mnt/img
 echo -e '\e[92m解压已完成，准备编辑镜像文件，写入备份信息\e[0m'
 cd /mnt/img
 sysupgrade -b /mnt/img/back.tar.gz
@@ -32,7 +33,7 @@ echo -e '\e[92m备份文件已经写入，移除挂载\e[0m'
 rm back.tar.gz
 cd /tmp
 umount /mnt/img
-losetup -d /dev/loop0
+losetup -d $lodev
 echo -e '\e[92m准备重新打包\e[0m'
 zstdmt /mnt/mmcblk0p2/FriendlyWrt.img -o /tmp/FriendlyWrtupdate.img.zst
 echo -e '\e[92m打包完毕，准备刷机\e[0m'
