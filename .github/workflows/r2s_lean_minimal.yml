@@ -48,7 +48,8 @@ jobs:
 
       - name: Patch Kernel
         run: |
-          . patch_kernel_5.4.22.sh
+          . patch_kernel_5.4.sh
+          sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
 
       - name: Mods
         run: |
@@ -74,6 +75,9 @@ jobs:
           CONFIG_PACKAGE_luci-app-frpc=y
           CONFIG_PACKAGE_luci-app-netdata=y
           CONFIG_LIBSODIUM_MINIMAL=y
+          CONFIG_PACKAGE_ddns-scripts_aliyun=y
+          CONFIG_PACKAGE_ddns-scripts_cloudflare.com-v4=y
+          CONFIG_PACKAGE_luci-app-ssr-plus=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_DNS2SOCKS=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Redsocks2=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
@@ -93,42 +97,37 @@ jobs:
           CONFIG_PACKAGE_kmod-rtl8xxxu=y
           CONFIG_UnblockNeteaseMusic_Go=y
           CONFIG_UnblockNeteaseMusic_NodeJS=y
-          # CONFIG_PACKAGE_iptables-mod-conntrack-extra is not set
-          # CONFIG_PACKAGE_iptables-mod-ipopt is not set
-          # CONFIG_PACKAGE_kmod-crypto-authenc is not set
-          # CONFIG_PACKAGE_kmod-cryptodev is not set
-          # CONFIG_PACKAGE_kmod-ifb is not set
-          # CONFIG_PACKAGE_kmod-ipt-conntrack-extra is not set
-          # CONFIG_PACKAGE_kmod-ipt-ipopt is not set
-          # CONFIG_PACKAGE_kmod-nf-conntrack-netlink is not set
-          # CONFIG_PACKAGE_kmod-sched-cake is not set
-          # CONFIG_PACKAGE_kmod-sched-core is not set
-          # CONFIG_PACKAGE_kmod-tun is not set
-          # CONFIG_PACKAGE_libminiupnpc is not set
-          # CONFIG_PACKAGE_libnatpmp is not set
-          # CONFIG_PACKAGE_libopenssl-devcrypto is not set
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs=y
+          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
+          CONFIG_PACKAGE_luci-app-openclash=y
+          CONFIG_PACKAGE_luci-app-zerotier=y
           # CONFIG_PACKAGE_luci-app-accesscontrol is not set
           # CONFIG_PACKAGE_luci-app-nlbwmon is not set
+          # CONFIG_PACKAGE_nlbwmon is not set
+          # CONFIG_PACKAGE_luci-app-pppoe-relay is not set
+          # CONFIG_PACKAGE_luci-app-pppoe-server is not set
+          # CONFIG_PACKAGE_luci-app-pptp-vpnserver-manyusers is not set
           # CONFIG_PACKAGE_luci-app-sqm is not set
+          # CONFIG_PACKAGE_luci-app-ssr-python-pro-server is not set
+          # CONFIG_PACKAGE_luci-app-v2ray-server is not set
           # CONFIG_PACKAGE_luci-app-vsftpd is not set
           # CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Socks is not set
-          # CONFIG_PACKAGE_luci-app-zerotier is not set
-          # CONFIG_PACKAGE_nlbwmon is not set
-          # CONFIG_PACKAGE_sqm-scripts is not set
-          # CONFIG_PACKAGE_tc is not set
-          # CONFIG_PACKAGE_vsftpd-alt is not set
-          # CONFIG_PACKAGE_zerotier is not set
           # CONFIG_TARGET_ROOTFS_TARGZ is not set
           # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
           # CONFIG_PACKAGE_kmod-crypto-authenc is not set
           # CONFIG_PACKAGE_kmod-cryptodev is not set
+          # CONFIG_PACKAGE_libopenssl-devcrypto is not set
           # CONFIG_V2RAY_COMPRESS_UPX is not set
           ' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
-          git revert --no-edit f092ca098e80c667b10cdd1dba328506a2673c1d
+          git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
+          sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
           git checkout upstream/master -- feeds.conf.default
           cd package/lean/
           #git clone https://github.com/jerrykuku/lua-maxminddb.git
@@ -151,7 +150,18 @@ jobs:
           sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
-          echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
+          mv ../../scripts/check_wan4.sh package/base-files/files/usr/bin && sed -i '/exit/i\/bin/sh /usr/bin/check_wan4.sh &' package/base-files/files/etc/rc.local
+          mv ../../scripts/autoupdate.sh package/base-files/files/root/au.sh && chmod +x package/base-files/files/root/au.sh
+          echo -e '\nDYC Build\n' >> package/base-files/files/etc/banner
+
+      - name: Add OpenClash
+        run: |
+          git clone https://github.com/vernesong/OpenClash.git 
+          mv OpenClash/luci-app-openclash friendlywrt-rk3328/friendlywrt/package
+          cd friendlywrt-rk3328/friendlywrt/package/base-files/files
+          mkdir -p etc/openclash && cd etc/openclash
+          curl -L https://github.com/vernesong/OpenClash/releases/download/Clash/clash-linux-armv8.tar.gz | tar zxf -
+          chmod +x clash
 
       - name: Build FriendlyWrt
         run: |
@@ -170,7 +180,8 @@ jobs:
           mv friendlywrt-rk3328/out/*img* ./artifact/
           cp friendlywrt-rk3328/friendlywrt/.config ./artifact/
           zip -r artifact.zip ./artifact/
-          release_tag="R2S-Lean-$(date +%Y-%m-%d)-Minimal"
+          #release_tag="R2S-Lean-$(date +%Y-%m-%d)-Minimal"
+          release_tag="R2S-Minimal-$(date +%Y-%m-%d)"
           echo "##[set-output name=release_tag;]$release_tag"
       - name: Create Release
         id: create_release
@@ -192,4 +203,3 @@ jobs:
           asset_path: ./artifact.zip
           asset_name: ${{ steps.assemble_artifact.outputs.release_tag }}-ROM.zip
           asset_content_type: application/zip
-
