@@ -57,6 +57,7 @@ jobs:
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/master -X theirs
+          rm target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
           git checkout upstream/master -- feeds.conf.default
           sed -i '5s/#src-git/src-git/g' feeds.conf.default
           cd package/lean/
