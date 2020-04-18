@@ -50,7 +50,6 @@ jobs:
       - name: Patch Kernel
         run: |
           . patch_kernel_5.4.sh
-          sed -i -r 's/# (CONFIG_.*_ERRATUM_.*?) is.*/\1=y/g' kernel/arch/arm64/configs/nanopi-r2_linux_defconfig
 
       - name: Mods
         run: |
