@@ -65,6 +65,7 @@ jobs:
           git mv README.md README && git commit -m 'undo rename readme for rebasing'
           git checkout origin/master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
+          rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
           sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
           git checkout upstream/dev-19.07 -- feeds.conf.default
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/default-settings/files/zzz-default-settings
