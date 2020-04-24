@@ -8,7 +8,7 @@ git clone https://github.com/openwrt/openwrt && cd openwrt/
 #git checkout 4e0c54bc5bc8381e031af5147b66b4dadeecc626
 #rm target/linux/generic/pending-5.4/403-mtd-hook-mtdsplit-to-Kbuild.patch
 #rm target/linux/generic/hack-5.4/700-swconfig_switch_drivers.patch
-cp -a ./target/linux/generic/files/* ../rk3328/kernel/
+cp -a ./target/linux/generic/files/* ../kernel/
 ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
 ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
 ./scripts/patch-kernel.sh ../kernel target/linux/generic/hack-5.4
