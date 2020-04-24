@@ -104,23 +104,23 @@ jobs:
           CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
           CONFIG_PACKAGE_luci-app-openclash=y
           CONFIG_PACKAGE_luci-app-zerotier=y
-          # CONFIG_PACKAGE_luci-app-accesscontrol is not set
-          # CONFIG_PACKAGE_luci-app-nlbwmon is not set
-          # CONFIG_PACKAGE_nlbwmon is not set
-          # CONFIG_PACKAGE_luci-app-pppoe-relay is not set
-          # CONFIG_PACKAGE_luci-app-pppoe-server is not set
-          # CONFIG_PACKAGE_luci-app-pptp-vpnserver-manyusers is not set
-          # CONFIG_PACKAGE_luci-app-sqm is not set
-          # CONFIG_PACKAGE_luci-app-ssr-python-pro-server is not set
-          # CONFIG_PACKAGE_luci-app-v2ray-server is not set
-          # CONFIG_PACKAGE_luci-app-vsftpd is not set
-          # CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Socks is not set
-          # CONFIG_TARGET_ROOTFS_TARGZ is not set
-          # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
-          # CONFIG_PACKAGE_kmod-crypto-authenc is not set
-          # CONFIG_PACKAGE_kmod-cryptodev is not set
-          # CONFIG_PACKAGE_libopenssl-devcrypto is not set
-          # CONFIG_V2RAY_COMPRESS_UPX is not set
+          CONFIG_PACKAGE_luci-app-accesscontrol=y
+          CONFIG_PACKAGE_luci-app-nlbwmon=y
+          CONFIG_PACKAGE_nlbwmon=y
+          CONFIG_PACKAGE_luci-app-pppoe-relay=y
+          CONFIG_PACKAGE_luci-app-pppoe-server=y
+          CONFIG_PACKAGE_luci-app-pptp-vpnserver-manyusers=y
+          CONFIG_PACKAGE_luci-app-sqm=y
+          CONFIG_PACKAGE_luci-app-ssr-python-pro-server=y
+          CONFIG_PACKAGE_luci-app-v2ray-server=y
+          CONFIG_PACKAGE_luci-app-vsftpd=y
+          CONFIG_PACKAGE_luci-app-vssr_INCLUDE_ShadowsocksR_Socks=y
+          CONFIG_TARGET_ROOTFS_TARGZ=y
+          CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO=y
+          CONFIG_PACKAGE_kmod-crypto-authenc=y
+          CONFIG_PACKAGE_kmod-cryptodev=y
+          CONFIG_PACKAGE_libopenssl-devcrypto=y
+          CONFIG_V2RAY_COMPRESS_UPX=y
           ' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
