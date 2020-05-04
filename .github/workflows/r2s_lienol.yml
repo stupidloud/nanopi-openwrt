@@ -99,6 +99,12 @@ jobs:
           zip -r artifact.zip ./artifact/
           release_tag="R2S-Lienol-$(date +%Y-%m-%d)"
           echo "##[set-output name=release_tag;]$release_tag"
+      - name: update
+        uses: actions/upload-artifact@master
+        with:
+          name: r2s_lienol
+          path: ./artifact/
+        
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
