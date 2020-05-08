@@ -171,7 +171,7 @@ jobs:
       - name: Add Passwall
         run: |
           cd friendlywrt-rk3328/friendlywrt
-          echo -e '\nsrc-git lienol https://github.com/Lienol/openwrt-package' >> feeds.conf.default
+          echo -e '\nsrc-git lienol https://github.com/project-openwrt/openwrt-package' >> feeds.conf.default
           ./scripts/feeds update -a
           rm -rf feeds/lienol/lienol/ipt2socks
           rm -rf feeds/lienol/lienol/shadowsocksr-libev
