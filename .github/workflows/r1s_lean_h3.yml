@@ -60,6 +60,7 @@ jobs:
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase e561fa6fcc2e744c4a8cbfa1b4cf65107a675414^ --onto 1dee4bedde119aadc586ebf7105cfded3c220711 #bypass a commit that cause an error for next rebasing
           git rebase 52a38e950de0686cb5a2d3e8e05c38027a8e3d0d^ --onto upstream/master -X theirs
+          git revert --no-edit b65f1ebf0089a2fa0d3e1ad30efc21385a013139
           git revert --no-edit 2c37fa71f93d150eb67bffdc5bdac8abf5354b16
           git revert --no-edit 23378ed9a481dc73923f5bfa81637a1a8056882d
           git revert --no-edit 4787dbaf3cad44b374b660cc0fef9386963e6795
