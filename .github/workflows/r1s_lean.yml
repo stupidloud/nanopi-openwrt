@@ -14,7 +14,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    if: github.repository == 'klever1988/nanopi-openwrt'
+    if: github.repository == 'qzhome2102/nanopi-openwrt'
 
     steps:
 
@@ -131,6 +131,7 @@ jobs:
         run: |
           rm -rf ./artifact/
           mkdir -p ./artifact/
+          cp -r friendlywrt-h5/friendlywrt/bin/ ./artifact/
           mv friendlywrt-h5/out/*img* ./artifact/
           cp friendlywrt-h5/friendlywrt/.config ./artifact/
           zip -r artifact.zip ./artifact/
