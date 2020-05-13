@@ -91,9 +91,10 @@ jobs:
 
       - name: Build FriendlyWrt
         run: |
-          cd friendlywrt-h5
-          cp configs/config_h5 friendlywrt/.config
-          cd friendlywrt
+          cd friendlywrt-h5/friendlywrt
+          rm -f ./.config*
+          wget https://raw.githubusercontent.com/qzhome2102/nanopi-openwrt/master/new-r1s-h5-config
+          cp new-r1s-h5-config .config
           ./scripts/feeds update -a && ./scripts/feeds install -a
           make defconfig
           
