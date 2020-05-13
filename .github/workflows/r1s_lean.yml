@@ -95,7 +95,15 @@ jobs:
           cp configs/config_h5 friendlywrt/.config
           cd friendlywrt
           ./scripts/feeds update -a && ./scripts/feeds install -a
-          make defconfig && make download -j8
+          make defconfig
+          
+      - name: SSH connection to Actions
+        uses: P3TERX/debugger-action@master
+
+      - name: Build FriendlyWrt
+        run: |
+          cd friendlywrt-h5/friendlywrt
+          make download -j8
           make -s -j$(nproc) || make V=s -j1
 
       #- name: Patch Kernel
@@ -131,7 +139,6 @@ jobs:
         run: |
           rm -rf ./artifact/
           mkdir -p ./artifact/
-          cp -r friendlywrt-h5/friendlywrt/bin/ ./artifact/
           mv friendlywrt-h5/out/*img* ./artifact/
           cp friendlywrt-h5/friendlywrt/.config ./artifact/
           zip -r artifact.zip ./artifact/
