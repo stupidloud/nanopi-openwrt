@@ -145,5 +145,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
-          name: FriendlyWrt_NanoPi-R1S H5 v19.07
+          name: FriendlyWrt_NanoPi-R1S H5 klever1988
           path: ./artifact/
