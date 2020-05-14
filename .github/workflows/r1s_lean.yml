@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/r1s_lean.yml'
   schedule:
-    - cron: '10 10 */4 * *'
+    - cron: '10 03 */3 * *'
 
 jobs:
 
@@ -98,8 +98,8 @@ jobs:
           ./scripts/feeds update -a && ./scripts/feeds install -a
           make defconfig
           
-      - name: SSH connection to Actions
-        uses: P3TERX/debugger-action@master
+      # - name: SSH connection to Actions
+      #   uses: P3TERX/debugger-action@master
 
       - name: Build FriendlyWrt
         run: |
