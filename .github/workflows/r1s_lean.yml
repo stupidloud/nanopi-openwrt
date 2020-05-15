@@ -94,7 +94,7 @@ jobs:
           cd friendlywrt-h5/friendlywrt
           rm -f ./.config*
           wget https://raw.githubusercontent.com/qzhome2102/nanopi-openwrt/master/new-r1s-h5-config
-          cp new-r1s-h5-config .config
+          mv new-r1s-h5-config .config
           
       - name: SSH connection to Actions
         uses: P3TERX/debugger-action@master
