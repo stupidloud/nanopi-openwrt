@@ -5,7 +5,7 @@ on:
     branches: 
       - master
     paths:
-      - '.github/workflows/r1s_lean.yml'
+      - '.github/workflows/openvpn-r1s-h5-lean.yml'
   # schedule:
   #   - cron: '10 03 */3 * *'
 
