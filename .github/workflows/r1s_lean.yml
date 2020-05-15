@@ -95,6 +95,8 @@ jobs:
           rm -f .config*
           wget https://raw.githubusercontent.com/qzhome2102/nanopi-openwrt/master/new-r1s-h5-config
           mv new-r1s-h5-config .config
+          ./scripts/feeds update -a && ./scripts/feeds install -a
+          make defconfig 
           
       - name: SSH connection to Actions
         uses: P3TERX/debugger-action@master
@@ -102,8 +104,7 @@ jobs:
       - name: Build FriendlyWrt 1
         run: |
           cd friendlywrt-h5/friendlywrt
-          ./scripts/feeds update -a && ./scripts/feeds install -a
-          make defconfig && make download -j8
+          make download -j8
           make -s -j$(nproc) || make V=s -j1
 
       #- name: Patch Kernel
