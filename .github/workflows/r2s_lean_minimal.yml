@@ -127,6 +127,7 @@ jobs:
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
           git reset 0a395d6fd6c38c554709197ae3cd6315f143cd7a -- package/kernel/mac80211 package/network/services/hostapd
+          cat package/kernel/mac80211/Makefile
           rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
           sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
           git checkout upstream/master -- feeds.conf.default
