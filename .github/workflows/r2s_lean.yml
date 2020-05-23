@@ -6,6 +6,8 @@ on:
       - master
     paths:
       - '.github/workflows/r2s_lean.yml'
+  schedule:
+      - cron: '10 09 * * *'
 
 jobs:
 
