@@ -1,9 +1,13 @@
 diff --git a/build-kernel.sh b/build-kernel.sh
-index 9b95610..da92c06 100755
+index 9b95610..928977c 100755
 --- a/build-kernel.sh
 +++ b/build-kernel.sh
 @@ -27,7 +27,7 @@ true ${KERNEL_LOGO:=}
-
+ KERNEL_REPO=https://github.com/friendlyarm/kernel-rockchip
+ KERNEL_BRANCH=nanopi-r2-v5.4.y
+ 
 -declare -a KERNEL_3RD_DRIVERS=("https://github.com/friendlyarm/rtl8821CU" "https://github.com/friendlyarm/rtl8822bu" "https://github.com/friendlyarm/rtl8812au")
-+declare -a KERNEL_3RD_DRIVERS=("https://github.com/friendlyarm/rtl8821CU" "https://github.com/friendlyarm/rtl8822bu" "https://github.com/sailordu/rtl8812au-5.6.4.2.git")
-
++declare -a KERNEL_3RD_DRIVERS=("https://github.com/friendlyarm/rtl8821CU" "https://github.com/friendlyarm/rtl8822bu" "https://github.com/sailordu/rtl8812au-5.6.4.2")
+ declare -a KERNEL_3RD_DRIVER_BRANCHES=("nanopi-r2" "nanopi-r2" "nanopi-r2")
+ declare -a KERNEL_3RD_DRIVER_NAME=("rtl8821CU" "rtl8822bu" "rtl8812au")
+ 
