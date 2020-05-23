@@ -1,0 +1,9 @@
+diff --git a/build-kernel.sh b/build-kernel.sh
+index 9b95610..da92c06 100755
+--- a/build-kernel.sh
++++ b/build-kernel.sh
+@@ -27,7 +27,7 @@ true ${KERNEL_LOGO:=}
+
+-declare -a KERNEL_3RD_DRIVERS=("https://github.com/friendlyarm/rtl8821CU" "https://github.com/friendlyarm/rtl8822bu" "https://github.com/friendlyarm/rtl8812au")
++declare -a KERNEL_3RD_DRIVERS=("https://github.com/friendlyarm/rtl8821CU" "https://github.com/friendlyarm/rtl8822bu" "https://github.com/sailordu/rtl8812au-5.6.4.2.git")
+
