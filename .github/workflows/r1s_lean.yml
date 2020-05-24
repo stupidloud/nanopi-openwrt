@@ -8,6 +8,9 @@ on:
       - '.github/workflows/r1s_lean.yml'
   schedule:
     - cron: '10 03 */3 * *'
+      
+  watch:
+    types: [started]    
 
 jobs:
 
