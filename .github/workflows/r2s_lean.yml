@@ -1,13 +1,20 @@
 name: r2s Lean版openwrt
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/r2s_lean.yml'
+  schedule:
+      - cron: '10 09 * * *'
 
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
-    if: github.repository == 'klever1988/nanopi-openwrt'
+    if: github.repository == 'sailordu/nanopi-openwrt'
 
     steps:
 
