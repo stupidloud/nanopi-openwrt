@@ -6,8 +6,8 @@ on:
       - master
     paths:
       - '.github/workflows/up-r1s-h5-lean.yml'
-  schedule:
-    - cron: '10 03 */3 * *'  
+  # schedule:
+  #   - cron: '10 03 */3 * *'  
 
 jobs:
 
@@ -99,8 +99,8 @@ jobs:
           mv new-r1s-h5-config .config
  
           
-      # - name: SSH connection to Actions
-      #   uses: P3TERX/debugger-action@master
+      - name: SSH connection to Actions
+        uses: P3TERX/debugger-action@master
 
       - name: Build FriendlyWrt 1
         run: |
@@ -142,11 +142,13 @@ jobs:
           rm -rf ./artifact/
           mkdir -p ./artifact/
           find friendlywrt-h5/out/ -name "FriendlyWrt_*img.zip*" | xargs -i mv -f {} ./artifact/
+          
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
           name: FriendlyWrt_NanoPi-R1S H5 v19.07
           path: ./artifact/
+
 
       - name: Zip Files
         run: |
