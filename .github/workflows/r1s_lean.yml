@@ -60,12 +60,6 @@ jobs:
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto upstream/master -X theirs
-          #git revert --no-edit b65f1ebf0089a2fa0d3e1ad30efc21385a013139
-          #git revert --no-edit 2c37fa71f93d150eb67bffdc5bdac8abf5354b16
-          #git revert --no-edit 23378ed9a481dc73923f5bfa81637a1a8056882d
-          #git revert --no-edit 4787dbaf3cad44b374b660cc0fef9386963e6795
-          #git revert --no-edit 463b6ac0508de4788a6e41335471ced0a255e1cd
-          #git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
           rm target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
           git checkout upstream/master -- feeds.conf.default
           sed -i '5s/#src-git/src-git/g' feeds.conf.default
@@ -92,7 +86,7 @@ jobs:
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
 
-      - name: Build FriendlyWrt
+      - name: Build config
         run: |
           cd friendlywrt-h5/friendlywrt
           ./scripts/feeds update -a && ./scripts/feeds install -a
@@ -105,7 +99,7 @@ jobs:
       # - name: SSH connection to Actions
       #   uses: P3TERX/debugger-action@master
 
-      - name: Build FriendlyWrt 1
+      - name: Build FriendlyWrt
         run: |
           cd friendlywrt-h5/friendlywrt
           make download -j8
@@ -146,6 +140,7 @@ jobs:
           mkdir -p ./artifact/
           find friendlywrt-h5/out/ -name "FriendlyWrt_*img.zip*" | xargs -i mv -f {} ./artifact/
           cp friendlywrt-h5/friendlywrt/.config ./artifact/
+          cp friendlywrt-h5/friendlywrt/bin/targets/allwinner-h5/generic/config.seed ./artifact/
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
