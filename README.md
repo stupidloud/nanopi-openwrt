@@ -26,6 +26,7 @@ https://github.com/klever1988/nanopi-openwrt/blob/master/CHANGELOG.md
 ```bash
 opkg update
 opkg install zstd
+opkg install libzstd
 ```
 然后下载脚本执行
 ```bash
