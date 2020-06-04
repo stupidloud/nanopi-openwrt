@@ -83,6 +83,10 @@ jobs:
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
 
+
+      - name: SSH connection to Actions
+        uses: P3TERX/debugger-action@master
+
       - name: Build FriendlyWrt
         run: |
           cd friendlywrt-h5/friendlywrt
@@ -131,45 +135,6 @@ jobs:
       - name: Zip Files
         run: |
           find friendlywrt-h5/out/ -name "FriendlyWrt_*img*" | xargs -i zip -r {}.zip {}
- 
-      - name: Assemble Artifact
-        id: assemble_artifact
-        run: |
-          rm -rf ./artifact/
-          mkdir -p ./artifact/
-          find friendlywrt-h5/out/ -name "FriendlyWrt_*img.zip*" | xargs -i mv -f {} ./artifact/
-          cp friendlywrt-h5/friendlywrt/.config ./artifact/
-          cp -r friendlywrt-h5/friendlywrt/bin/ ./artifact
-          zip -r artifact.zip ./artifact/
-          release_tag="NanoPi-R1S-H5-Lean-$(date +%Y-%m-%d)"
-          echo "##[set-output name=release_tag;]$release_tag"
-          
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.repo_access }}
-        with:
-          tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}
-          release_name: 自动发布 ${{ steps.assemble_artifact.outputs.release_tag }}
-          draft: false
-          prerelease: false
-          
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.repo_access }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./artifact.zip
-          asset_name: ${{ steps.assemble_artifact.outputs.release_tag }}-ROM.zip
-          asset_content_type: application/zip
-
-
-      - name: Zip Files
-        run: |
-          find friendlywrt-h5/out/ -name "FriendlyWrt_*img*" | xargs -i zip -r {}.zip {}
           
       - name: Assemble Artifact
         run: |
@@ -177,7 +142,6 @@ jobs:
           mkdir -p ./artifact/
           find friendlywrt-h5/out/ -name "FriendlyWrt_*img.zip*" | xargs -i mv -f {} ./artifact/
           cp friendlywrt-h5/friendlywrt/.config ./artifact/
-          cp -r friendlywrt-h5/friendlywrt/bin/ ./artifact
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
