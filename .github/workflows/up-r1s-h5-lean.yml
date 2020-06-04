@@ -97,8 +97,8 @@ jobs:
           mv new-r1s-h5-config .config
  
           
-      # - name: SSH connection to Actions
-      #   uses: P3TERX/debugger-action@master
+      - name: SSH connection to Actions
+        uses: P3TERX/debugger-action@master
 
       - name: Build FriendlyWrt 1
         run: |
