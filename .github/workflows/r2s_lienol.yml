@@ -78,6 +78,7 @@ jobs:
         run: |
           cd friendlywrt-rk3328/friendlywrt
           ./scripts/feeds update -a && ./scripts/feeds install -a
+          ./scripts/feeds install libpcre
           sed -i '/Load Average/i\<div class="tr"><div class="td left" width="33%"><%:CPU Temperature%></div><div class="td left" id="_cputemp"><%=luci.sys.exec("cut -c1-2 /sys/class/thermal/thermal_zone0/temp")%></div></div>' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
           sed -i 's/pcdata(boardinfo.system or "?")/"ARMv8"/' feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
           
