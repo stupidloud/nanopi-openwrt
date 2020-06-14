@@ -84,8 +84,8 @@ jobs:
           echo -e '\nDYC Build\n'  >> package/base-files/files/etc/banner
 
 
-      - name: SSH connection to Actions
-        uses: P3TERX/debugger-action@master
+      # - name: SSH connection to Actions
+      #   uses: P3TERX/debugger-action@master
 
       - name: Build FriendlyWrt
         run: |
