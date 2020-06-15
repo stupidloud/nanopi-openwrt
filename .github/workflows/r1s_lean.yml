@@ -90,14 +90,13 @@ jobs:
         run: |
           cd friendlywrt-h5/friendlywrt
           ./scripts/feeds update -a && ./scripts/feeds install -a
-          make defconfig
           rm -f .config*
           wget https://raw.githubusercontent.com/qzhome2102/r1s-config/master/new-r1s-h5-config
-          mv new-r1s-h5-config .config
+          mv new-r1s-h5-config .config && make defconfig
 
 
-      - name: SSH connection to Actions
-        uses: P3TERX/debugger-action@master
+      # - name: SSH connection to Actions
+      #   uses: P3TERX/debugger-action@master
 
       - name: Build FriendlyWrt
         run: |
