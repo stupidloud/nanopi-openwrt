@@ -132,6 +132,9 @@ jobs:
           mkdir -p ./artifact/
           mv friendlywrt-h3/out/*img* ./artifact/
           cp friendlywrt-h3/friendlywrt/.config ./artifact/
+          cd ./artifact/
+          md5sum *img* > md5sum.txt
+          cd ..
           zip -r artifact.zip ./artifact/
           release_tag="R1S-H3-$(date +%Y-%m-%d)"
           echo "##[set-output name=release_tag;]$release_tag"
