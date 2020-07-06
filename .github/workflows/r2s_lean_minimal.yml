@@ -127,9 +127,11 @@ jobs:
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git checkout upstream/master -b tmp
-          #git revert --no-edit 33abeff31cfb2ae58adf167c82bd36b5f56a5b1c
+          git checkout 33f7cb735300bd9a099995236ed768c8925fec75 -- target/linux/sunxi/image/
+          git rm README.md
+          git commit -m 'reset'
           git checkout origin/master-v19.07.1
-          git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs || true
+          git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
           git add target/linux/sunxi/image/cortex-a53.mk
           git rebase --continue
           #rm -rf package/kernel/mt76/Makefile package/network/services/hostapd package/kernel/mac80211
