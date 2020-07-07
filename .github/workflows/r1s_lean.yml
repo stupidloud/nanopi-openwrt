@@ -60,7 +60,7 @@ jobs:
           git checkout 33f7cb735300bd9a099995236ed768c8925fec75 -- target/linux/sunxi/image/
           git rm README.md
           git commit -m 'reset'
-          git checkout origin/master-v19.07.1
+          git checkout origin/master
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto tmp -X theirs
           rm target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
           git checkout upstream/master -- feeds.conf.default
