@@ -62,7 +62,7 @@ jobs:
           git checkout 33f7cb735300bd9a099995236ed768c8925fec75 -- target/linux/sunxi/image/
           git rm README.md
           git commit -m 'reset'
-          git checkout origin/master
+          git checkout master-v18.06.1
           git rebase e561fa6fcc2e744c4a8cbfa1b4cf65107a675414^ --onto 1dee4bedde119aadc586ebf7105cfded3c220711 #bypass a commit that cause an error for next rebasing
           git rebase 52a38e950de0686cb5a2d3e8e05c38027a8e3d0d^ --onto tmp -X theirs
           #rm target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
