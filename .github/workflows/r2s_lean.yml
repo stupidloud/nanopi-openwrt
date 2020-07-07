@@ -61,7 +61,12 @@ jobs:
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
-          git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto upstream/master -X theirs
+          git checkout upstream/master -b tmp
+          git checkout 33f7cb735300bd9a099995236ed768c8925fec75 -- target/linux/sunxi/image/
+          git rm README.md
+          git commit -m 'reset'
+          git checkout origin/master-v19.07.1
+          git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
           #git revert --no-edit b65f1ebf0089a2fa0d3e1ad30efc21385a013139
           #git revert --no-edit 2c37fa71f93d150eb67bffdc5bdac8abf5354b16
           #git revert --no-edit 23378ed9a481dc73923f5bfa81637a1a8056882d
