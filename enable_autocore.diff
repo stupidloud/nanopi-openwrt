@@ -1,5 +1,5 @@
 diff --git a/package/lean/autocore/Makefile b/package/lean/autocore/Makefile
-index f0c5c2787a..777a0f59ee 100644
+index c6cde396e..347a45203 100644
 --- a/package/lean/autocore/Makefile
 +++ b/package/lean/autocore/Makefile
 @@ -17,7 +17,7 @@ include $(INCLUDE_DIR)/package.mk
@@ -12,7 +12,7 @@ index f0c5c2787a..777a0f59ee 100644
  
  define Package/autocore/description
 diff --git a/package/lean/autocore/files/autocore b/package/lean/autocore/files/autocore
-index 614e21761e..90f9f52dd8 100755
+index 614e21761..90f9f52dd 100755
 --- a/package/lean/autocore/files/autocore
 +++ b/package/lean/autocore/files/autocore
 @@ -31,7 +31,7 @@ start()
@@ -34,7 +34,7 @@ index 614e21761e..90f9f52dd8 100755
  		ethtool -K $c tso on >/dev/null 2>&1
  		ethtool -K $c ufo on >/dev/null 2>&1
 diff --git a/package/lean/autocore/files/index.htm b/package/lean/autocore/files/index.htm
-index c24224cb39..e7da9b7a63 100644
+index c24224cb3..e7da9b7a6 100644
 --- a/package/lean/autocore/files/index.htm
 +++ b/package/lean/autocore/files/index.htm
 @@ -718,6 +718,7 @@
@@ -46,24 +46,14 @@ index c24224cb39..e7da9b7a63 100644
  		<tr><td width="33%"><%:Kernel Version%></td><td><%=unameinfo.release or "?"%></td></tr>
  		<tr><td width="33%"><%:Local Time%></td><td id="localtime">-</td></tr>
 diff --git a/package/lean/autocore/files/sbin/cpuinfo b/package/lean/autocore/files/sbin/cpuinfo
-index 05f0053d1a..87b2bc8219 100755
+index 8c0527f84..6adabeafc 100755
 --- a/package/lean/autocore/files/sbin/cpuinfo
 +++ b/package/lean/autocore/files/sbin/cpuinfo
-@@ -2,7 +2,7 @@
+@@ -1,5 +1,5 @@
+ #!/bin/sh
  
- info()
- {
--	MHz=`grep 'MHz' /proc/cpuinfo | cut -c11- |sed -n '1p'`
-+	MHz=`echo "$(cat /sys/devices/system/cpu/cpu[04]/cpufreq/cpuinfo_cur_freq)/1000" | bc`
- 	#获取CPU工作频率
- 
- 	sensors 2>/dev/null
-@@ -12,7 +12,7 @@ info()
- 		#获取CPU核心1温度
- 
- 	else
--		a=""
-+		a=`echo "scale=2; $(cat /sys/class/thermal/thermal_zone0/temp)/1000" | bc`°
- 	fi
- }
- 
+-MHz=`grep 'MHz' /proc/cpuinfo | cut -c11- |sed -n '1p'`
+-TEMP=`sensors 2>/dev/null | grep 'Core 0' | cut -c12-`
++MHz=`echo "$(cat /sys/devices/system/cpu/cpu[04]/cpufreq/cpuinfo_cur_freq)/1000" | bc`
++TEMP=`echo "scale=2; $(cat /sys/class/thermal/thermal_zone0/temp)/1000" | bc`°
+ echo "$MHz MHz $TEMP "
