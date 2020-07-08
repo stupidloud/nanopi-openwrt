@@ -48,6 +48,3 @@ CONFIG_PACKAGE_zstd=y
 CONFIG_PACKAGE_gcc=y
 CONFIG_PACKAGE_make=y
 CONFIG_PACKAGE_i2c-tools=y
-
-CONFIG_PACKAGE_luci-app-flowoffload=y
-# CONFIG_PACKAGE_luci-app-sfe is not set
