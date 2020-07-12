@@ -51,7 +51,7 @@ jobs:
           cd friendlywrt-h5
           #. ../remove_unused_config.sh
           cat ../app_config.seed >> configs/config_h5
-          echo 'CONFIG_KERNEL_CGROUPS=y' >> configs/config_h5
+          echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h5
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
