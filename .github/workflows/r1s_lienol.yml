@@ -49,9 +49,10 @@ jobs:
       - name: Mods
         run: |
           cd friendlywrt-h5
-          #. ../remove_unused_config.sh
+          . ../remove_unused_config.sh
           cat ../app_config.seed >> configs/config_h5
-          echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h5
+          #echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h5
+          sed -i '/docker/Id;/containerd/Id;/runc/Id;/iptparser/Id' configs/config_h5 #fix compile error
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
@@ -62,8 +63,8 @@ jobs:
           rm target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
           sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
           git checkout upstream/dev-19.07 -- feeds.conf.default
-          #sed -i '/ucl upx/d' tools/Makefile
-          #sudo apt -y install upx-ucl && mkdir -p staging_dir/host/bin && ln -s /usr/bin/upx-ucl staging_dir/host/bin/upx
+          sed -i '/ucl upx/d' tools/Makefile
+          sudo apt -y install upx-ucl && mkdir -p staging_dir/host/bin && ln -s /usr/bin/upx-ucl staging_dir/host/bin/upx
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/default-settings/files/zzz-default-settings
           sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
