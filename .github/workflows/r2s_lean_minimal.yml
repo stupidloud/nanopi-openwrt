@@ -134,8 +134,8 @@ jobs:
           git commit -m 'reset'
           git checkout origin/master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
-          #rm -rf package/kernel/mt76/Makefile package/network/services/hostapd package/kernel/mac80211
-          #git checkout 0a395d6fd6c38c554709197ae3cd6315f143cd7a -- package/kernel/mt76/Makefile package/network/services/hostapd package/kernel/mac80211
+          rm -rf package/kernel/mt76/Makefile package/network/services/hostapd package/kernel/mac80211
+          git checkout d1f2153ca49b5e071c9c29de85bd321b7ce04f95 -- package/kernel/mt76/Makefile package/network/services/hostapd package/kernel/mac80211
           rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
           sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
           git checkout upstream/master -- feeds.conf.default
