@@ -1,4 +1,4 @@
-name: r1s Lean版openwrt 
+name: r1s Lean版openwrt
 
 on:
   push:
@@ -130,7 +130,7 @@ jobs:
           sed -i '130,150 {/build_friendlywrt/d}' scripts/build.sh
           ./build.sh nanopi_r1s.mk
 
-        - name: Zip Files
+      - name: Zip Files
         run: |
           find friendlywrt-h5/out/ -name "FriendlyWrt_*img*" | xargs -i zip -r {}.zip {}
           
