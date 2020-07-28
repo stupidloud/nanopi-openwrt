@@ -1,4 +1,4 @@
-name: r1s Lean版openwrt2
+name: r1s Lean版openwrt 
 
 on:
   push:
@@ -8,6 +8,9 @@ on:
       - '.github/workflows/r1s_lean.yml'
   schedule:
     - cron: '10 10 */3 * *'
+
+  watch:
+    types: [started]   
 
 jobs:
 
@@ -129,7 +132,6 @@ jobs:
           cd friendlywrt-h5
           sed -i '130,150 {/build_friendlywrt/d}' scripts/build.sh
           ./build.sh nanopi_r1s.mk
-
       - name: Zip Files
         run: |
           find friendlywrt-h5/out/ -name "FriendlyWrt_*img*" | xargs -i zip -r {}.zip {}
