@@ -143,7 +143,7 @@ jobs:
       - name: Zip Files
         run: |
           find friendlywrt-h5/out/ -name "FriendlyWrt_*img*" | xargs -i zip -r {}.zip {}
-          
+     
       - name: Assemble Artifact
         run: |
           rm -rf ./artifact/
@@ -156,3 +156,5 @@ jobs:
         with:
           name: FriendlyWrt_NanoPi-R1S H5 klever1988
           path: ./artifact/
+        
+          
