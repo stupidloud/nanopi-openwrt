@@ -150,7 +150,6 @@ jobs:
           mkdir -p ./artifact/
           find friendlywrt-h5/out/ -name "FriendlyWrt_*img.zip*" | xargs -i mv -f {} ./artifact/
           cp friendlywrt-h5/friendlywrt/.config ./artifact/
-          cp friendlywrt-h5/friendlywrt/bin/targets/allwinner-h5/generic/config.seed ./artifact/
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
