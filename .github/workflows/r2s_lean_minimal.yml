@@ -127,9 +127,9 @@ jobs:
           ' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-          git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
-          git checkout upstream/master -b tmp
-          git checkout 33f7cb735300bd9a099995236ed768c8925fec75 -- target/linux/sunxi/image/
+          git remote add upstream https://github.com/coolsnowwolf/openwrt && git fetch upstream
+          git checkout upstream/lede-17.01 -b tmp
+          #git checkout 33f7cb735300bd9a099995236ed768c8925fec75 -- target/linux/sunxi/image/
           git rm README.md
           git commit -m 'reset'
           git checkout origin/master-v19.07.1
