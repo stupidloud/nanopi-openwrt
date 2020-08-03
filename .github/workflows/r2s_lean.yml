@@ -62,7 +62,7 @@ jobs:
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/openwrt && git fetch upstream
           git checkout upstream/lede-17.01 -b tmp
-          git checkout 33f7cb735300bd9a099995236ed768c8925fec75 -- target/linux/sunxi/image/
+          #git checkout 33f7cb735300bd9a099995236ed768c8925fec75 -- target/linux/sunxi/image/
           git rm README.md
           git commit -m 'reset'
           git checkout origin/master-v19.07.1
@@ -73,7 +73,7 @@ jobs:
           #git revert --no-edit 4787dbaf3cad44b374b660cc0fef9386963e6795
           #git revert --no-edit 463b6ac0508de4788a6e41335471ced0a255e1cd
           #git revert --no-edit 8faac30089ce616940b3e96c4f4d900aeb6b9fcb
-          rm target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
+          rm -f target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
           sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
           git checkout upstream/lede-17.01 -- feeds.conf.default
           sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
