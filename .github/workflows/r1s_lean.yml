@@ -52,18 +52,18 @@ jobs:
           . ../remove_unused_config.sh
           cat ../app_config.seed >> configs/config_h5
           echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h5
-          sed -i '/docker/Id;/containerd/Id;/runc/Id;/iptparser/Id' configs/config_h5 #fix compile error
+          sed -i '/STAMP_BUILT/d' friendlywrt/feeds/packages/utils/runc/Makefile friendlywrt/feeds/packages/utils/containerd/Makefile #fix compile error
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-          git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
+          git remote add upstream https://github.com/coolsnowwolf/openwrt && git fetch upstream
           git checkout upstream/master -b tmp
-          git checkout 33f7cb735300bd9a099995236ed768c8925fec75 -- target/linux/sunxi/image/
+          #git checkout 33f7cb735300bd9a099995236ed768c8925fec75 -- target/linux/sunxi/image/
           git rm README.md
           git commit -m 'reset'
           git checkout origin/master
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto tmp -X theirs
-          rm target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
-          git checkout upstream/master -- feeds.conf.default
+          rm -f target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
+          git checkout upstream/lede-17.01 -- feeds.conf.default
           sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
           cd package/lean/
           #git clone https://github.com/jerrykuku/lua-maxminddb.git
