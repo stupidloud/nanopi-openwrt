@@ -54,7 +54,6 @@ jobs:
           . ../remove_unused_config.sh
           cat ../app_config.seed >> configs/config_h3
           echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h3
-          sed -i '/STAMP_BUILT/d' friendlywrt/feeds/packages/utils/runc/Makefile friendlywrt/feeds/packages/utils/containerd/Makefile #fix compile error
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/openwrt && git fetch upstream
@@ -97,6 +96,7 @@ jobs:
           cp configs/config_h3 friendlywrt/.config
           cd friendlywrt
           ./scripts/feeds update -a && ./scripts/feeds install -a
+          sed -i '/STAMP_BUILT/d' friendlywrt/feeds/packages/utils/runc/Makefile friendlywrt/feeds/packages/utils/containerd/Makefile #fix compile error
           make defconfig && make download -j8
           make -s -j$(nproc) || make V=s -j1
 
