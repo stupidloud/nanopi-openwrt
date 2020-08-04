@@ -96,7 +96,7 @@ jobs:
           cp configs/config_h3 friendlywrt/.config
           cd friendlywrt
           ./scripts/feeds update -a && ./scripts/feeds install -a
-          sed -i '/STAMP_BUILT/d' friendlywrt/feeds/packages/utils/runc/Makefile friendlywrt/feeds/packages/utils/containerd/Makefile #fix compile error
+          sed -i '/STAMP_BUILT/d' feeds/packages/utils/runc/Makefile feeds/packages/utils/containerd/Makefile #fix compile error
           make defconfig && make download -j8
           make -s -j$(nproc) || make V=s -j1
 
