@@ -2,6 +2,10 @@
 # 更新日志
 ###### （如果没有特别说明，更新内容就是上游Lean和Lienol两位大佬的代码更新）
 
+## 2020-08-05
+
+- R2S加入了 https://github.com/NateLol/luci-app-oled 支持oled状态显示 ![oled](https://github.com/klever1988/nanopi-openwrt/raw/master/assets/oled.jpg)
+
 ## 2020-08-04
 
 - 改用Lean大的稳定分支版本 https://github.com/coolsnowwolf/openwrt 进行编译，修复了usb无线网卡的死机问题
