@@ -143,7 +143,7 @@ jobs:
           rm -f target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
           sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
           git checkout upstream/lede-17.01 -- feeds.conf.default
-          sed -i 's/packages;openwrt-19.07/packages/' feeds.conf.default
+          sed -i 's/coolsnowwolf\/packages/klever1988\/packages/' feeds.conf.default
           sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
           cd package/lean/
           git clone https://github.com/NateLol/luci-app-oled
