@@ -5,6 +5,7 @@
 ## 2020-08-05
 
 - R2S加入了 https://github.com/NateLol/luci-app-oled 支持oled状态显示
+
 ![oled](https://github.com/klever1988/nanopi-openwrt/raw/master/assets/oled.jpg)
 
 ## 2020-08-04
