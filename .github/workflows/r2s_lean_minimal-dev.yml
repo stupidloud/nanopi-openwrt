@@ -131,7 +131,6 @@ jobs:
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
           git checkout upstream/master -b tmp
-          git reset --hard aed7fc6131c5bf4ed39ff5194a144ba00057f828
           rm -r target/linux/sunxi/image
           git checkout 33f7cb735300bd9a099995236ed768c8925fec75 -- target/linux/sunxi/image/
           git rm README.md
