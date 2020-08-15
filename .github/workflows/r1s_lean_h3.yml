@@ -125,7 +125,7 @@ jobs:
           sed -i '130,150 {/build_friendlywrt/d}' scripts/build.sh
           echo -e '\nCONFIG_TCP_CONG_ADVANCED=y' >> kernel/arch/arm/configs/sunxi_defconfig
           echo -e '\nCONFIG_TCP_CONG_BBR=m' >> kernel/arch/arm/configs/sunxi_defconfig
-          ./build.sh nanopi_r1s_h3.mk	
+          ./build.sh nanopi_r1s_h3.mk
 
       - name: Zip Files
         run: |
