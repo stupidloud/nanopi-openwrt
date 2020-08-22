@@ -201,6 +201,7 @@ jobs:
           cd friendlywrt-rk3328
           sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
           ./build.sh nanopi_r2s.mk
+          sudo bash fix_ownership.sh
 
       - name: Zip Files
         run: |
@@ -216,7 +217,6 @@ jobs:
           md5sum *img* > md5sum.txt
           cd ..
           zip -r artifact.zip ./artifact/
-          #release_tag="R2S-Lean-$(date +%Y-%m-%d)-Minimal"
           release_tag="R2S-Minimal-$(date +%Y-%m-%d)"
           echo "##[set-output name=release_tag;]$release_tag"
       - name: Create Release

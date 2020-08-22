@@ -122,6 +122,7 @@ jobs:
           cd friendlywrt-h5
           sed -i '130,150 {/build_friendlywrt/d}' scripts/build.sh
           ./build.sh nanopi_r1s.mk
+          sudo bash fix_ownership.sh
 
       - name: Zip Files
         run: |

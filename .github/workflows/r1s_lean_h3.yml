@@ -126,6 +126,7 @@ jobs:
           echo -e '\nCONFIG_TCP_CONG_ADVANCED=y' >> kernel/arch/arm/configs/sunxi_defconfig
           echo -e '\nCONFIG_TCP_CONG_BBR=m' >> kernel/arch/arm/configs/sunxi_defconfig
           ./build.sh nanopi_r1s_h3.mk
+          sudo bash fix_ownership.sh
 
       - name: Zip Files
         run: |
