@@ -202,7 +202,7 @@ jobs:
           cd friendlywrt-rk3328
           sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
           ./build.sh nanopi_r2s.mk
-          sudo bash fix_ownership.sh
+          cd .. && sudo bash fix_ownership.sh
 
       - name: Zip Files
         run: |
