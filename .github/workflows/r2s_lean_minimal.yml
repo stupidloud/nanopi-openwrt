@@ -126,7 +126,8 @@ jobs:
           CONFIG_PACKAGE_luci-app-oled=y
           CONFIG_PACKAGE_luci-app-flowoffload=y
           # CONFIG_PACKAGE_luci-app-sfe is not set
-          CONFIG_PACKAGE_DROPBEAR_ECC_FULL=y
+          CONFIG_DROPBEAR_ECC=y
+          CONFIG_DROPBEAR_ECC_FULL=y
           ' >> configs/config_rk3328
           cd friendlywrt
           git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
