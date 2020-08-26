@@ -66,6 +66,7 @@ jobs:
           git checkout upstream/lede-17.01 -- feeds.conf.default
           sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
           cd package/lean/
+          git clone https://github.com/rufengsuixing/luci-app-adguardhome
           #git clone https://github.com/jerrykuku/lua-maxminddb.git
           #git clone https://github.com/jerrykuku/luci-app-vssr.git
           #cd luci-app-vssr/root/etc/

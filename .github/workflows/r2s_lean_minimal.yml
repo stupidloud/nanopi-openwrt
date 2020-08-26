@@ -124,6 +124,7 @@ jobs:
           # CONFIG_PACKAGE_libopenssl-devcrypto is not set
           # CONFIG_V2RAY_COMPRESS_UPX is not set
           CONFIG_PACKAGE_luci-app-oled=y
+          CONFIG_PACKAGE_luci-app-adguardhome=y
           CONFIG_PACKAGE_luci-app-flowoffload=y
           # CONFIG_PACKAGE_luci-app-sfe is not set
           CONFIG_DROPBEAR_ECC=y
@@ -147,6 +148,7 @@ jobs:
           sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
           cd package/lean/
           git clone https://github.com/NateLol/luci-app-oled
+          git clone https://github.com/rufengsuixing/luci-app-adguardhome
           #git clone https://github.com/jerrykuku/lua-maxminddb.git
           #git clone https://github.com/jerrykuku/luci-app-vssr.git
           #cd luci-app-vssr/root/etc/
