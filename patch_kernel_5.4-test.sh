@@ -5,7 +5,7 @@ wget https://raw.githubusercontent.com/QiuSimons/R2S-OpenWrt/master/PATCH/new/ma
 git apply 999-unlock-1608mhz-rk3328.patch
 cd ../
 git clone https://github.com/coolsnowwolf/lede && cd lede/
-git checkout 707e6ed1a19db0a12f553cafbd5851d3591420af
+git checkout 12d0742fd52a6fd32ffd1bd0cf58e33eb416416f
 cp -a ./target/linux/generic/files/* ../kernel/
 ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
 ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
