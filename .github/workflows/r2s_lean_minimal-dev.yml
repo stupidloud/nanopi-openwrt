@@ -1,11 +1,10 @@
-name: r2s Lean版openwrt minimal 
+name: r2s Lean版openwrt minimal
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
     paths:
-      - '.github/workflows/r2s_lean_minimal.yml'
+      - '.github/workflows/r2s_lean_minimal-dev.yml'
   schedule:
     - cron: '10 08 * * *'
 
@@ -32,7 +31,7 @@ jobs:
         run: . 2_clone_rouce.sh
 
       - name: Patch Kernel
-        run: . patch_kernel_5.4.sh
+        run: . patch_kernel_5.4-test.sh
 
       - name: Mods
         run: |
@@ -42,24 +41,20 @@ jobs:
           cat ../base_rk3328.seed > configs/config_rk3328
           cat ../minimal_config.seed >> configs/config_rk3328
           cd friendlywrt
-          git remote add upstream https://github.com/coolsnowwolf/openwrt && git fetch upstream
-          git checkout upstream/lede-17.01 -b tmp
+          git remote add upstream https://github.com/project-openwrt/openwrt && git fetch upstream
+          git checkout upstream/openwrt-19.07 -b tmp
           git mv README.md README
           git commit -m 'reset'
           git checkout master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
-          rm -f target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
+          rm -f target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
           sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
-          git checkout upstream/lede-17.01 -- feeds.conf.default
-          sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
-          cd package/lean/
-          git clone https://github.com/NateLol/luci-app-oled
-          git clone https://github.com/rufengsuixing/luci-app-adguardhome
-          rm -rf luci-theme-argon
-          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
+          git checkout upstream/openwrt-19.07 -- feeds.conf.default
+          cd package/ctcgfw/
+          rm -rf luci-app-oled/ && git clone https://github.com/NateLol/luci-app-oled
           cd ../../
-          git apply ../../enable_autocore.diff
-          sed -i 's/@LINUX_5_4//' package/lean/luci-app-flowoffload/Makefile
+          git apply ../../enable_autocore_ctcgfw.diff
+          #sed -i 's/@LINUX_5_4//' package/lean/luci-app-flowoffload/Makefile
           sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' package/lean/default-settings/files/zzz-default-settings
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
           sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
@@ -69,11 +64,12 @@ jobs:
           mv ../../scripts/autoupdate.sh package/base-files/files/root/au.sh && chmod +x package/base-files/files/root/au.sh
           echo -e '\nDYC Build\n' >> package/base-files/files/etc/banner
 
-      - name: Add OpenClash
-        run: . add_openclash.sh
-
-      - name: Add Passwall
-        run: . add_passwall.sh
+      - name: Add OpenClash Core
+        run: |
+          cd friendlywrt-rk3328/friendlywrt/package/base-files/files
+          mkdir -p etc/openclash/core && cd etc/openclash/core
+          curl -L https://github.com/vernesong/OpenClash/releases/download/Clash/clash-linux-armv8.tar.gz | tar zxf -
+          chmod +x clash
 
       - name: Build FriendlyWrt
         run: |
@@ -86,7 +82,7 @@ jobs:
         id: assemble_artifact
         run: |
           . x_assemble_artifact.sh
-          release_tag="R2S-Minimal-$(date +%Y-%m-%d)"
+          release_tag="R2S-Minimal-$(date +%Y-%m-%d)-dev"
           echo "##[set-output name=release_tag;]$release_tag"
       - name: Create Release
         id: create_release
@@ -95,7 +91,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.sec_token }}
         with:
           tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}
-          release_name: 自动发布 ${{ steps.assemble_artifact.outputs.release_tag }}
+          release_name: 仅测试勿使用 ${{ steps.assemble_artifact.outputs.release_tag }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
