@@ -4,8 +4,8 @@ git apply ../../add_fullconenat.diff
 wget https://raw.githubusercontent.com/QiuSimons/R2S-OpenWrt/master/PATCH/new/main/999-unlock-1608mhz-rk3328.patch
 git apply 999-unlock-1608mhz-rk3328.patch
 cd ../
-git clone https://github.com/coolsnowwolf/lede && cd lede/
-git checkout 12d0742fd52a6fd32ffd1bd0cf58e33eb416416f
+git clone -b openwrt-18.06-k5.4 --single-branch https://github.com/project-openwrt/openwrt && cd openwrt/
+git checkout 20c62b15584e5c902d51abdcec6e056584daa926
 cp -a ./target/linux/generic/files/* ../kernel/
 ./scripts/patch-kernel.sh ../kernel target/linux/generic/backport-5.4
 ./scripts/patch-kernel.sh ../kernel target/linux/generic/pending-5.4
