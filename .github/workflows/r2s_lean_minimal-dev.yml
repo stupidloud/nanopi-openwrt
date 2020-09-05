@@ -38,8 +38,9 @@ jobs:
           cd friendlywrt-rk3328
           . ../remove_unused_config.sh
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
+          cat ../minimal_config.seed >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
-          cat ../minimal_config.seed >> configs/config_rk3328
+          
           cd friendlywrt
           git remote add upstream https://github.com/project-openwrt/openwrt && git fetch upstream
           git checkout upstream/openwrt-19.07 -b tmp
@@ -54,7 +55,6 @@ jobs:
           rm -rf luci-app-oled/ && git clone https://github.com/NateLol/luci-app-oled
           cd ../../
           git apply ../../enable_autocore_ctcgfw.diff
-          #sed -i 's/@LINUX_5_4//' package/lean/luci-app-flowoffload/Makefile
           sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' package/lean/default-settings/files/zzz-default-settings
           sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
           sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings

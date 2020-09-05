@@ -2,8 +2,7 @@ name: r2s Lean版openwrt minimal
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
     paths:
       - '.github/workflows/r2s_lean_minimal.yml'
   schedule:
@@ -39,8 +38,9 @@ jobs:
           cd friendlywrt-rk3328
           . ../remove_unused_config.sh
           cat configs/config_rk3328 | grep "TARGET" >> ../base_rk3328.seed
+          cat ../minimal_config.seed >> ../base_rk3328.seed
           cat ../base_rk3328.seed > configs/config_rk3328
-          cat ../minimal_config.seed >> configs/config_rk3328
+
           cd friendlywrt
           git remote add upstream https://github.com/coolsnowwolf/openwrt && git fetch upstream
           git checkout upstream/lede-17.01 -b tmp
@@ -53,10 +53,8 @@ jobs:
           git checkout upstream/lede-17.01 -- feeds.conf.default
           sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
           cd package/lean/
-          git clone https://github.com/NateLol/luci-app-oled
-          git clone https://github.com/rufengsuixing/luci-app-adguardhome
           rm -rf luci-theme-argon
-          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
+          . ../../../../3_prepare_packages.sh
           cd ../../
           git apply ../../enable_autocore.diff
           sed -i 's/@LINUX_5_4//' package/lean/luci-app-flowoffload/Makefile
