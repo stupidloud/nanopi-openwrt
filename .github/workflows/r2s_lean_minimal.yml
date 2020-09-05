@@ -28,7 +28,7 @@ jobs:
         run: . 1_initialization_environment.sh
 
       - name: Clone Source
-        run: . 2_clone_rouce.sh
+        run: . 2_clone_rouce.sh master-v19.07.1 rk3328
 
       - name: Patch Kernel
         run: . patch_kernel_5.4.sh
@@ -44,14 +44,12 @@ jobs:
           cd friendlywrt
           git remote add upstream https://github.com/coolsnowwolf/openwrt && git fetch upstream
           git checkout upstream/lede-17.01 -b tmp
-          git mv README.md README
+          git rm README.md
           git commit -m 'reset'
           git checkout master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
           rm -f target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
-          sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
-          git checkout upstream/lede-17.01 -- feeds.conf.default
-          sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
+          git checkout upstream/lede-17.01 -- feeds.conf.default && sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
           cd package/lean/
           rm -rf luci-theme-argon
           . ../../../../3_prepare_packages.sh
@@ -74,11 +72,7 @@ jobs:
         run: . add_passwall.sh
 
       - name: Build FriendlyWrt
-        run: |
-          cd friendlywrt-rk3328
-          sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
-          ./build.sh nanopi_r2s.mk
-          cd .. && sudo bash fix_ownership.sh
+        run: . 4_build_image.sh friendlywrt-rk3328 nanopi_r2s.mk
 
       - name: Assemble Artifact
         id: assemble_artifact

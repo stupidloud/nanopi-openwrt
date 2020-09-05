@@ -28,7 +28,7 @@ jobs:
         run: . 1_initialization_environment.sh
 
       - name: Clone Source
-        run: . 2_clone_rouce.sh
+        run: . 2_clone_rouce.sh master-v19.07.1 rk3328
 
       - name: Patch Kernel
         run: . patch_kernel_5.4-test.sh
@@ -49,7 +49,6 @@ jobs:
           git checkout master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
           rm -f target/linux/rockchip-rk3328/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch
-          sed -i '/ipv6/,+3d' package/base-files/files/root/setup.sh
           git checkout upstream/openwrt-19.07 -- feeds.conf.default
           cd package/ctcgfw/
           rm -rf luci-app-oled/ && git clone https://github.com/NateLol/luci-app-oled
@@ -72,11 +71,7 @@ jobs:
           chmod +x clash
 
       - name: Build FriendlyWrt
-        run: |
-          cd friendlywrt-rk3328
-          sed -i 's/set -eu/set -u/' scripts/mk-friendlywrt.sh
-          ./build.sh nanopi_r2s.mk
-          cd .. && sudo bash fix_ownership.sh
+        run: . 4_build_image.sh friendlywrt-rk3328 nanopi_r2s.mk
 
       - name: Assemble Artifact
         id: assemble_artifact
