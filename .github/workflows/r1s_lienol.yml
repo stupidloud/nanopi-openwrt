@@ -48,12 +48,10 @@ jobs:
 
       - name: Mods
         run: |
-        git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
+          git config --global user.email "action@github.com" && git config --global user.name "GitHub Action"
           cd friendlywrt-h5
           . ../remove_unused_config.sh
           cat ../app_config.seed >> configs/config_h5
-          #echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h5
-          sed -i '/docker/Id;/containerd/Id;/runc/Id;/iptparser/Id' configs/config_h5 #fix compile error
           cd friendlywrt
           git remote add upstream https://github.com/Lienol/openwrt && git fetch upstream
           git checkout upstream/dev-19.07 -b tmp
