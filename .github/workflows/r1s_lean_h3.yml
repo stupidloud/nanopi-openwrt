@@ -64,9 +64,6 @@ jobs:
       - name: Build FriendlyWrt
         run: . 4_build_image.sh friendlywrt-h3 nanopi_r1s_h3.mk
 
-      - name: Zip Files
-        run: |
-          gzip friendlywrt-h3/out/*.img
       - name: Assemble Artifact
         id: assemble_artifact
         run: |
