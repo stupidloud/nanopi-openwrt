@@ -33,6 +33,7 @@ CONFIG_PACKAGE_luci-app-vssr=y
 CONFIG_PACKAGE_luci-theme-argon=y
 CONFIG_PACKAGE_luci-theme-material=y
 CONFIG_PACKAGE_luci-theme-netgear=y
+CONFIG_PACKAGE_luci-theme-infinityfreedom=y
 CONFIG_PACKAGE_luci-app-unblockmusic=y
 CONFIG_PACKAGE_kmod-rtl8xxxu=y
 CONFIG_UnblockNeteaseMusic_Go=y
