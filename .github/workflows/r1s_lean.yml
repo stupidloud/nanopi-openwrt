@@ -34,7 +34,7 @@ jobs:
         run: |
           cd friendlywrt-h5
           . ../remove_unused_config.sh
-          cat ../app_config.seed >> configs/config_h5
+          cat ../app1_config.seed >> configs/config_h5
           echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h5
           cd friendlywrt
           git remote add upstream https://github.com/coolsnowwolf/openwrt && git fetch upstream
@@ -59,8 +59,8 @@ jobs:
           sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
           echo -e '\nDYC Build\n' >> package/base-files/files/etc/banner
           
-      - name: SSH connection to Actions
-        uses: P3TERX/debugger-action@master
+      # - name: SSH connection to Actions
+      #   uses: P3TERX/debugger-action@master
 
       - name: Build FriendlyWrt
         run: . 4_build_image.sh friendlywrt-h5 nanopi_r1s.mk
