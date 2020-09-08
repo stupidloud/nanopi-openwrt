@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - '.github/workflows/r1s_lean.yml'
+      - '.github/workflows/r1s_lean-1.yml'
 
   schedule:
     - cron: '10 03 */3 * *'
