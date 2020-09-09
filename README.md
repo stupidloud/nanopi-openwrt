@@ -34,6 +34,14 @@ wget -qO- https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoup
 ```
 (脚本由gary lau提供，非常感谢！)
 
+### R2S离线升级方法:
+(注意:目前仅支持R2S，仅能升级到minimal版本固件，如果你使用的是Lienol版也不要用此方法升级)
+把下载好的 release固件 上传到R2S（系统 -> 文件传输 -> 上传）
+把下载好的scripts目录下的 autoupdate-offline.sh 上传到R2S（系统 -> 文件传输 -> 上传）
+然后脚本执行
+```bash
+sh /tmp/upload/autoupdate-offline.sh
+```
 #### 本固件(minimal版本)NAT基准性能测试：
 
 <img src="https://github.com/klever1988/nanopi-openwrt/raw/master/assets/NAT.jpg" width="600" /><img src="https://raw.githubusercontent.com/klever1988/nanopi-openwrt/master/assets/Acc.jpg" width="250" />
