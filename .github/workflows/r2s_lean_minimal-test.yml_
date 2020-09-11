@@ -29,7 +29,7 @@ jobs:
         run: . 1_initialization_environment.sh
 
       - name: Clone Source
-        run: . 2_clone_rouce.sh
+        run: . 2_clone_source.sh
 
       - name: Patch Kernel
         run: . patch_kernel_5.4-test.sh
