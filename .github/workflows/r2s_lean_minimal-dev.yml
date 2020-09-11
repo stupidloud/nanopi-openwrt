@@ -28,7 +28,7 @@ jobs:
         run: . 1_initialization_environment.sh
 
       - name: Clone Source
-        run: . 2_clone_rouce.sh master-v19.07.1 rk3328
+        run: . 2_clone_source.sh master-v19.07.1 rk3328
 
       - name: Patch Kernel
         run: . patch_kernel_5.4-test.sh
