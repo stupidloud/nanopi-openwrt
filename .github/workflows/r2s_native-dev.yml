@@ -30,7 +30,7 @@ jobs:
       - name: Clone Source
         run: |
           git clone https://github.com/project-openwrt/openwrt --depth=1 -b openwrt-18.06-k5.4
-          git clone https://github.com/openwrt/openwrt --depth=1 oopenwrt
+          #git clone https://github.com/openwrt/openwrt --depth=1 oopenwrt
           #cd oopenwrt && echo 'package/boot/arm-trusted-firmware-rockchip
           #package/boot/uboot-rockchip
           #target/linux/rockchip
@@ -42,6 +42,7 @@ jobs:
           echo 'CONFIG_TARGET_rockchip=y
           CONFIG_TARGET_rockchip_armv8=y
           CONFIG_TARGET_rockchip_armv8_DEVICE_friendlyarm_nanopi-r2s=y' > .config
+          cat ../minimal_config.seed >> .config
 
       - name: Compile
         run: |
@@ -49,13 +50,13 @@ jobs:
           ./scripts/feeds update -a && ./scripts/feeds install -a
           make defconfig
           make download -j8
-          make -j$(($(nproc) + 1)) -s          
+          make -j$(($(nproc) + 1)) -s
 
       - name: Assemble Artifact
         id: assemble_artifact
         run: |
           #gzip openwrt/bin/targets/*/*/*img*
-          mv openwrt/bin/targets/*/*/*img.gz ./artifact.img.gz
+          mv openwrt/bin/targets/*/*/*squashfs*img.gz ./artifact.img.gz
           release_tag="R2S-native-$(date +%Y-%m-%d)-dev"
           echo "##[set-output name=release_tag;]$release_tag"
       - name: Create Release
