@@ -69,11 +69,13 @@ CONFIG_PACKAGE_luci-theme-infinityfreedom=y
 CONFIG_PACKAGE_luci-app-flowoffload=y
 # CONFIG_PACKAGE_luci-app-sfe is not set
 
+CONFIG_PACKAGE_luci-app-passwall=y
 CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
 # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks is not set
 CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
 CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs=y
 CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ChinaDNS_NG=y
 CONFIG_PACKAGE_luci-app-ssr-libev-server=y
 CONFIG_PACKAGE_luci-theme-argon-dark-mod=y
 CONFIG_PACKAGE_luci-theme-argon-light-mod=y
@@ -88,8 +90,6 @@ CONFIG_PACKAGE_autocore=y
 CONFIG_PACKAGE_zram-swap=y
 CONFIG_PACKAGE_usbutils=y
 CONFIG_PACKAGE_mount-utils=y
-CONFIG_PACKAGE_findutils-find=y
-CONFIG_PACKAGE_findutils-locate=y
 CONFIG_PACKAGE_luci-app-smartdns=y
 CONFIG_PACKAGE_luci-app-wireguard=y
 CONFIG_PACKAGE_luci-app-oaf=y
