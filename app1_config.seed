@@ -19,6 +19,7 @@ CONFIG_PACKAGE_collectd=y
 CONFIG_PACKAGE_curl=y
 CONFIG_PACKAGE_htop=y
 # CONFIG_PACKAGE_appfilter is not set
+# CONFIG_PACKAGE_kmod-oaf is not set
 CONFIG_PACKAGE_kmod-mac80211=y
 CONFIG_PACKAGE_lrzsz=y
 CONFIG_PACKAGE_nano=y
