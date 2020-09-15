@@ -1,4 +1,4 @@
-if [[ `pwd` == *"r2s"* ]]; then
+if [[ `pwd` == *"rk3328"* ]]; then
   git clone https://github.com/NateLol/luci-app-oled
 fi
 git clone https://github.com/destan19/OpenAppFilter
