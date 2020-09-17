@@ -44,8 +44,9 @@ jobs:
           CONFIG_TARGET_rockchip_armv8_DEVICE_friendlyarm_nanopi-r2s=y' > .config
           cat ../base_rk3328.seed >> .config
           cat ../minimal_config.seed >> .config
+          echo -e 'CONFIG_PACKAGE_kmod-mt7601u\n' >> .config
           sed -i 's/option input\t\tREJECT/option input\t\tACCEPT/' package/network/config/firewall/files/firewall.config
-          echo -e '\nDYC Build\n' >> package/base-files/files/etc/banner
+          echo -e '\nDYC Build\n' >> package/base-files/files/etc/openwrt_banner
 
       - name: Compile
         run: |

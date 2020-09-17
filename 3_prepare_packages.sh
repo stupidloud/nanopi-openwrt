@@ -6,7 +6,7 @@ rm -rf luci-app-adguardhome/ && git clone https://github.com/rufengsuixing/luci-
 rm -rf luci-theme-argon/ && git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon
 rm -rf luci-theme-edge/ && git clone -b 18.06 https://github.com/garypang13/luci-theme-edge
 rm -rf luci-theme-infinityfreedom/ && git clone https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom
-rm -rf chinadns-ng/ && git clone https://github.com/pexcn/openwrt-chinadns-ng chinadns-ng
+rm -rf openwrt-chinadns-ng/ && git clone https://github.com/pexcn/openwrt-chinadns-ng
 rm -rf luci-app-chinadns-ng/ && git clone https://github.com/WuSiYu/luci-app-chinadns-ng
 
 #git clone https://github.com/jerrykuku/lua-maxminddb.git
