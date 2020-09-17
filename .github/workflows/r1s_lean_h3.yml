@@ -37,7 +37,6 @@ jobs:
           sed -i '/CONFIG_TARGET_DEVICE/d' configs/config_h3
           . ../remove_unused_config.sh
           cat ../app_config.seed >> configs/config_h3
-          echo '# CONFIG_V2RAY_COMPRESS_UPX is not set' >> configs/config_h3
           cd friendlywrt
           git remote add upstream https://github.com/coolsnowwolf/openwrt && git fetch upstream
           git checkout upstream/lede-17.01 -b tmp
@@ -47,19 +46,12 @@ jobs:
           git checkout master-v19.07.1
           git rebase adc1a9a3676b8d7be1b48b5aed185a94d8e42728^ --onto tmp -X theirs
           rm -f target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
-          git checkout upstream/lede-17.01 -- feeds.conf.default
-          sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
+          git checkout upstream/lede-17.01 -- feeds.conf.default && sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
           cd package/lean/
-          rm -rf luci-theme-argon
           . ../../../../3_prepare_packages.sh
           cd ../../
           git apply ../../enable_autocore.diff
-          sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' package/lean/default-settings/files/zzz-default-settings
-          sed -i '/exit/i\chown -R root:root /usr/share/netdata/web' package/lean/default-settings/files/zzz-default-settings
-          sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-settings/files/zzz-default-settings
-          sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
-          sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
-          echo -e '\nDYC Build\n' >> package/base-files/files/etc/banner
+          . ../../5_mods.sh
 
       - name: Build FriendlyWrt
         run: . 4_build_image.sh friendlywrt-h3 nanopi_r1s_h3.mk
