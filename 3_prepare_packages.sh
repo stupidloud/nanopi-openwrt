@@ -8,6 +8,8 @@ rm -rf luci-theme-edge/ && git clone -b 18.06 https://github.com/garypang13/luci
 rm -rf luci-theme-infinityfreedom/ && git clone https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom
 rm -rf openwrt-chinadns-ng/ && git clone https://github.com/pexcn/openwrt-chinadns-ng
 rm -rf luci-app-chinadns-ng/ && git clone https://github.com/WuSiYu/luci-app-chinadns-ng
+rm -rf luci-app-mentohust/ && git clone https://github.com/BoringCat/luci-app-mentohust
+rm -rf mentohust/ && git clone https://github.com/KyleRicardo/MentoHUST-OpenWrt-ipk
 
 #git clone https://github.com/jerrykuku/lua-maxminddb.git
 #git clone https://github.com/jerrykuku/luci-app-vssr.git
