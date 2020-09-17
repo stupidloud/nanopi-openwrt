@@ -44,6 +44,8 @@ jobs:
           CONFIG_TARGET_rockchip_armv8_DEVICE_friendlyarm_nanopi-r2s=y' > .config
           cat ../base_rk3328.seed >> .config
           cat ../minimal_config.seed >> .config
+          sed -i 's/option input\t\tREJECT/option input\t\tACCEPT/' package/network/config/firewall/files/firewall.config
+          echo -e '\nDYC Build\n' >> package/base-files/files/etc/banner
 
       - name: Compile
         run: |
@@ -57,7 +59,7 @@ jobs:
         id: assemble_artifact
         run: |
           #gzip openwrt/bin/targets/*/*/*img*
-          mv openwrt/bin/targets/*/*/*squashfs*img.gz ./artifact.img.gz
+          mv openwrt/bin/targets/*/*/*ext4*img.gz ./artifact.img.gz
           release_tag="R2S-native-$(date +%Y-%m-%d)-dev"
           echo "##[set-output name=release_tag;]$release_tag"
       - name: Create Release
