@@ -35,6 +35,7 @@ jobs:
           cd friendlywrt-h5
           . ../remove_unused_config.sh
           cat ../app_config.seed >> configs/config_h5
+          sed -i '/sqm-scriptss/d;/kmod-sched/d;' configs/config_h5
           cd friendlywrt
           git remote add upstream https://github.com/coolsnowwolf/openwrt && git fetch upstream
           git checkout upstream/lede-17.01 -b tmp
