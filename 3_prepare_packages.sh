@@ -3,7 +3,7 @@ if [[ `pwd` == *"rk3328"* ]]; then
 fi
 [ ! -d luci-app-adguardhome ] && git clone https://github.com/rufengsuixing/luci-app-adguardhome
 [ ! -d luci-app-mentohust ] && git clone https://github.com/BoringCat/luci-app-mentohust
-[ ! -d mentohust ] && git clone https://github.com/KyleRicardo/MentoHUST-OpenWrt-ipk
+[ ! -d mentohust ] && svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/mentohust
 rm -rf luci-theme-argon/ && git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon
 rm -rf luci-theme-edge/ && git clone -b 18.06 https://github.com/garypang13/luci-theme-edge
 rm -rf luci-theme-infinityfreedom/ && git clone https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom

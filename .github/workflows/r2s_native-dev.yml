@@ -41,7 +41,8 @@ jobs:
           cd openwrt
           echo 'CONFIG_TARGET_rockchip=y
           CONFIG_TARGET_rockchip_armv8=y
-          CONFIG_TARGET_rockchip_armv8_DEVICE_friendlyarm_nanopi-r2s=y' > .config
+          CONFIG_TARGET_rockchip_armv8_DEVICE_friendlyarm_nanopi-r2s=y
+          CONFIG_PACKAGE_kmod-rtl8821cu=y' > .config
           cat ../base_rk3328.seed >> .config
           cat ../minimal_config.seed >> .config
           echo -e 'CONFIG_PACKAGE_kmod-mt7601u=y\n' >> .config
