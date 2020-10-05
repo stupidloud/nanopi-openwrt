@@ -4,4 +4,5 @@ sed -i '/exit/i\find /etc/rc.d/ -name *docker* -delete' package/lean/default-set
 sed -i 's/option fullcone\t1/option fullcone\t0/' package/network/config/firewall/files/firewall.config
 sed -i '/find.*wlan.*wc/a\WIFI_NUM=0' package/base-files/files/root/setup.sh
 sed -i '/8.8.8.8/d' package/base-files/files/root/setup.sh
+echo 'wireguard' > base-files/etc/modules.d/10_wireguard
 echo -e '\nDYC Build\n' >> package/base-files/files/etc/banner
