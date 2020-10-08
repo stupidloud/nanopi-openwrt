@@ -1,3 +1,6 @@
+sudo apt install -y hwinfo
+sudo hwinfo --short
+
 git config --global user.email "action@github.com" && git config --global user.name "GitHub Action"
 sudo rm -rf /etc/apt/sources.list.d
 sudo apt-get update
