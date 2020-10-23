@@ -10,7 +10,6 @@ on:
       
   watch:
     types: [started]
-      
 
 jobs:
 
@@ -50,8 +49,14 @@ jobs:
           git rebase 90bb1cf9c33e73de5019686b8bd495f689e675a4^ --onto tmp -X theirs
           rm -f target/linux/allwinner-h5/patches-4.14/0001-net-thunderx-workaround-BGX-TX-Underflow-issue.patch target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
           git checkout upstream/lede-17.01 -- feeds.conf.default && sed -i -E 's/#(src-git.+)(helloworld.+)/\1\2/' feeds.conf.default
+<<<<<<< HEAD
           curl 'https://git.openwrt.org/?p=openwrt/openwrt.git;a=patch;h=22378beb581b113def1dc392ef75306a2168a163' | git apply --reject - || true
           . ../../3_prepare_packages.sh
+=======
+          cd package/lean/
+          . ../../../../3_prepare_packages.sh
+          cd ../../
+>>>>>>> b816f6feb422b3949ac910c892789c1b665cf3bd
           git apply ../../enable_autocore.diff
           . ../../5_mods.sh
 
