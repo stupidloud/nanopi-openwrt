@@ -479,4 +479,31 @@ CONFIG_VERSION_REPO="http://downloads.openwrt.org/releases/18.06.1"
 CONFIG_VERSION_SUPPORT_URL=""
 CONFIG_WPA_MSG_MIN_PRIORITY=3
 
+# CONFIG_PACKAGE_mt76-test is not set
+# CONFIG_PACKAGE_mt7601u-firmware is not set
+# CONFIG_PACKAGE_mt7622bt-firmware is not set
+CONFIG_PACKAGE_kmod-mt76=y
+CONFIG_PACKAGE_kmod-mt76-core=y
+CONFIG_PACKAGE_kmod-mt76-usb=y
+# CONFIG_PACKAGE_kmod-mt7601u is not set
+CONFIG_PACKAGE_kmod-mt7603=y
+CONFIG_PACKAGE_kmod-mt7615-common=y
+# CONFIG_PACKAGE_kmod-mt7615-firmware is not set
+# CONFIG_PACKAGE_kmod-mt7615e is not set
+# CONFIG_PACKAGE_kmod-mt7663-firmware-ap is not set
+# CONFIG_PACKAGE_kmod-mt7663-firmware-sta is not set
+CONFIG_PACKAGE_kmod-mt7663-usb-sdio=y
+# CONFIG_PACKAGE_kmod-mt7663s is not set
+CONFIG_PACKAGE_kmod-mt7663u=y
+CONFIG_PACKAGE_kmod-mt76x0-common=y
+CONFIG_PACKAGE_kmod-mt76x02-common=y
+CONFIG_PACKAGE_kmod-mt76x02-usb=y
+# CONFIG_PACKAGE_kmod-mt76x0e is not set
+CONFIG_PACKAGE_kmod-mt76x0u=y
+CONFIG_PACKAGE_kmod-mt76x2=y
+CONFIG_PACKAGE_kmod-mt76x2-common=y
+CONFIG_PACKAGE_kmod-mt76x2u=y
+# CONFIG_PACKAGE_kmod-mt7915e is not set
+
+
 CONFIG_PACKAGE_dns2socks=n
