@@ -70,3 +70,29 @@ CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ChinaDNS_NG=y
 # CONFIG_V2RAY_COMPRESS_UPX is not set
 CONFIG_DROPBEAR_ECC=y
 CONFIG_DROPBEAR_ECC_FULL=y
+
+# CONFIG_PACKAGE_mt76-test is not set
+# CONFIG_PACKAGE_mt7601u-firmware is not set
+# CONFIG_PACKAGE_mt7622bt-firmware is not set
+CONFIG_PACKAGE_kmod-mt76=y
+CONFIG_PACKAGE_kmod-mt76-core=y
+CONFIG_PACKAGE_kmod-mt76-usb=y
+# CONFIG_PACKAGE_kmod-mt7601u is not set
+CONFIG_PACKAGE_kmod-mt7603=y
+CONFIG_PACKAGE_kmod-mt7615-common=y
+# CONFIG_PACKAGE_kmod-mt7615-firmware is not set
+# CONFIG_PACKAGE_kmod-mt7615e is not set
+# CONFIG_PACKAGE_kmod-mt7663-firmware-ap is not set
+# CONFIG_PACKAGE_kmod-mt7663-firmware-sta is not set
+CONFIG_PACKAGE_kmod-mt7663-usb-sdio=y
+# CONFIG_PACKAGE_kmod-mt7663s is not set
+CONFIG_PACKAGE_kmod-mt7663u=y
+CONFIG_PACKAGE_kmod-mt76x0-common=y
+CONFIG_PACKAGE_kmod-mt76x02-common=y
+CONFIG_PACKAGE_kmod-mt76x02-usb=y
+# CONFIG_PACKAGE_kmod-mt76x0e is not set
+CONFIG_PACKAGE_kmod-mt76x0u=y
+CONFIG_PACKAGE_kmod-mt76x2=y
+CONFIG_PACKAGE_kmod-mt76x2-common=y
+CONFIG_PACKAGE_kmod-mt76x2u=y
+# CONFIG_PACKAGE_kmod-mt7915e is not set
