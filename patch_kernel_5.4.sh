@@ -1,8 +1,8 @@
 cd friendlywrt-rk3328
 cd kernel/
 git apply ../../add_fullconenat.diff
-wget https://github.com/armbian/build/raw/master/patch/kernel/rockchip64-dev/RK3328-enable-1512mhz-opp.patch
-git apply RK3328-enable-1512mhz-opp.patch
+wget https://raw.githubusercontent.com/coolsnowwolf/lede/c39177efcfd9df8ea8e5d8e687d327fe77bfde52/target/linux/rockchip/patches-5.4/003-arm64-dts-rockchip-add-more-cpu-operating-points-for.patch
+git apply 003-arm64-dts-rockchip-add-more-cpu-operating-points-for.patch
 cd ../
 git clone https://github.com/openwrt/openwrt && cd openwrt/
 git checkout a47279154e08d54df05fa8bf45fe935ebf0df5da
