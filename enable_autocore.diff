@@ -1,43 +1,23 @@
 diff --git a/package/lean/autocore/Makefile b/package/lean/autocore/Makefile
-index c6cde396e..347a45203 100644
+index 03e4fb6..f774324 100644
 --- a/package/lean/autocore/Makefile
 +++ b/package/lean/autocore/Makefile
-@@ -17,7 +17,7 @@ include $(INCLUDE_DIR)/package.mk
- define Package/autocore
-   TITLE:=x86/x64 auto core loadbalance script.
-   MAINTAINER:=Lean
--  DEPENDS:=@TARGET_x86 +bc +lm-sensors +ethtool
+@@ -16,9 +16,7 @@ include $(INCLUDE_DIR)/package.mk
+ define Package/autocore-arm
+   TITLE:=Arm auto core loadbalance script.
+   MAINTAINER:=CN_SZTL
+-  DEPENDS:=@(TARGET_bcm27xx||TARGET_bcm53xx||TARGET_ipq40xx||TARGET_ipq806x||TARGET_mvebu||TARGET_rockchip) \
+-    +TARGET_bcm27xx:bcm27xx-userland +TARGET_bcm53xx:nvram \
+-    +(TARGET_ipq40xx||TARGET_ipq806x):lm-sensors
 +  DEPENDS:=+bc +lm-sensors +ethtool
+   VARIANT:=arm
  endef
  
- define Package/autocore/description
-diff --git a/package/lean/autocore/files/autocore b/package/lean/autocore/files/autocore
-index 614e21761..90f9f52dd 100755
---- a/package/lean/autocore/files/autocore
-+++ b/package/lean/autocore/files/autocore
-@@ -31,7 +31,7 @@ start()
- 	g=${a}${b}${c}${d}${e}${f}
- 
- 	mkdir -p /tmp/sysinfo
--	echo $g > /tmp/sysinfo/model
-+	#echo $g > /tmp/sysinfo/model
- 
- 	a=$(ip address | grep ^[0-9] | awk -F: '{print $2}' | sed "s/ //g" | grep '^[e]' | grep -v "@" | grep -v "\.")
- 	b=$(echo "$a" | wc -l)
-@@ -42,7 +42,7 @@ start()
- 		ethtool -K $c tx-checksum-ip-generic on >/dev/null 2>&1 || (
- 		ethtool -K $c tx-checksum-ipv4 on >/dev/null 2>&1
- 		ethtool -K $c tx-checksum-ipv6 on >/dev/null 2>&1)
--		ethtool -K $c tx-scatter-gather on >/dev/null 2>&1
-+		#ethtool -K $c tx-scatter-gather on >/dev/null 2>&1
- 		ethtool -K $c gso on >/dev/null 2>&1
- 		ethtool -K $c tso on >/dev/null 2>&1
- 		ethtool -K $c ufo on >/dev/null 2>&1
-diff --git a/package/lean/autocore/files/index.htm b/package/lean/autocore/files/index.htm
-index c24224cb3..e7da9b7a6 100644
---- a/package/lean/autocore/files/index.htm
-+++ b/package/lean/autocore/files/index.htm
-@@ -718,6 +718,7 @@
+diff --git a/package/lean/autocore/files/arm/index.htm b/package/lean/autocore/files/arm/index.htm
+index 4f88474..c56ca5a 100644
+--- a/package/lean/autocore/files/arm/index.htm
++++ b/package/lean/autocore/files/arm/index.htm
+@@ -700,6 +700,7 @@
  		<tr><td width="33%"><%:Firmware Version%></td><td>
  			<%=pcdata(ver.distname)%> <%=pcdata(ver.distversion)%> /
  			<%=pcdata(ver.luciname)%> (<%=pcdata(ver.luciversion)%>)
@@ -45,15 +25,30 @@ index c24224cb3..e7da9b7a6 100644
  		</td></tr>
  		<tr><td width="33%"><%:Kernel Version%></td><td><%=unameinfo.release or "?"%></td></tr>
  		<tr><td width="33%"><%:Local Time%></td><td id="localtime">-</td></tr>
-diff --git a/package/lean/autocore/files/sbin/cpuinfo b/package/lean/autocore/files/sbin/cpuinfo
-index 8c0527f84..6adabeafc 100755
---- a/package/lean/autocore/files/sbin/cpuinfo
-+++ b/package/lean/autocore/files/sbin/cpuinfo
-@@ -1,5 +1,5 @@
- #!/bin/sh
+diff --git a/package/lean/autocore/files/arm/sbin/cpuinfo b/package/lean/autocore/files/arm/sbin/cpuinfo
+index 5a525a5..6adabea 100755
+--- a/package/lean/autocore/files/arm/sbin/cpuinfo
++++ b/package/lean/autocore/files/arm/sbin/cpuinfo
+@@ -4,20 +4,7 @@
+ [ -z "${cpu_arch}" ] && cpu_arch="ARMv8 Processor"
+ cpu_cores="$(cat "/proc/cpuinfo" | grep "processor" | wc -l)"
  
--MHz=`grep 'MHz' /proc/cpuinfo | cut -c11- |sed -n '1p'`
--TEMP=`sensors 2>/dev/null | grep 'Core 0' | cut -c12-`
-+MHz=`echo "$(cat /sys/devices/system/cpu/cpu[04]/cpufreq/cpuinfo_cur_freq)/1000" | bc`
-+TEMP=`echo "scale=2; $(cat /sys/class/thermal/thermal_zone0/temp)/1000" | bc`°
- echo "$MHz MHz $TEMP "
+-if grep -q "bcm27xx" "/etc/openwrt_release"; then
+-	cpu_freq="$(vcgencmd get_config arm_freq | awk -F '=' '{print $2}')Mhz"
+-elif grep -q "bcm53xx" "/etc/openwrt_release"; then
+-	cpu_freq="$(nvram get clkfreq | awk -F ',' '{print $1}')MHz"
+-elif grep -q "mvebu" "/etc/openwrt_release"; then
+-	cpu_freq="$(cat "/proc/cpuinfo" | grep "BogoMIPS" | sed -n "1p" | awk -F ': ' '{print $2}')MHz"
+-else
+-	cpu_freq="$(expr $(cat /sys/devices/system/cpu/cpufreq/policy0/cpuinfo_cur_freq) / 1000)MHz"
++cpu_freq="$(expr $(cat /sys/devices/system/cpu/cpu[04]/cpufreq/cpuinfo_cur_freq) / 1000) MHz"
+-fi
+-
+-if grep -q "ipq40xx" "/etc/openwrt_release"; then
+-	sys_temp="$(sensors | grep -Eo '\+[0-9]+.+C' | sed ':a;N;$!ba;s/\n/ /g;s/+//g')"
+-else
+-	sys_temp="$(awk '{ printf("%.1f °C", $0 / 1000) }' /sys/class/thermal/thermal_zone0/temp)"
++sys_temp="$(awk '{ printf("%.2f °C", $0 / 1000) }' /sys/class/thermal/thermal_zone0/temp)"
+-fi
+ 
+ echo -n "${cpu_arch} x ${cpu_cores} (${cpu_freq}, ${sys_temp})"
