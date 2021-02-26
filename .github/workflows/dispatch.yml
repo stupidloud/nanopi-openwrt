@@ -1,0 +1,20 @@
+name: Repo Dispatcher
+on:
+  workflow_dispatch:
+    inputs:
+      device:
+        description: 'select device to build'
+        default: 'r2s'
+        required: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Trigger Compile
+          run: |
+            curl \
+            -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -H "Accept: application/vnd.github.everest-preview+json" \
+            -H "Authorization: token ${{ secrets.SEC_TOKEN }}" \
+            -d '{"event_type": "${{ github.event.inputs.device }}", "client_payload": {"device": "${{ github.event.inputs.device }}"}}'
