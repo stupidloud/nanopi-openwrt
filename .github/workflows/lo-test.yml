@@ -1,0 +1,157 @@
+name: build
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      device:
+        description: 'select device to build'
+        default: 'r2s'
+        required: false
+
+jobs:
+
+  build:
+    name: ${{ github.event.client_payload.device }}
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+
+      - name: Space cleanup
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo rm -rf /usr/share/dotnet & #/usr/local/lib/android/sdk
+          sudo -E apt update
+          sudo -E apt -y install secure-delete zstd build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python python3 python-pip python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool rsync swig
+          sudo -E apt -y autoremove --purge
+          sudo -E apt clean
+          df -h
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Checkout
+        run: |
+          for i in {0..5}
+          do
+           curl -s -L --fail https://github.com/${{ github.repository }}/releases/download/cache/lede.${{ github.event.client_payload.device }}.img.zst.0$i || break
+          done | zstdmt -d -o lede.img || (truncate -s 40g lede.img && mkfs.xfs lede.img)
+          LOOP_DEVICE=$(losetup -f) && echo $LOOP_DEVICE > LOOP_DEVICE
+          sudo losetup -P --direct-io $LOOP_DEVICE lede.img
+          mkdir lede && sudo mount $LOOP_DEVICE lede && sudo chown -R $USER:$USER lede
+          [ ! -e lede/.git ] && (cd lede && git init && git remote add -t openwrt-18.06-k5.4 -f origin https://github.com/immortalwrt/immortalwrt && git checkout openwrt-18.06-k5.4)
+          cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action" && git pull -X theirs
+
+      - name: Update feeds and packages
+        run: |
+          cd lede/
+          git clone --depth=1 https://github.com/destan19/OpenAppFilter.git && rm -rf package/OpenAppFilter && mv OpenAppFilter package/
+          git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git && rm -rf package/lean/luci-theme-argon && mv luci-theme-argon package/lean/
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: Custom configure file
+        run: |
+          cd lede
+          rm -f .config*
+          cat ../${{ github.event.client_payload.device }}.config.seed > .config
+          sed -i 's/^[ \t]*//g' .config
+          echo '
+          # CONFIG_v2ray-plugin_INCLUDE_GOPROXY is not set
+          # CONFIG_XRAY_CORE_COMPRESS_GOPROXY is not set
+          # CONFIG_UnblockNeteaseMusicGo_INCLUDE_GOPROXY is not set
+          ' >> .config
+          make defconfig && cat .config
+
+      - name: Compile firmware
+        run: |
+          cd lede
+          while true; do make download -j8 && break || true; done
+          make -j$(($(nproc) + 1)) -s || (make clean && make -j1 V=sc)
+          echo "======================="
+          echo "Space usage:"
+          echo "======================="
+          df -h
+          echo "======================="
+          du -h --max-depth=1 ./ --exclude=build_dir --exclude=bin
+          du -h --max-depth=1 ./build_dir
+          du -h --max-depth=1 ./bin
+
+      - name: Prepare artifact
+        run: |
+          mkdir -p ./artifact/firmware
+          mkdir -p ./artifact/package
+          mkdir -p ./artifact/buildinfo
+          mkdir -p ./release
+          cd lede
+          rm -rf $(find ./bin/targets/ -type d -name "packages")
+          cp -rf $(find ./bin/targets/ -type f) ../artifact/firmware/
+          cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ../artifact/package/
+          cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ../artifact/buildinfo/
+          cp $(ls -1 ../artifact/firmware/*img*) ../release/${{ github.event.client_payload.device }}.img.gz
+          pushd ../release/ && md5sum ${{ github.event.client_payload.device }}.img.gz > md5sum.txt && popd
+          echo "strDate=$(date +%Y-%m-%d)" >> $GITHUB_ENV
+          rm -rf bin/ tmp/
+          cd ..
+          rm -f *zst*
+          sudo umount lede
+          LOOP_DEVICE=$(cat LOOP_DEVICE)
+          sudo losetup -d $LOOP_DEVICE
+          zstdmt -c -1 lede.img | split -d -b 2000m - lede.${{ github.event.client_payload.device }}.img.zst.
+          ls -l *zst*
+
+      - name: Deliver buildinfo
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenWrt_buildinfo
+          path: ./artifact/buildinfo/
+
+      - name: Deliver package
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenWrt_package
+          path: ./artifact/package/
+
+      - name: Deliver firmware
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenWrt_firmware
+          path: ./artifact/firmware/
+
+      - name: Upload release asset
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./release/*
+          tag: ${{ github.event.client_payload.device }}-${{ env.strDate }}
+          file_glob: true
+          overwrite: true
+          release_name: ${{ github.event.client_payload.device }} ${{ env.strDate }} 自动发布
+
+      - name: Upload cache asset
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./lede.${{ github.event.client_payload.device }}*zst*
+          tag: cache
+          file_glob: true
+          overwrite: true
+          prerelease: true
+
+      - name: Debug via tmate
+        uses: P3TERX/ssh2actions@main
+        if: ${{ failure() }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+      - name: Send tg notification
+        uses: appleboy/telegram-action@master
+        #if: always()
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          args: The ${{ github.event.client_payload.device }} build ran completed at ${{ job.status }}.
