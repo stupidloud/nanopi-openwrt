@@ -36,6 +36,7 @@ jobs:
 
       - name: Checkout
         run: |
+          sudo curl https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
           for i in {0..5}
           do
            curl -s -L --fail https://github.com/${{ github.repository }}/releases/download/cache/lede.${{ github.event.client_payload.device }}.img.zst.0$i || break
@@ -141,7 +142,7 @@ jobs:
           ret=$(curl -sH "$AUTH" "https://api.$cache_path/tags/cache")
           echo $ret | jq -r '.assets[] | select(.name | contains ("'${{ github.event.client_payload.device }}'")).id' | \
           xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
-          zstdmt -c --long lede.img | split -d -b 2000m - lede.${{ github.event.client_payload.device }}.img.zst. --filter='curl --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=$FILE'
+          zstdmt -c --adapt --long lede.img | split -d -b 2000m - lede.${{ github.event.client_payload.device }}.img.zst. --filter='curl --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=$FILE'
 
       - name: Debug via tmate
         uses: P3TERX/ssh2actions@main
