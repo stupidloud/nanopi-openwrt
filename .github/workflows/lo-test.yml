@@ -25,10 +25,7 @@ jobs:
           sudo sysctl vm.swappiness=0
           sudo rm -rf /usr/share/dotnet & #/usr/local/lib/android/sdk
           sudo -E apt update
-          sudo -E apt -y --no-install-recommends install jq zstd secure-delete build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python python3 python-pip python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool rsync swig
-          sudo -E apt -y autoremove --purge
-          sudo -E apt clean
-          df -h
+          sudo -E apt -y --no-upgrade --no-install-recommends install jq zstd secure-delete build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python python3 python-pip python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool rsync swig &
 
       - uses: actions/checkout@v2
         with:
@@ -36,6 +33,7 @@ jobs:
 
       - name: Checkout
         run: |
+          sudo curl https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
           for i in {0..5}
           do
            curl -s -L --fail https://github.com/${{ github.repository }}/releases/download/cache/lede.${{ github.event.client_payload.device }}.img.zst.0$i || break
@@ -70,7 +68,7 @@ jobs:
       - name: Compile firmware
         run: |
           cd lede
-          while true; do make download -j8 && break || true; done
+          while true; do make download -j && break || true; done
           make -j$(($(nproc) + 1)) -s || (make clean && make -j1 V=sc)
           echo "======================="
           echo "Space usage:"
@@ -141,7 +139,8 @@ jobs:
           ret=$(curl -sH "$AUTH" "https://api.$cache_path/tags/cache")
           echo $ret | jq -r '.assets[] | select(.name | contains ("'${{ github.event.client_payload.device }}'")).id' | \
           xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
-          zstdmt -c --long lede.img | split -d -b 2000m - lede.${{ github.event.client_payload.device }}.img.zst. --filter='curl --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=$FILE'
+          zstdmt -c --adapt --long lede.img | parallel --wc --block 1.99G --pipe \
+          'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'${{ github.event.client_payload.device }}'.img.0{#} > /dev/null'
 
       - name: Debug via tmate
         uses: P3TERX/ssh2actions@main
