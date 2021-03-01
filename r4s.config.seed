@@ -38,6 +38,7 @@ CONFIG_PACKAGE_luci-theme-infinityfreedom=y
 CONFIG_PACKAGE_pv=y
 CONFIG_PACKAGE_bash=y
 CONFIG_PACKAGE_curl=y
+CONFIG_PACKAGE_coremark=y
 CONFIG_PACKAGE_fdisk=y
 CONFIG_PACKAGE_htop=y
 CONFIG_PACKAGE_nano=y
