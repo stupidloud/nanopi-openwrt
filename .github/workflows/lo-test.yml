@@ -12,7 +12,7 @@ on:
 jobs:
 
   build:
-    name: ${{ github.event.client_payload.device }}
+    name: ${{ github.event.client_payload.device || github.event.inputs.device }}
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
 
@@ -36,7 +36,7 @@ jobs:
           sudo curl https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
           for i in {1..6}
           do
-           curl -s -L --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.${{ github.event.client_payload.device }}.img.zst.0$i || break
+           curl -s -L --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.${{ github.event.client_payload.device || github.event.inputs.device }}.img.zst.0$i || break
           done | zstdmt -d -o lede.img || (truncate -s 40g lede.img && mkfs.xfs lede.img)
           LOOP_DEVICE=$(losetup -f) && echo $LOOP_DEVICE > LOOP_DEVICE
           sudo losetup -P --direct-io $LOOP_DEVICE lede.img
@@ -56,7 +56,7 @@ jobs:
         run: |
           cd lede
           rm -f .config*
-          cat ../${{ github.event.client_payload.device }}.config.seed > .config
+          cat ../${{ github.event.client_payload.device || github.event.inputs.device }}.config.seed > .config
           sed -i 's/^[ \t]*//g' .config
           echo '
           # CONFIG_v2ray-plugin_INCLUDE_GOPROXY is not set
@@ -90,17 +90,17 @@ jobs:
           cp -rf $(find ./bin/targets/ -type f) ../artifact/firmware/
           cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ../artifact/package/
           cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ../artifact/buildinfo/
-          cp $(ls -1 ../artifact/firmware/*img*) ../release/${{ github.event.client_payload.device }}.img.gz
-          pushd ../release/ && md5sum ${{ github.event.client_payload.device }}.img.gz > md5sum.txt && popd
+          cp $(ls -1 ../artifact/firmware/*img*) ../release/${{ github.event.client_payload.device || github.event.inputs.device }}.img.gz
+          pushd ../release/ && md5sum ${{ github.event.client_payload.device || github.event.inputs.device }}.img.gz > md5sum.txt && popd
           echo "strDate=$(date +%Y-%m-%d)" >> $GITHUB_ENV
-          echo "strDevice=$(echo ${{ github.event.client_payload.device }} | awk '{print toupper($0)}')" >> $GITHUB_ENV
+          echo "strDevice=$(echo ${{ github.event.client_payload.device || github.event.inputs.device }} | awk '{print toupper($0)}')" >> $GITHUB_ENV
           rm -rf bin/ tmp/
           cd ..
           rm -f *zst*
           sudo umount lede
           LOOP_DEVICE=$(cat LOOP_DEVICE)
           sudo losetup -d $LOOP_DEVICE
-          #zstdmt -c lede.img | split -d -b 2000m - lede.${{ github.event.client_payload.device }}.img.zst.
+          #zstdmt -c lede.img | split -d -b 2000m - lede.${{ github.event.client_payload.device || github.event.inputs.device }}.img.zst.
           #ls -l *zst*
 
       - name: Deliver buildinfo
@@ -126,7 +126,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./release/*
-          tag: ${{ github.event.client_payload.device }}-${{ env.strDate }}
+          tag: ${{ github.event.client_payload.device || github.event.inputs.device }}-${{ env.strDate }}
           file_glob: true
           overwrite: true
           release_name: ${{ env.strDevice }} ${{ env.strDate }} 自动发布
@@ -137,10 +137,10 @@ jobs:
           export cache_path='github.com/repos/klever1988/sshactions/releases'
           export cache_repo_id='39020554'
           ret=$(curl -sH "$AUTH" "https://api.$cache_path/tags/cache")
-          echo $ret | jq -r '.assets[] | select(.name | contains ("'${{ github.event.client_payload.device }}'")).id' | \
+          echo $ret | jq -r '.assets[] | select(.name | contains ("'${{ github.event.client_payload.device || github.event.inputs.device }}'")).id' | \
           xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
           zstdmt -c --adapt --long lede.img | parallel --wc --block 1.99G --pipe \
-          'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'${{ github.event.client_payload.device }}'.img.zst.0{#} > /dev/null'
+          'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'${{ github.event.client_payload.device || github.event.inputs.device }}'.img.zst.0{#} > /dev/null'
 
       - name: Debug via tmate
         uses: P3TERX/ssh2actions@main
@@ -155,4 +155,4 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          args: The ${{ github.event.client_payload.device }} build ran completed at ${{ job.status }}.
+          args: The ${{ github.event.client_payload.device || github.event.inputs.device }} build ran completed at ${{ job.status }}.
