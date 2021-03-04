@@ -14,6 +14,9 @@ jobs:
   build:
     name: ${{ github.event.client_payload.device || github.event.inputs.device }}
     runs-on: ubuntu-latest
+    env:
+      DEVICE: ${{ github.event.client_payload.device || github.event.inputs.device }}
+      TG: ${{ secrets.TELEGRAM_BOT_TOKEN }}
     if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
@@ -23,9 +26,9 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo sysctl vm.swappiness=0
-          sudo rm -rf /usr/share/dotnet #/usr/local/lib/android/sdk
+          nohup sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk &
           sudo -E apt update
-          sudo -E apt -y --no-install-recommends install jq zstd secure-delete build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python python3 python-pip python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool rsync swig &
+          nohup sudo -E apt -y --no-install-recommends install jq zstd secure-delete build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python python3 python-pip python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool rsync swig &
 
       - uses: actions/checkout@v2
         with:
@@ -37,9 +40,9 @@ jobs:
           sudo curl -sL https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
           for i in {1..6}
           do
-           curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.${{ github.event.client_payload.device || github.event.inputs.device }}.img.zst.0$i || break
+           curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
           done | zstdmt -d -o lede.img || (truncate -s 40g lede.img && mkfs.xfs lede.img)
-          LOOP_DEVICE=$(losetup -f) && echo $LOOP_DEVICE > LOOP_DEVICE
+          LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
           sudo losetup -P --direct-io $LOOP_DEVICE lede.img
           mkdir lede && sudo mount $LOOP_DEVICE lede
           if [ -d 'lede/.git' ]; then
@@ -60,7 +63,7 @@ jobs:
         run: |
           cd ~/lede
           rm -f .config*
-          cat $GITHUB_WORKSPACE/${{ github.event.client_payload.device || github.event.inputs.device }}.config.seed > .config
+          cat $GITHUB_WORKSPACE/$DEVICE.config.seed > .config
           sed -i 's/^[ \t]*//g' .config
           echo '
           # CONFIG_v2ray-plugin_INCLUDE_GOPROXY is not set
@@ -72,9 +75,9 @@ jobs:
       - name: Compile firmware
         run: |
           cd ~/lede
-          if [[ ${{ github.event.client_payload.device || github.event.inputs.device }} =~ ('r2s'|'r4s') ]]; then
+          if [[ $DEVICE =~ ('r2s'|'r4s') ]]; then
             sdk_src='https://downloads.openwrt.org/snapshots/targets/rockchip/armv8/openwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz'
-          elif [[ ${{ github.event.client_payload.device || github.event.inputs.device }} == 'r1s' ]]; then
+          elif [[ $DEVICE == 'r1s' ]]; then
             sdk_src='https://downloads.openwrt.org/snapshots/targets/sunxi/cortexa53/openwrt-sdk-sunxi-cortexa53_gcc-8.4.0_musl.Linux-x86_64.tar.xz'
           fi
           mkdir sdk && wget -qO- $sdk_src | tar -xJf - -C sdk
@@ -108,15 +111,14 @@ jobs:
           cp -rf $(find ./bin/targets/ -type f) ../artifact/firmware/
           cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ../artifact/package/
           cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ../artifact/buildinfo/
-          cp $(ls -1 ../artifact/firmware/*img*) ../release/${{ github.event.client_payload.device || github.event.inputs.device }}.img.gz
-          pushd ../release/ && md5sum ${{ github.event.client_payload.device || github.event.inputs.device }}.img.gz > md5sum.txt && popd
+          cp $(ls -1 ../artifact/firmware/*img*) ../release/$DEVICE.img.gz
+          pushd ../release/ && md5sum $DEVICE.img.gz > md5sum.txt && popd
           echo "strDate=$(date +%Y-%m-%d)" >> $GITHUB_ENV
-          echo "strDevice=$(echo ${{ github.event.client_payload.device || github.event.inputs.device }} | awk '{print toupper($0)}')" >> $GITHUB_ENV
+          echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
           rm -rf bin/ tmp/
           cd ..
           mv artifact release $GITHUB_WORKSPACE
           sudo umount lede
-          LOOP_DEVICE=$(cat LOOP_DEVICE)
           sudo losetup -d $LOOP_DEVICE
 
       - name: Deliver buildinfo
@@ -142,10 +144,10 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./release/*
-          tag: ${{ github.event.client_payload.device || github.event.inputs.device }}-${{ env.strDate }}
+          tag: ${{env.DEVICE}}-${{env.strDate}}
           file_glob: true
           overwrite: true
-          release_name: ${{ env.strDevice }} ${{ env.strDate }} 自动发布
+          release_name: ${{env.strDevice}} ${{env.strDate}} 自动发布
 
       - name: Save cache state
         run: |
@@ -154,10 +156,10 @@ jobs:
           export cache_path='github.com/repos/klever1988/sshactions/releases'
           export cache_repo_id='39020554'
           ret=$(curl -sH "$AUTH" "https://api.$cache_path/tags/cache")
-          echo $ret | jq -r '.assets[] | select(.name | contains ("'${{ github.event.client_payload.device || github.event.inputs.device }}'")).id' | \
+          echo $ret | jq -r '.assets[] | select(.name | contains ("'$DEVICE'")).id' | \
           xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
           zstdmt -c --adapt --long lede.img | parallel --wc --block 1.99G --pipe \
-          'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'${{ github.event.client_payload.device || github.event.inputs.device }}'.img.zst.0{#} > /dev/null'
+          'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'$DEVICE'.img.zst.0{#} > /dev/null'
 
       - name: Debug via tmate
         uses: P3TERX/ssh2actions@main
@@ -168,7 +170,8 @@ jobs:
 
       - name: Send tg notification
         uses: appleboy/telegram-action@master
+        if: ${{env.TG}}
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          args: The ${{ github.event.client_payload.device || github.event.inputs.device }} build ran completed at ${{ job.status }}.
+          args: The ${{env.DEVICE}} build ran completed at ${{job.status}}.
