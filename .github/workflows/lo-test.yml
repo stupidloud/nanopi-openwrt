@@ -41,10 +41,10 @@ jobs:
           for i in {1..6}
           do
            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
-          done | zstdmt -d -o lede.img || (truncate -s 35g lede.img && mkfs.xfs lede.img)
+          done | zstdmt -d -o lede.img || (truncate -s 10g lede.img && mkfs.btrfs -M lede.img)
           LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
           sudo losetup -P --direct-io $LOOP_DEVICE lede.img
-          mkdir lede && sudo mount $LOOP_DEVICE lede
+          mkdir lede && sudo mount -o nossd,autodefrag,compress=zstd $LOOP_DEVICE lede
           if [ -d 'lede/.git' ]; then
           cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action" && git pull --ff -X theirs
           else
