@@ -1,4 +1,4 @@
-git clone --depth=1 https://github.com/project-lede/luci-app-godproxy && mv luci-app-godproxy package/
+git clone --depth=1 https://github.com/project-lede/luci-app-godproxy && rm -r package/luci-app-godproxy && mv luci-app-godproxy package/
 git clone --depth=1 https://github.com/destan19/OpenAppFilter.git && rm -r package/OpenAppFilter && mv OpenAppFilter package/
 git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git && rm -r package/lean/luci-theme-argon && mv luci-theme-argon package/lean/
 
@@ -16,5 +16,5 @@ chmod +x target/linux/rockchip/armv8/base-files/etc/init.d/fa-rk3328-pwmfan
 mkdir -p target/linux/rockchip/armv8/base-files/etc/rc.d &&\
 ln -sf ../init.d/fa-rk3328-pwmfan target/linux/rockchip/armv8/base-files/etc/rc.d/S96fa-rk3328-pwmfan
 
-git clone --depth=1 https://github.com/NateLol/luci-app-oled && mv luci-app-oled package/
+git clone --depth=1 https://github.com/NateLol/luci-app-oled && rm -r package/luci-app-oled && mv luci-app-oled package/
 fi
