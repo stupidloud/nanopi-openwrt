@@ -45,8 +45,9 @@ fi
 
 #fi
 offset=`expr $(fdisk -l -u FriendlyWrt.img | tail -n1 | awk '{print $2}') \* 512`
+losetup -o $offset $lodev FriendlyWrt.img
 mkdir -p /mnt/img
-mount -o loop,offset=$offset FriendlyWrt.img /mnt/img
+mount $lodev /mnt/img
 echo -e '\e[92m解压已完成，准备编辑镜像文件，写入备份信息\e[0m'
 cd /mnt/img
 sysupgrade -b back.tar.gz
@@ -57,6 +58,7 @@ echo -e '\e[92m备份文件已经写入，移除挂载\e[0m'
 #rm back.tar.gz
 cd /tmp/upg
 umount /mnt/img
+losetup -d $lodev
 echo -e '\e[92m正在打包...\e[0m'
 #zstdmt /mnt/mmcblk0p2/FriendlyWrt.img -o /tmp/FriendlyWrtupdate.img.zst
 echo -e '\e[92m开始写入，请勿中断...\e[0m'
