@@ -61,9 +61,7 @@ jobs:
       - name: Custom configure file
         run: |
           cd ~/lede
-          rm -f .config*
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed > .config
-          cat .config
 
       - name: Compile firmware
         run: |
@@ -79,11 +77,13 @@ jobs:
           rm -rf build_dir staging_dir; mv sdk/*/build_dir ./ && rsync -a --ignore-existing sdk/*/staging_dir/ ./staging_dir/
           rm -rf sdk
           fi
-          ln -sf /usr/bin/upx-ucl staging_dir/host/bin/upx
+          #ln -sf /usr/bin/upx-ucl staging_dir/host/bin/upx
+          rm staging_dir/host/bin/upx
           sed -i '/\(tools\|toolchain\)\/Makefile/d' Makefile
           echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
+          find . -name Makefile | xargs -n1 grep -l '(STAGING_DIR_HOST)/bin/upx ' | xargs -n1 sed -i '/upx/d'
 
-          make defconfig && cat .config
+          make defconfig
 
           while true; do make download -j && break || true; done
           while true; do make package/download -j && break || true; done
