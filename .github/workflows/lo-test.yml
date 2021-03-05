@@ -80,7 +80,7 @@ jobs:
           #ln -sf /usr/bin/upx-ucl staging_dir/host/bin/upx
           sed -i '/\(tools\|toolchain\)\/Makefile/d' Makefile
           echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
-          grep -l -r --include=\Makefile '(STAGING_DIR_HOST)/bin/upx ' | xargs -n1 sed -i '/upx/d' || true
+          grep -l -r --include=\Makefile '(STAGING_DIR_HOST)/bin/upx ' | xargs -n1 -i sed -i '/upx/d' {}
 
           make defconfig
 
