@@ -78,10 +78,9 @@ jobs:
           rm -rf sdk
           fi
           #ln -sf /usr/bin/upx-ucl staging_dir/host/bin/upx
-          rm staging_dir/host/bin/upx
           sed -i '/\(tools\|toolchain\)\/Makefile/d' Makefile
           echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
-          find . -name Makefile | xargs -n1 grep -l '(STAGING_DIR_HOST)/bin/upx ' | xargs -n1 sed -i '/upx/d'
+          grep -l -r --include=\Makefile '(STAGING_DIR_HOST)/bin/upx ' | xargs -n1 sed -i '/upx/d' || true
 
           make defconfig
 
