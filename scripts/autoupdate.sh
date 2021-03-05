@@ -1,17 +1,21 @@
 #!/bin/sh
 set -e $1
 
+opkg update || true
 if ! command -v pv &> /dev/null
 then
-	opkg update || true
 	opkg install pv
-	if ! command -v pv &> /dev/null; then echo -e '\e[91mpv命令无效，升级中止！\e[0m' && exit 1; fi
+	if ! command -v pv &> /dev/null; then echo -e '\e[91mpv命令不可用，升级中止！\e[0m' && exit 1; fi
 fi
 if ! command -v fdisk &> /dev/null
 then
-	opkg update || true
 	opkg install --force-overwrite fdisk
-	if ! command -v fdisk &> /dev/null; then echo -e '\e[91mfdisk命令无效，升级中止！\e[0m' && exit 1; fi
+	if ! command -v fdisk &> /dev/null; then echo -e '\e[91mfdisk命令不可用，升级中止！\e[0m' && exit 1; fi
+fi
+if ! command -v losetup &> /dev/null
+then
+	opkg install --force-overwrite losetup
+	if ! command -v losetup &> /dev/null; then echo -e '\e[91mlosetup命令不可用，升级中止！\e[0m' && exit 1; fi
 fi
 
 board_id=$(cat /etc/board.json | jsonfilter -e '@["model"].name' | tail -c 4 | tr -d "\n" | awk '{print tolower($0)}')
@@ -44,6 +48,7 @@ fi
 	pv $board_id.img.gz | gunzip -dc > FriendlyWrt.img && rm $board_id.img.gz
 
 #fi
+lodev=$(losetup -f)
 offset=`expr $(fdisk -l -u FriendlyWrt.img | tail -n1 | awk '{print $2}') \* 512`
 losetup -o $offset $lodev FriendlyWrt.img
 mkdir -p /mnt/img
