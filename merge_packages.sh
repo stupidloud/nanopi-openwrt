@@ -18,3 +18,5 @@ ln -sf ../init.d/fa-rk3328-pwmfan target/linux/rockchip/armv8/base-files/etc/rc.
 
 git clone --depth=1 https://github.com/NateLol/luci-app-oled && rm -r package/luci-app-oled && mv luci-app-oled package/
 fi
+
+sed -i 's/192.168.1.1/192.168.2.1/' package/base-files/files/bin/config_generate
