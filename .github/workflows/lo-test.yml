@@ -40,13 +40,13 @@ jobs:
           sudo curl -sL https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
           for i in {1..6}
           do
-           curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
+            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
           done | zstdmt -d -o lede.img || (truncate -s 10g lede.img && mkfs.btrfs -M lede.img)
           LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
           sudo losetup -P --direct-io $LOOP_DEVICE lede.img
           mkdir lede && sudo mount -o nossd,autodefrag,compress=zstd $LOOP_DEVICE lede
           if [ -d 'lede/.git' ]; then
-          cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action" && \
+          cd lede
           git fetch && git reset --hard origin/openwrt-18.06-k5.4 && git merge openwrt-18.06 || true
           else
           sudo chown $USER:$(id -gn) lede && (cd lede && git init && git remote add -t openwrt-18.06-k5.4 -f origin https://github.com/immortalwrt/immortalwrt && git checkout openwrt-18.06-k5.4)
