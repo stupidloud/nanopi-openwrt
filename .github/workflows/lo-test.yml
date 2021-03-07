@@ -46,8 +46,9 @@ jobs:
           sudo losetup -P --direct-io $LOOP_DEVICE lede.img
           mkdir lede && sudo mount -o nossd,autodefrag,compress=zstd $LOOP_DEVICE lede
           if [ -d 'lede/.git' ]; then
-          cd lede
-          git fetch && git reset --hard origin/openwrt-18.06-k5.4 && git merge openwrt-18.06 || true
+          cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
+          git remote set-branches --add origin openwrt-18.06
+          git fetch && git reset --hard origin/openwrt-18.06-k5.4 && git merge --commit origin/openwrt-18.06 || true
           else
           sudo chown $USER:$(id -gn) lede && (cd lede && git init && git remote add -t openwrt-18.06-k5.4 -f origin https://github.com/immortalwrt/immortalwrt && git checkout openwrt-18.06-k5.4)
           fi
@@ -87,6 +88,9 @@ jobs:
 
           while true; do make download -j && break || true; done
           while true; do make package/download -j && break || true; done
+          #tmpfix
+          make package/arm-trusted-firmware-rk3328/{clean,compile}
+          #tmpfix
           make -j$(($(nproc) + 1)) || make V=sc
           echo "======================="
           echo "Space usage:"
