@@ -46,7 +46,8 @@ jobs:
           sudo losetup -P --direct-io $LOOP_DEVICE lede.img
           mkdir lede && sudo mount -o nossd,autodefrag,compress=zstd $LOOP_DEVICE lede
           if [ -d 'lede/.git' ]; then
-          cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action" && git pull --ff -X theirs
+          cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action" && \
+          git fetch && git reset --hard origin/openwrt-18.06-k5.4 && git merge openwrt-18.06 || true
           else
           sudo chown $USER:$(id -gn) lede && (cd lede && git init && git remote add -t openwrt-18.06-k5.4 -f origin https://github.com/immortalwrt/immortalwrt && git checkout openwrt-18.06-k5.4)
           fi
