@@ -20,7 +20,8 @@ merge_package https://github.com/jerrykuku/luci-theme-argon luci-theme-argon "-b
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd luci-app-ksmbd
 merge_package https://github.com/coolsnowwolf/packages/trunk/kernel/ksmbd
 merge_package https://github.com/coolsnowwolf/packages/trunk/net/ksmbd-tools
-merge_package https://github.com/jerrykuku/lua-maxminddb
+
+rm -rf package/luci-app-vssr
 
 if [ $DEVICE = 'r2s' ]; then
 mkdir -p target/linux/rockchip/armv8/base-files/usr/bin &&\
