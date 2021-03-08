@@ -44,7 +44,7 @@ jobs:
           done | zstdmt -d -o lede.img || (truncate -s 10g lede.img && mkfs.btrfs -M lede.img)
           LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
           sudo losetup -P --direct-io $LOOP_DEVICE lede.img
-          mkdir lede && sudo mount -o nossd,autodefrag,compress=zstd $LOOP_DEVICE lede
+          mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
           if [ -d 'lede/.git' ]; then
           cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote set-branches --add origin openwrt-18.06
@@ -112,13 +112,11 @@ jobs:
           cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ../artifact/buildinfo/
           cp $(ls -1 ../artifact/firmware/*img*) ../release/$DEVICE.img.gz
           pushd ../release/ && md5sum $DEVICE.img.gz > md5sum.txt && popd
-          echo "strDate=$(date +%Y-%m-%d)" >> $GITHUB_ENV
+          echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
           echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
           rm -rf bin/ tmp/
           cd ..
           mv artifact release $GITHUB_WORKSPACE
-          sudo umount lede
-          sudo losetup -d $LOOP_DEVICE
 
       - name: Deliver buildinfo
         uses: actions/upload-artifact@v2
@@ -149,7 +147,11 @@ jobs:
           release_name: ${{env.strDevice}} ${{env.strDate}} 自动发布
 
       - name: Save cache state
+        if: env.TG
         run: |
+          sleep 120
+          sudo umount lede
+          sudo losetup -d $LOOP_DEVICE
           cd
           export AUTH="Authorization: token ${{ secrets.SEC_TOKEN }}"
           export cache_path='github.com/repos/klever1988/sshactions/releases'
@@ -162,14 +164,14 @@ jobs:
 
       - name: Debug via tmate
         uses: P3TERX/ssh2actions@main
-        if: ${{ failure() }}
+        if: ${{ failure() && env.TG }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
       - name: Send tg notification
         uses: appleboy/telegram-action@master
-        if: ${{env.TG}}
+        if: env.TG
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
