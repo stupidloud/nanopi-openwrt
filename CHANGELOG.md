@@ -2,6 +2,10 @@
 # 更新日志
 ###### （如果没有特别说明，更新内容就是上游Lean和Lienol两位大佬的代码更新）
 
+## 2021-02-27
+
+- 改用Tianling Shen的immortalwrt源码产出固件
+
 ## 2020-08-05
 
 - R2S加入了 https://github.com/NateLol/luci-app-oled 支持oled状态显示
