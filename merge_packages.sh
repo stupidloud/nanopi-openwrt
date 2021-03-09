@@ -30,7 +30,7 @@ wget https://github.com/friendlyarm/friendlywrt/raw/master-v19.07.1/target/linux
 chmod +x target/linux/rockchip/armv8/base-files/etc/init.d/fa-rk3328-pwmfan
 mkdir -p target/linux/rockchip/armv8/base-files/etc/rc.d &&\
 ln -sf ../init.d/fa-rk3328-pwmfan target/linux/rockchip/armv8/base-files/etc/rc.d/S96fa-rk3328-pwmfan
-sed 's/enable\ \'0\'/enable \'1\'/' package/ctcgfw/luci-app-oled/root/etc/config/oled
+sed -i "s/enable\ \'0\'/enable \'1\'/" package/ctcgfw/luci-app-oled/root/etc/config/oled
 fi
 
 sed -i 's/192.168.1.1/192.168.2.1/' package/base-files/files/bin/config_generate

@@ -149,10 +149,10 @@ jobs:
       - name: Save cache state
         if: env.TG
         run: |
+          cd
           sleep 120
           sudo umount lede
           sudo losetup -d $LOOP_DEVICE
-          cd
           export AUTH="Authorization: token ${{ secrets.SEC_TOKEN }}"
           export cache_path='github.com/repos/klever1988/sshactions/releases'
           export cache_repo_id='39020554'
