@@ -34,3 +34,7 @@ sed -i "s/enable\ \'0\'/enable \'1\'/" package/ctcgfw/luci-app-oled/root/etc/con
 fi
 
 sed -i 's/192.168.1.1/192.168.2.1/' package/base-files/files/bin/config_generate
+
+mkdir -p package/base-files/files/etc/dropbear
+mv $GITHUB_WORKSPACE/host_keys/* package/base-files/files/etc/dropbear/
+chmod 600 package/base-files/files/etc/dropbear/*
