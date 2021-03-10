@@ -58,6 +58,7 @@ jobs:
           cd ~/lede
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+          . $GITHUB_WORKSPACE/patches.sh
           . $GITHUB_WORKSPACE/merge_packages.sh
 
       - name: Custom configure file
