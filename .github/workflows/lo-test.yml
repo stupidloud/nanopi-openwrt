@@ -56,6 +56,7 @@ jobs:
       - name: Update feeds and packages
         run: |
           cd ~/lede
+          pushd package/feeds/packages/syncthing && git restore Makefile && popd #temporary fix
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           . $GITHUB_WORKSPACE/patches.sh
