@@ -52,7 +52,7 @@ lodev=$(losetup -f)
 offset=`expr $(fdisk -l -u FriendlyWrt.img | tail -n1 | awk '{print $2}') \* 512`
 losetup -o $offset $lodev FriendlyWrt.img
 mkdir -p /mnt/img
-mount $lodev /mnt/img
+mount -t ext4 $lodev /mnt/img
 echo -e '\e[92m解压已完成，准备编辑镜像文件，写入备份信息\e[0m'
 cd /mnt/img
 sysupgrade -b back.tar.gz
