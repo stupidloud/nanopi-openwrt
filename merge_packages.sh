@@ -15,6 +15,7 @@ function merge_package(){
     mv $pn package/
 }
 
+merge_package https://github.com/linkease/ddnsto-openwrt
 merge_package https://github.com/project-lede/luci-app-godproxy
 merge_package https://github.com/jerrykuku/luci-theme-argon luci-theme-argon "-b 18.06"
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd luci-app-ksmbd
