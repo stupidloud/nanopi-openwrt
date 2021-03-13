@@ -60,7 +60,6 @@ jobs:
           ./scripts/feeds install -a
           . $GITHUB_WORKSPACE/patches.sh
           . $GITHUB_WORKSPACE/merge_packages.sh
-          sed -i 's/8e461614154d0d395f4e704ea170a6dac67401d92fe75e57e59ee33370bf1db6/skip/' package/ctcgfw/shadowsocks-rust/Makefile #tmp fix
 
       - name: Custom configure file
         run: |
