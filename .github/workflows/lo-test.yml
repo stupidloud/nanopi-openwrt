@@ -17,6 +17,7 @@ jobs:
     env:
       DEVICE: ${{ github.event.client_payload.device || github.event.inputs.device }}
       TG: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      DEPLOY_SSHKEY: ${{ secrets.SSH_KEY }}
     if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
@@ -106,6 +107,7 @@ jobs:
           mkdir -p ./artifact/buildinfo
           mkdir -p ./release
           cd lede
+          cp -a bin tmp ../
           rm -rf $(find ./bin/targets/ -type d -name "packages")
           cp -rf $(find ./bin/targets/ -type f) ../artifact/firmware/
           cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ../artifact/package/
@@ -114,7 +116,7 @@ jobs:
           pushd ../release/ && md5sum $DEVICE.img.gz > md5sum.txt && popd
           echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
           echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
-          rm -rf bin/ tmp/
+          rm -rf bin tmp
           cd ..
           mv artifact release $GITHUB_WORKSPACE
 
@@ -176,3 +178,31 @@ jobs:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           args: The ${{env.DEVICE}} build ran completed at ${{job.status}}.
+
+      - name: Build and deploy packages
+        if: env.DEPLOY_SSHKEY
+        run: |
+          cd
+          truncate -s +10G lede.img
+          sudo losetup -P --direct-io $LOOP_DEVICE lede.img
+          sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
+          sudo btrfs filesystem resize max lede/
+          mv bin tmp lede/
+          cd lede
+          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | sort | xargs -n1 -i echo CONFIG_PACKAGE_{}=m >> .config
+          make defconfig
+          make target/linux/compile -j$(($(nproc) + 1))
+          find package/ -type d -name luci-app-* | xargs -n1 -i sh -c "make {}/compile -j$(($(nproc) + 1)) || true"
+          make package/index
+          mkdir -p ~/.ssh; echo ${{env.DEPLOY_SSHKEY}} | base64 -d > ~/.ssh/id_ed25519; chmod 600 ~/.ssh/id_ed25519
+          rsync -avz --progress -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+          bin/packages/*/base root@imgxxx.net:/usr/share/caddy/$DEVICE/
+          rsync -avz --progress -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+          bin/targets/*/*/packages/ root@imgxxx.net:/usr/share/caddy/$DEVICE/core/
+
+      - name: Debug via tmate
+        uses: P3TERX/ssh2actions@main
+        if: ${{ failure() && env.TG }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
