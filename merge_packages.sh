@@ -14,10 +14,10 @@ function merge_package(){
 
     mv $pn package/
 }
-
-mkdir -p package/base-files/files/etc/dropbear
-mv $GITHUB_WORKSPACE/host_keys/* package/base-files/files/etc/dropbear/
-chmod 600 package/base-files/files/etc/dropbear/*
+mkdir files
+mkdir -p files/etc/dropbear
+mv $GITHUB_WORKSPACE/host_keys/* files/etc/dropbear/
+chmod 600 files/etc/dropbear/*
 
 merge_package https://github.com/linkease/ddnsto-openwrt
 merge_package https://github.com/project-lede/luci-app-godproxy
@@ -26,14 +26,12 @@ merge_package https://github.com/coolsnowwolf/packages/trunk/kernel/ksmbd
 merge_package https://github.com/coolsnowwolf/packages/trunk/net/ksmbd-tools
 
 if [ $DEVICE = 'r2s' ]; then
-mkdir -p target/linux/rockchip/armv8/base-files/usr/bin &&\
-wget https://github.com/friendlyarm/friendlywrt/raw/master-v19.07.1/target/linux/rockchip-rk3328/base-files/usr/bin/start-rk3328-pwm-fan.sh -qNP target/linux/rockchip/armv8/base-files/usr/bin &&\
-chmod +x target/linux/rockchip/armv8/base-files/usr/bin/start-rk3328-pwm-fan.sh
-mkdir -p target/linux/rockchip/armv8/base-files/etc/init.d &&\
-wget https://github.com/friendlyarm/friendlywrt/raw/master-v19.07.1/target/linux/rockchip-rk3328/base-files/etc/init.d/fa-rk3328-pwmfan -qNP target/linux/rockchip/armv8/base-files/etc/init.d &&\
-chmod +x target/linux/rockchip/armv8/base-files/etc/init.d/fa-rk3328-pwmfan
-mkdir -p target/linux/rockchip/armv8/base-files/etc/rc.d &&\
-ln -sf ../init.d/fa-rk3328-pwmfan target/linux/rockchip/armv8/base-files/etc/rc.d/S96fa-rk3328-pwmfan
+mkdir -p files/usr/bin files/etc/init.d files/etc/rc.d
+wget https://github.com/friendlyarm/friendlywrt/raw/master-v19.07.1/target/linux/rockchip-rk3328/base-files/usr/bin/start-rk3328-pwm-fan.sh -qNP files/usr/bin
+chmod +x files/usr/bin/start-rk3328-pwm-fan.sh
+wget https://github.com/friendlyarm/friendlywrt/raw/master-v19.07.1/target/linux/rockchip-rk3328/base-files/etc/init.d/fa-rk3328-pwmfan -qNP files/etc/init.d
+chmod +x files/etc/init.d/fa-rk3328-pwmfan
+ln -sf ../init.d/fa-rk3328-pwmfan files/etc/rc.d/S96fa-rk3328-pwmfan
 sed -i "s/enable '0'/enable '1'/" package/ctcgfw/luci-app-oled/root/etc/config/oled
 fi
 
