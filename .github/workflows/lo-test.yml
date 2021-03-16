@@ -198,7 +198,7 @@ jobs:
           make defconfig
           make download -j
           make target/linux/compile -j$(($(nproc) + 1))
-          make package/compile -j$(($(nproc) + 1)) IGNORE_ERRORS=m
+          make package/compile -j$(($(nproc) + 1)) IGNORE_ERRORS=y
           make package/index
           n_kernel_digest=$(cat bin/targets/*/*/*.manifest | grep kernel | tail -c 33 | tr -d "\n")
           sed -i "s/$n_kernel_digest/$p_kernel_digest/" bin/targets/*/*/packages/Packages bin/targets/*/*/packages/Packages.manifest
