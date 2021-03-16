@@ -13,7 +13,7 @@ jobs:
 
   build:
     name: ${{ github.event.client_payload.device || github.event.inputs.device }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     env:
       DEVICE: ${{ github.event.client_payload.device || github.event.inputs.device }}
       TG: ${{ secrets.TELEGRAM_BOT_TOKEN }}
