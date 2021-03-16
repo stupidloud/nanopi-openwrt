@@ -21,7 +21,6 @@ chmod 600 package/base-files/files/etc/dropbear/*
 
 merge_package https://github.com/linkease/ddnsto-openwrt
 merge_package https://github.com/project-lede/luci-app-godproxy
-merge_package https://github.com/jerrykuku/luci-theme-argon luci-theme-argon "-b 18.06"
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd luci-app-ksmbd
 merge_package https://github.com/coolsnowwolf/packages/trunk/kernel/ksmbd
 merge_package https://github.com/coolsnowwolf/packages/trunk/net/ksmbd-tools
