@@ -38,5 +38,6 @@ ln -sf ../init.d/fa-rk3328-pwmfan target/linux/rockchip/armv8/base-files/etc/rc.
 sed -i "s/enable '0'/enable '1'/" package/ctcgfw/luci-app-oled/root/etc/config/oled
 fi
 
+sed -i "/\/etc\/coremark\.sh/d" package/feeds/packages/coremark/Makefile
 sed -i "s/option limit_enable '1'/option limit_enable '0'/" package/lean/nft-qos/files/nft-qos.config
 sed -i 's/192.168.1.1/192.168.2.1/' package/base-files/files/bin/config_generate
