@@ -194,15 +194,13 @@ jobs:
           sudo btrfs filesystem resize max lede/
           mv bin tmp lede/
           cd lede
-          p_kernel_digest=$(cat bin/targets/*/*/*.manifest | grep kernel | tail -c 33 | tr -d "\n")
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | sort | xargs -n1 -i echo CONFIG_PACKAGE_{}=y >> .config
           make defconfig
           make download -j
           make target/linux/compile -j$(($(nproc) + 1))
           make package/compile -j$(($(nproc) + 1)) IGNORE_ERRORS=y
           make package/index
-          n_kernel_digest=$(cat bin/targets/*/*/*.manifest | grep kernel | tail -c 33 | tr -d "\n")
-          sed -i "s/$n_kernel_digest/$p_kernel_digest/" bin/targets/*/*/packages/Packages bin/targets/*/*/packages/Packages.manifest
+          sed "s/\-[a-z0-9]\{32\})/)/" bin/targets/*/*/packages/Packages bin/targets/*/*/packages/Packages.manifest
           gzip -f bin/targets/*/*/packages/Packages
           mkdir -p ~/.ssh; echo ${{env.DEPLOY_SSHKEY}} | base64 -d > ~/.ssh/id_ed25519; chmod 600 ~/.ssh/id_ed25519
           rsync -ach --progress -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \

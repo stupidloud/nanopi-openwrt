@@ -8,3 +8,5 @@ sed -i "s/option hw_flow '1'/option hw_flow '0'/" package/ctcgfw/luci-app-turboa
 sed -i "s/option sfe_flow '1'/option sfe_flow '0'/" package/ctcgfw/luci-app-turboacc/root/etc/config/turboacc
 sed -i "s/option sfe_bridge '1'/option sfe_bridge '0'/" package/ctcgfw/luci-app-turboacc/root/etc/config/turboacc
 sed -i "/INCLUDE_shortcut-fe=n/d" package/ctcgfw/luci-app-turboacc/Makefile
+
+sed '/Installed-Time/a\sed "s/\-[a-z0-9]\{32\})/)/" $(1)/usr/lib/opkg/status\' include/rootfs.mk
