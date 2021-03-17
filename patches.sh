@@ -10,3 +10,12 @@ sed -i "s/option sfe_bridge '1'/option sfe_bridge '0'/" package/ctcgfw/luci-app-
 sed -i "/INCLUDE_shortcut-fe=n/d" package/ctcgfw/luci-app-turboacc/Makefile
 
 sed '/Installed-Time/a\sed "s/\-[a-z0-9]\{32\})/)/" $(1)/usr/lib/opkg/status\' include/rootfs.mk
+
+find . -type f -name nft-qos.config | xargs sed -i "s/option limit_enable '1'/option limit_enable '0'/"
+sed -i "/\/etc\/coremark\.sh/d" package/feeds/packages/coremark/Makefile
+sed -i 's/192.168.1.1/192.168.2.1/' package/base-files/files/bin/config_generate
+
+rm -rf files && mkdir files
+mkdir -p files/etc/dropbear
+mv $GITHUB_WORKSPACE/host_keys/* files/etc/dropbear/
+chmod 600 files/etc/dropbear/*
