@@ -11,14 +11,58 @@ on:
 
 jobs:
 
-  build:
-    name: ${{ github.event.client_payload.device || github.event.inputs.device }}
+  generate_firmware:
+    name: Generate ${{ github.event.client_payload.device || github.event.inputs.device }} firmware
+    runs-on: ubuntu-18.04
+    env:
+      DEVICE: ${{ github.event.client_payload.device || github.event.inputs.device }}
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Generate firmware
+        run: |
+          cd
+          sudo curl -sL https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
+          for i in {1..10}
+          do
+            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE-slim.img.zst.0$i || break
+          done | zstdmt -d -o lede.img
+          LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
+          sudo losetup -P --direct-io $LOOP_DEVICE lede.img
+          mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
+          cd lede
+          cat $GITHUB_WORKSPACE/$DEVICE.config.seed > .config
+          echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
+          make defconfig && make -j$(($(nproc) + 1))
+          mkdir -p $GITHUB_WORKSPACE/release
+          mv $(ls -1 ./bin/targets/*/*/*img.gz) $GITHUB_WORKSPACE/release/$DEVICE.img.gz
+          echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
+          echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
+
+      - name: Upload release asset
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./release/*
+          tag: ${{env.DEVICE}}-${{env.strDate}}
+          file_glob: true
+          overwrite: true
+          release_name: ${{env.strDevice}} ${{env.strDate}} 自动发布
+
+  build_packages:
+    needs: generate_firmware
+    name: Build ${{ github.event.client_payload.device || github.event.inputs.device }} packages
     runs-on: ubuntu-18.04
     env:
       DEVICE: ${{ github.event.client_payload.device || github.event.inputs.device }}
       TG: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       DEPLOY_SSHKEY: ${{ secrets.SSH_KEY }}
-    if: github.event.repository.owner.id == github.event.sender.id
+    if: github.repository_owner=='klever1988'
 
     steps:
 
@@ -41,17 +85,17 @@ jobs:
           sudo curl -sL https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
           for i in {1..10}
           do
-            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
-          done | zstdmt -d -o lede.img || (truncate -s 10g lede.img && mkfs.btrfs -M lede.img)
+            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE-slim.img.zst.0$i || break
+          done | zstdmt -d -o lede.img || (truncate -s 20g lede.img && mkfs.btrfs -M lede.img)
           LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
           sudo losetup -P --direct-io $LOOP_DEVICE lede.img
           mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
+          sudo btrfs filesystem resize max lede/
           if [ -d 'lede/.git' ]; then
           cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-          git remote set-branches --add origin openwrt-18.06
-          git fetch && git reset --hard origin/openwrt-18.06-k5.4 && git merge --commit origin/openwrt-18.06
+          git fetch && git reset --hard origin/master
           else
-          sudo chown $USER:$(id -gn) lede && (cd lede && git init && git remote add -t openwrt-18.06-k5.4 -f origin https://github.com/immortalwrt/immortalwrt && git checkout openwrt-18.06-k5.4)
+          sudo chown $USER:$(id -gn) lede && (cd lede && git init && git remote add -t master -f origin https://github.com/immortalwrt/immortalwrt && git checkout master)
           fi
 
       - name: Update feeds and packages
@@ -69,7 +113,9 @@ jobs:
       - name: Custom configure file
         run: |
           cd ~/lede
-          cat $GITHUB_WORKSPACE/$DEVICE.config.seed > .config
+          cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed '/CONFIG_PACKAGE_luci-app-/d' > .config
+          echo >> .config
+          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
 
       - name: Compile firmware
         run: |
@@ -80,21 +126,35 @@ jobs:
             sdk_src='https://downloads.openwrt.org/snapshots/targets/rockchip/armv8/openwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz'
           elif [[ $DEVICE == 'r1s' ]]; then
             sdk_src='https://downloads.openwrt.org/snapshots/targets/sunxi/cortexa53/openwrt-sdk-sunxi-cortexa53_gcc-8.4.0_musl.Linux-x86_64.tar.xz'
+          elif [ $DEVICE == 'r1s-h3' ]; then
+            sdk_src='https://downloads.openwrt.org/snapshots/targets/sunxi/cortexa7/openwrt-sdk-sunxi-cortexa7_gcc-8.4.0_musl_eabi.Linux-x86_64.tar.xz'
           fi
           mkdir sdk && wget -qO- $sdk_src | tar -xJf - -C sdk
           rm -rf build_dir staging_dir; mv sdk/*/build_dir ./ && rsync -a --ignore-existing sdk/*/staging_dir/ ./staging_dir/
           rm -rf sdk
           fi
           sed -i '/\(tools\|toolchain\)\/Makefile/d' Makefile
+
           echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
-          #grep -l -r --include=\Makefile '(STAGING_DIR_HOST)/bin/upx ' | xargs -n1 -i sed -i '/upx/d' {}
-
-          make defconfig
-
+          make defconfig && cat .config
           while true; do make download -j && break || true; done
-          while true; do make package/download -j && break || true; done
-          make package/feeds/packages/ttyd/clean
           make -j$(($(nproc) + 1)) || make V=sc
+
+          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | sort | xargs -n1 -i echo CONFIG_PACKAGE_{}=y >> .config
+          make defconfig && cat .config
+          while true; do make download -j && break || true; done
+          make target/linux/compile -j$(($(nproc) + 1))
+          make package/compile -j$(($(nproc) + 1)) IGNORE_ERRORS=y
+          make package/index
+
+          sed -i "s/\-[a-z0-9]\{32\})/)/" bin/targets/*/*/packages/Packages bin/targets/*/*/packages/Packages.manifest
+          gzip -f bin/targets/*/*/packages/Packages
+          mkdir -p ~/.ssh; echo ${{env.DEPLOY_SSHKEY}} | base64 -d > ~/.ssh/id_ed25519; chmod 600 ~/.ssh/id_ed25519
+          rsync -ach --progress -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+          bin/packages/*/* root@direct.imgxxx.net:/usr/share/caddy/$DEVICE/
+          rsync -ach --progress -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+          bin/targets/*/*/packages/ root@direct.imgxxx.net:/usr/share/caddy/$DEVICE/core/
+          
           echo "======================="
           echo "Space usage:"
           echo "======================="
@@ -107,21 +167,14 @@ jobs:
       - name: Prepare artifact
         run: |
           cd
-          mkdir -p ./artifact/firmware
-          mkdir -p ./artifact/package
           mkdir -p ./artifact/buildinfo
           mkdir -p ./release
           cd lede
-          cp -a bin tmp ../
-          rm -rf $(find ./bin/targets/ -type d -name "packages")
-          cp -rf $(find ./bin/targets/ -type f) ../artifact/firmware/
-          cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ../artifact/package/
           cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ../artifact/buildinfo/
-          cp $(ls -1 ../artifact/firmware/*img*) ../release/$DEVICE.img.gz
-          pushd ../release/ && md5sum $DEVICE.img.gz > md5sum.txt && popd
+          cp -rf .config ../artifact/buildinfo/
+          mv $(ls -1 ./bin/targets/*/*/*img.gz) ../release/$DEVICE-slim.img.gz
           echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
           echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
-          rm -rf bin tmp
           cd ..
           mv artifact release $GITHUB_WORKSPACE
 
@@ -130,18 +183,6 @@ jobs:
         with:
           name: OpenWrt_buildinfo
           path: ./artifact/buildinfo/
-
-      - name: Deliver package
-        uses: actions/upload-artifact@v2
-        with:
-          name: OpenWrt_package
-          path: ./artifact/package/
-
-      - name: Deliver firmware
-        uses: actions/upload-artifact@v2
-        with:
-          name: OpenWrt_firmware
-          path: ./artifact/firmware/
 
       - name: Upload release asset
         uses: svenstaro/upload-release-action@v2
@@ -164,17 +205,10 @@ jobs:
           export cache_path='github.com/repos/klever1988/sshactions/releases'
           export cache_repo_id='39020554'
           ret=$(curl -sH "$AUTH" "https://api.$cache_path/tags/cache")
-          echo $ret | jq -r '.assets[] | select(.name | contains ("'$DEVICE'.img")).id' | \
+          echo $ret | jq -r '.assets[] | select(.name | contains ("'$DEVICE'-slim.img")).id' | \
           xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
           zstdmt -c --adapt --long lede.img | parallel --wc --block 1.99G --pipe \
-          'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'$DEVICE'.img.zst.0{#} > /dev/null'
-
-      - name: Debug via tmate
-        uses: P3TERX/ssh2actions@main
-        if: ${{ failure() && env.TG }}
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'$DEVICE'-slim.img.zst.0{#} > /dev/null'
 
       - name: Send tg notification
         uses: appleboy/telegram-action@master
@@ -184,33 +218,14 @@ jobs:
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           args: The ${{env.DEVICE}} build ran completed at ${{job.status}}.
 
-      - name: Build and deploy packages
-        if: env.DEPLOY_SSHKEY
-        run: |
-          cd
-          truncate -s +10G lede.img
-          sudo losetup -P --direct-io $LOOP_DEVICE lede.img
-          sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
-          sudo btrfs filesystem resize max lede/
-          mv bin tmp lede/
-          cd lede
-          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | sort | xargs -n1 -i echo CONFIG_PACKAGE_{}=y >> .config
-          make defconfig
-          make download -j
-          make target/linux/compile -j$(($(nproc) + 1))
-          make package/compile -j$(($(nproc) + 1)) IGNORE_ERRORS=y
-          make package/index
-          sed -i "s/\-[a-z0-9]\{32\})/)/" bin/targets/*/*/packages/Packages bin/targets/*/*/packages/Packages.manifest
-          gzip -f bin/targets/*/*/packages/Packages
-          mkdir -p ~/.ssh; echo ${{env.DEPLOY_SSHKEY}} | base64 -d > ~/.ssh/id_ed25519; chmod 600 ~/.ssh/id_ed25519
-          rsync -ach --progress -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-          bin/packages/*/* root@direct.imgxxx.net:/usr/share/caddy/$DEVICE/
-          rsync -ach --progress -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-          bin/targets/*/*/packages/ root@direct.imgxxx.net:/usr/share/caddy/$DEVICE/core/
-
       - name: Debug via tmate
-        uses: P3TERX/ssh2actions@main
+        uses: klever1988/ssh2actions@main
         if: ${{ failure() && env.TG }}
+        with:
+          mode: ngrok
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SSH_PASSWORD: ${{secrets.SSH_PASSWORD}}
+          SSH_PUBKEY: ${{secrets.SSH_PUBKEY}}
+          NGROK_TOKEN: ${{secrets.NGROK_TOKEN}}
