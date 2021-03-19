@@ -11,51 +11,7 @@ on:
 
 jobs:
 
-  generate_firmware:
-    name: Generate ${{ github.event.client_payload.device || github.event.inputs.device }} firmware
-    runs-on: ubuntu-18.04
-    env:
-      DEVICE: ${{ github.event.client_payload.device || github.event.inputs.device }}
-    if: github.event.repository.owner.id == github.event.sender.id
-
-    steps:
-
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-
-      - name: Generate firmware
-        run: |
-          cd
-          sudo curl -sL https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
-          for i in {1..10}
-          do
-            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE-slim.img.zst.0$i || break
-          done | zstdmt -d -o lede.img
-          LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
-          sudo losetup -P --direct-io $LOOP_DEVICE lede.img
-          mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
-          cd lede
-          cat $GITHUB_WORKSPACE/$DEVICE.config.seed > .config
-          echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
-          make defconfig && make -j$(($(nproc) + 1))
-          mkdir -p $GITHUB_WORKSPACE/release
-          mv $(ls -1 ./bin/targets/*/*/*img.gz) $GITHUB_WORKSPACE/release/$DEVICE.img.gz
-          echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
-          echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
-
-      - name: Upload release asset
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./release/*
-          tag: ${{env.DEVICE}}-${{env.strDate}}
-          file_glob: true
-          overwrite: true
-          release_name: ${{env.strDevice}} ${{env.strDate}} 自动发布
-
   build_packages:
-    needs: generate_firmware
     name: Build ${{ github.event.client_payload.device || github.event.inputs.device }} packages
     runs-on: ubuntu-18.04
     env:
@@ -73,7 +29,7 @@ jobs:
           sudo sysctl vm.swappiness=0
           nohup sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk &
           sudo -E apt update
-          nohup sudo -E apt -y --no-install-recommends install jq build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python python3 python-pip python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool rsync swig &
+          nohup sudo -E apt -y --no-install-recommends install jq build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python python3 python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool rsync swig &
 
       - uses: actions/checkout@v2
         with:
@@ -85,17 +41,17 @@ jobs:
           sudo curl -sL https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
           for i in {1..10}
           do
-            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE-slim.img.zst.0$i || break
+            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
           done | zstdmt -d -o lede.img || (truncate -s 20g lede.img && mkfs.btrfs -M lede.img)
           LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
           sudo losetup -P --direct-io $LOOP_DEVICE lede.img
           mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
-          sudo btrfs filesystem resize max lede/
           if [ -d 'lede/.git' ]; then
           cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-          git fetch && git reset --hard origin/master
+          git remote set-branches --add origin openwrt-18.06
+          git fetch && git reset --hard origin/openwrt-18.06-k5.4 && git merge --commit --no-edit origin/openwrt-18.06
           else
-          sudo chown $USER:$(id -gn) lede && (cd lede && git init && git remote add -t master -f origin https://github.com/immortalwrt/immortalwrt && git checkout master)
+          sudo chown $USER:$(id -gn) lede && (cd lede && git init && git remote add -t openwrt-18.06-k5.4 -f origin https://github.com/immortalwrt/immortalwrt && git checkout openwrt-18.06-k5.4)
           fi
 
       - name: Update feeds and packages
@@ -113,6 +69,7 @@ jobs:
       - name: Custom configure file
         run: |
           cd ~/lede
+          make defconfig && make tools/upx/compile -j$(($(nproc) + 1))
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed '/CONFIG_PACKAGE_luci-app-/d' > .config
           echo >> .config
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
@@ -136,24 +93,24 @@ jobs:
           sed -i '/\(tools\|toolchain\)\/Makefile/d' Makefile
 
           echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
-          make defconfig && cat .config
-          while true; do make download -j && break || true; done
-          make -j$(($(nproc) + 1)) || make V=sc
-
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | sort | xargs -n1 -i echo CONFIG_PACKAGE_{}=y >> .config
           make defconfig && cat .config
           while true; do make download -j && break || true; done
           make target/linux/compile -j$(($(nproc) + 1))
           make package/compile -j$(($(nproc) + 1)) IGNORE_ERRORS=y
           make package/index
-
           sed -i "s/\-[a-z0-9]\{32\})/)/" bin/targets/*/*/packages/Packages bin/targets/*/*/packages/Packages.manifest
           gzip -f bin/targets/*/*/packages/Packages
-          mkdir -p ~/.ssh; echo ${{env.DEPLOY_SSHKEY}} | base64 -d > ~/.ssh/id_ed25519; chmod 600 ~/.ssh/id_ed25519
-          rsync -ach --progress -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-          bin/packages/*/* root@direct.imgxxx.net:/usr/share/caddy/$DEVICE/
-          rsync -ach --progress -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-          bin/targets/*/*/packages/ root@direct.imgxxx.net:/usr/share/caddy/$DEVICE/core/
+
+          cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed '/CONFIG_PACKAGE_luci-app-/d' > .config
+          echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
+          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
+          make defconfig
+          mkdir -p files/local_feed/core files/local_feed/base
+          sudo mount --bind bin/targets/*/*/packages/ files/local_feed/core
+          sudo mount --bind bin/packages/*/base/ files/local_feed/base
+          make -j$(($(nproc) + 1))
+          sudo umount files/local_feed/core files/local_feed/base
           
           echo "======================="
           echo "Space usage:"
@@ -175,6 +132,7 @@ jobs:
           mv $(ls -1 ./bin/targets/*/*/*img.gz) ../release/$DEVICE-slim.img.gz
           echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
           echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
+          rm -rf bin tmp
           cd ..
           mv artifact release $GITHUB_WORKSPACE
 
@@ -205,10 +163,10 @@ jobs:
           export cache_path='github.com/repos/klever1988/sshactions/releases'
           export cache_repo_id='39020554'
           ret=$(curl -sH "$AUTH" "https://api.$cache_path/tags/cache")
-          echo $ret | jq -r '.assets[] | select(.name | contains ("'$DEVICE'-slim.img")).id' | \
+          echo $ret | jq -r '.assets[] | select(.name | contains ("'$DEVICE'.img")).id' | \
           xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
           zstdmt -c --adapt --long lede.img | parallel --wc --block 1.99G --pipe \
-          'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'$DEVICE'-slim.img.zst.0{#} > /dev/null'
+          'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'$DEVICE'.img.zst.0{#} > /dev/null'
 
       - name: Send tg notification
         uses: appleboy/telegram-action@master
@@ -221,6 +179,64 @@ jobs:
       - name: Debug via tmate
         uses: klever1988/ssh2actions@main
         if: ${{ failure() && env.TG }}
+        with:
+          mode: ngrok
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SSH_PASSWORD: ${{secrets.SSH_PASSWORD}}
+          SSH_PUBKEY: ${{secrets.SSH_PUBKEY}}
+          NGROK_TOKEN: ${{secrets.NGROK_TOKEN}}
+
+  generate_firmware:
+    needs: build_packages
+    if: always()
+    name: Generate ${{ github.event.client_payload.device || github.event.inputs.device }} firmware
+    runs-on: ubuntu-18.04
+    env:
+      DEVICE: ${{ github.event.client_payload.device || github.event.inputs.device }}
+
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Generate firmware
+        run: |
+          sudo sysctl vm.swappiness=0
+          nohup sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk &
+          cd
+          sudo curl -sL https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
+          for i in {1..10}
+          do
+            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
+          done | zstdmt -d -o lede.img
+          LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
+          sudo losetup -P --direct-io $LOOP_DEVICE lede.img
+          mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
+          cd lede
+          cat $GITHUB_WORKSPACE/$DEVICE.config.seed > .config
+          echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
+          make defconfig && make -j$(($(nproc) + 1))
+          mkdir -p $GITHUB_WORKSPACE/release
+          mv $(ls -1 ./bin/targets/*/*/*img.gz) $GITHUB_WORKSPACE/release/$DEVICE.img.gz
+          echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
+          echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
+
+      - name: Upload release asset
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./release/*
+          tag: ${{env.DEVICE}}-${{env.strDate}}
+          file_glob: true
+          overwrite: true
+          release_name: ${{env.strDevice}} ${{env.strDate}} 自动发布
+
+      - name: Debug via tmate
+        uses: klever1988/ssh2actions@main
+        if: ${{ failure() }}
         with:
           mode: ngrok
         env:
