@@ -69,7 +69,6 @@ jobs:
       - name: Custom configure file
         run: |
           cd ~/lede
-          make defconfig && make tools/upx/compile -j$(($(nproc) + 1))
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed '/CONFIG_PACKAGE_luci-app-/d' > .config
           echo >> .config
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
@@ -90,6 +89,10 @@ jobs:
           rm -rf build_dir staging_dir; mv sdk/*/build_dir ./ && rsync -a --ignore-existing sdk/*/staging_dir/ ./staging_dir/
           rm -rf sdk
           fi
+          sed -i '/182.140.223.146/d' scripts/download.pl
+          sed -i '/\.cn\//d' scripts/download.pl
+          sed -i '/tencent/d' scripts/download.pl
+          make defconfig && make tools/upx/compile -j$(($(nproc) + 1))
           sed -i '/\(tools\|toolchain\)\/Makefile/d' Makefile
 
           echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
@@ -109,6 +112,7 @@ jobs:
           mkdir -p files/local_feed/core files/local_feed/base
           sudo mount --bind bin/targets/*/*/packages/ files/local_feed/core
           sudo mount --bind bin/packages/*/base/ files/local_feed/base
+          pushd bin/ && . ../files/etc/opkg/distfeeds.conf | tee ../files/etc/opkg/distfeeds.conf && popd
           make -j$(($(nproc) + 1))
           sudo umount files/local_feed/core files/local_feed/base
           
@@ -165,8 +169,13 @@ jobs:
           ret=$(curl -sH "$AUTH" "https://api.$cache_path/tags/cache")
           echo $ret | jq -r '.assets[] | select(.name | contains ("'$DEVICE'.img")).id' | \
           xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
-          zstdmt -c --adapt --long lede.img | parallel --wc --block 1.99G --pipe \
-          'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'$DEVICE'.img.zst.0{#} > /dev/null'
+          #zstdmt -c --adapt --long lede.img | parallel --wc --block 1.99G --pipe \
+          #'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'$DEVICE'.img.zst.0{#} > /dev/null'
+          zstdmt -c --long lede.img | split --numeric=1 -b 2000m - lede.$DEVICE.img.zst.
+          for f in *img.zst*
+          do
+            while true; do curl --data-binary @$f -H "$AUTH" -H 'Content-Type: application/octet-stream' "https://uploads.$cache_path/$cache_repo_id/assets?name=$f" && break || true; done
+          done
 
       - name: Send tg notification
         uses: appleboy/telegram-action@master
