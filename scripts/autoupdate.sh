@@ -34,6 +34,7 @@ else
 	fi
 fi
 
+sed -i 's/-slim//' md5sum.txt
 if [ `md5sum -c md5sum.txt|grep -c "OK"` -eq 0 ]; then
 	echo -e '\e[91m固件HASH值匹配失败，脚本退出\e[0m'
 	exit 1
@@ -53,8 +54,10 @@ echo -e '\e[92m解压已完成，准备编辑镜像文件，写入备份信息\e
 cd /mnt/img
 sysupgrade -b back.tar.gz
 tar zxf back.tar.gz
-echo -e '\e[91m注意：由于已知的问题，“网络接口”配置无法继承，重启后需要重新设置WAN拨号和LAN网段信息\e[0m'
-if ! grep -q macaddr /etc/config/network; then rm etc/config/network; fi
+if ! grep -q macaddr /etc/config/network; then
+	echo -e '\e[91m注意：由于已知的问题，“网络接口”配置无法继承，重启后需要重新设置WAN拨号和LAN网段信息\e[0m'
+	rm etc/config/network;
+fi
 echo -e '\e[92m备份文件已经写入，移除挂载\e[0m'
 #rm back.tar.gz
 cd /tmp/upg

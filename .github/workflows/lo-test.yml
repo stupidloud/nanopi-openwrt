@@ -115,7 +115,8 @@ jobs:
           pushd bin/ && . ../files/etc/opkg/distfeeds.conf | tee ../files/etc/opkg/distfeeds.conf && popd
           make -j$(($(nproc) + 1))
           sudo umount files/local_feed/core files/local_feed/base
-          
+          rm files/etc/opkg/distfeeds.conf
+
           echo "======================="
           echo "Space usage:"
           echo "======================="

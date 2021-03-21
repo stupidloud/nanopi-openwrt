@@ -17,4 +17,3 @@ sed -i 's/192.168.1.1/192.168.2.1/' package/base-files/files/bin/config_generate
 rm -rf files
 mv $GITHUB_WORKSPACE/files ./
 chmod 600 files/etc/dropbear/*
-sed -i "s/DEVICE/$DEVICE/" files/etc/opkg/distfeeds.conf
