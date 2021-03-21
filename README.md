@@ -20,9 +20,14 @@ https://github.com/klever1988/nanopi-openwrt/releases
 ```bash
 wget -qO- https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoupdate.sh | sh
 ```
+slim版
+```bash
+wget -qO- https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoupdate.sh | ver=-slim sh
+```
 (脚本由gary lau提供，非常感谢！)
 
 ### 固件特性：
+- slim版固件只有OpenWrt本体，但内置了“本地软件源”，包含大部分常用插件，不喜欢固件预装繁杂插件的人可以选择这个版本，进入后台软件包选装所需插件
 - 采用ext4文件系统，刷卡之后可自行使用分区工具对sd卡扩容根分区至最大
 - 支持usb无线网卡（RTL8821CU芯片，例如COMFAST 811AC），可以驱动无线网卡运行在5G频段
 - 使用[在线升级](#终端内在线升级方法)时，根分区会自动扩容，方便折腾
