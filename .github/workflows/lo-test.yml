@@ -73,7 +73,7 @@ jobs:
           echo >> .config
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
 
-      - name: Compile firmware
+      - name: Build and deploy packages
         run: |
           cd ~/lede
 
@@ -139,6 +139,7 @@ jobs:
           rm -rf bin tmp
           cd ..
           mv artifact release $GITHUB_WORKSPACE
+          cd $GITHUB_WORKSPACE/release/ && md5sum $DEVICE-slim.img.gz > $DEVICE-slim.img.md5
 
       - name: Deliver buildinfo
         uses: actions/upload-artifact@v2
@@ -151,10 +152,10 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./release/*
-          tag: ${{env.DEVICE}}-${{env.strDate}}
+          tag: ${{env.strDate}}
           file_glob: true
           overwrite: true
-          release_name: ${{env.strDevice}} ${{env.strDate}} 自动发布
+          release_name: ${{env.strDate}} 自动发布
 
       - name: Save cache state
         if: env.TG
@@ -230,6 +231,7 @@ jobs:
           make defconfig && make -j$(($(nproc) + 1))
           mkdir -p $GITHUB_WORKSPACE/release
           mv $(ls -1 ./bin/targets/*/*/*img.gz) $GITHUB_WORKSPACE/release/$DEVICE.img.gz
+          cd $GITHUB_WORKSPACE/release/ && md5sum $DEVICE.img.gz > $DEVICE.img.md5
           echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
           echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
 
@@ -238,10 +240,10 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./release/*
-          tag: ${{env.DEVICE}}-${{env.strDate}}
+          tag: ${{env.strDate}}
           file_glob: true
           overwrite: true
-          release_name: ${{env.strDevice}} ${{env.strDate}} 自动发布
+          release_name: ${{env.strDate}} 自动发布
 
       - name: Debug via tmate
         uses: klever1988/ssh2actions@main
