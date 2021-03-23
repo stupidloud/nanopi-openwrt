@@ -18,13 +18,14 @@ chmod +x /tmp/truncate /tmp/ddnz
 board_id=$(cat /etc/board.json | jsonfilter -e '@["model"].name' | tail -c 4 | tr -d "\n" | awk '{print tolower($0)}')
 mount -t tmpfs -o remount,size=650m tmpfs /tmp
 rm -rf /tmp/upg && mkdir /tmp/upg && cd /tmp/upg
-wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$(date +%Y-%m-%d)/$board_id$ver.img.gz -O $board_id.img.gz || true
+set +e
+wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$(date +%Y-%m-%d)/$board_id$ver.img.gz -O $board_id.img.gz
 if [ $? -eq 0 ]; then
 	wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$(date +%Y-%m-%d)/$board_id$ver.img.md5 -O md5sum.txt
 	echo -e '\e[92m今天固件已下载，准备解压\e[0m'
 else
 	echo -e '\e[91m今天的固件还没更新，尝试下载昨天的固件\e[0m'
-	wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d)/$board_id$ver.img.gz -O $board_id.img.gz || true
+	wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d)/$board_id$ver.img.gz -O $board_id.img.gz
 	if [ $? -eq 0 ]; then
 		wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d)/$board_id$ver.img.md5 -O md5sum.txt
 		echo -e '\e[92m昨天的固件已下载，准备解压\e[0m'
@@ -33,6 +34,7 @@ else
 		exit 1
 	fi
 fi
+set -e
 
 sed -i 's/-slim//' md5sum.txt
 if [ `md5sum -c md5sum.txt|grep -c "OK"` -eq 0 ]; then
