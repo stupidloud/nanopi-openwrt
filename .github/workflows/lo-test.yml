@@ -65,6 +65,8 @@ jobs:
           ./scripts/feeds install -a
           . $GITHUB_WORKSPACE/patches.sh
           . $GITHUB_WORKSPACE/merge_packages.sh
+          sed -i 's/..\/..\//$(TOPDIR)\/feeds\/packages\//' package/feeds/packages/baidupcs-web/Makefile
+          sed -i 's/..\/..\//$(TOPDIR)\/feeds\/packages\//' package/feeds/packages/filebrowser/Makefile
 
       - name: Custom configure file
         run: |
