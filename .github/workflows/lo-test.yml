@@ -49,7 +49,7 @@ jobs:
           if [ -d 'lede/.git' ]; then
           cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git remote set-branches --add origin openwrt-18.06
-          git fetch && git reset --hard origin/openwrt-18.06-k5.4 && git merge --commit --no-edit origin/openwrt-18.06
+          git fetch && git reset --hard origin/openwrt-18.06-k5.4 && git merge -X theirs --no-edit origin/openwrt-18.06
           else
           sudo chown $USER:$(id -gn) lede && (cd lede && git init && git remote add -t openwrt-18.06-k5.4 -f origin https://github.com/immortalwrt/immortalwrt && git checkout openwrt-18.06-k5.4)
           fi

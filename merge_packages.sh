@@ -21,11 +21,12 @@ merge_package https://github.com/coolsnowwolf/packages/trunk/kernel/ksmbd
 merge_package https://github.com/coolsnowwolf/packages/trunk/net/ksmbd-tools
 
 if [ $DEVICE = 'r2s' ]; then
-mkdir -p files/usr/bin files/etc/init.d files/etc/rc.d
-wget https://github.com/friendlyarm/friendlywrt/raw/master-v19.07.1/target/linux/rockchip-rk3328/base-files/usr/bin/start-rk3328-pwm-fan.sh -qNP files/usr/bin
-chmod +x files/usr/bin/start-rk3328-pwm-fan.sh
-wget https://github.com/friendlyarm/friendlywrt/raw/master-v19.07.1/target/linux/rockchip-rk3328/base-files/etc/init.d/fa-rk3328-pwmfan -qNP files/etc/init.d
-chmod +x files/etc/init.d/fa-rk3328-pwmfan
-ln -sf ../init.d/fa-rk3328-pwmfan files/etc/rc.d/S96fa-rk3328-pwmfan
-sed -i "s/enable '0'/enable '1'/" package/ctcgfw/luci-app-oled/root/etc/config/oled
+    mkdir -p files/usr/bin files/etc/init.d files/etc/rc.d
+    wget https://github.com/friendlyarm/friendlywrt/raw/master-v19.07.1/target/linux/rockchip-rk3328/base-files/usr/bin/start-rk3328-pwm-fan.sh -qNP files/usr/bin
+    chmod +x files/usr/bin/start-rk3328-pwm-fan.sh
+    wget https://github.com/friendlyarm/friendlywrt/raw/master-v19.07.1/target/linux/rockchip-rk3328/base-files/etc/init.d/fa-rk3328-pwmfan -qNP files/etc/init.d
+    chmod +x files/etc/init.d/fa-rk3328-pwmfan
+    ln -sf ../init.d/fa-rk3328-pwmfan files/etc/rc.d/S96fa-rk3328-pwmfan
+    merge_package https://github.com/NateLol/luci-app-oled
+    sed -i "s/enable '0'/enable '1'/" package/luci-app-oled/root/etc/config/oled
 fi
