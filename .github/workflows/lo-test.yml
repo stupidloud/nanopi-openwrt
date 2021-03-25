@@ -75,9 +75,6 @@ jobs:
           pushd luci
           ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/luci/{} | grep Only | grep lede | grep -E applications\|themes | awk '{print $3 $4}' | tr -d ':' | xargs -n1 -i mv {} ../lede/package/base/
           sed -i 's/include ..\/..\//include $(TOPDIR)\/feeds\/luci\//' ../lede/package/base/luci-*/Makefile
-          popd
-          sed -i 's/..\/..\//$(TOPDIR)\/feeds\/packages\//' package/feeds/packages/baidupcs-web/Makefile
-          sed -i 's/..\/..\//$(TOPDIR)\/feeds\/packages\//' package/feeds/packages/filebrowser/Makefile
 
       - name: Custom configure file
         run: |
