@@ -83,6 +83,8 @@ jobs:
         run: |
           cd ~/lede
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed '/CONFIG_PACKAGE_luci-app-/d' > .config
+          echo >> .config
+          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
 
       - name: Build and deploy packages
         run: |
@@ -109,7 +111,6 @@ jobs:
           cat $GITHUB_WORKSPACE/extra_packages.seed >> .config
           echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo CONFIG_PACKAGE_{}=y >> .config
-          find feeds/luci/applications -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo CONFIG_PACKAGE_{}=y >> .config
           make defconfig && cat .config
           while true; do make download -j && break || true; done
           make target/linux/compile -j$(($(nproc) + 1))
@@ -121,15 +122,13 @@ jobs:
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed '/CONFIG_PACKAGE_luci-app-/d' > .config
           echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
-          find feeds/luci/applications -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
           make defconfig
-          mkdir -p files/local_feed/core files/local_feed/base files/local_feed/luci
+          mkdir -p files/local_feed/core files/local_feed/base
           sudo mount --bind bin/targets/*/*/packages/ files/local_feed/core
           sudo mount --bind bin/packages/*/base/ files/local_feed/base
-          sudo mount --bind bin/packages/*/luci/ files/local_feed/luci
           pushd bin/ && . ../files/etc/opkg/distfeeds.conf | tee ../files/etc/opkg/distfeeds.conf && popd
           make -j$(($(nproc) + 1))
-          sudo umount files/local_feed/core files/local_feed/base files/local_feed/luci
+          sudo umount files/local_feed/core files/local_feed/base
           rm files/etc/opkg/distfeeds.conf
 
           echo "======================="
