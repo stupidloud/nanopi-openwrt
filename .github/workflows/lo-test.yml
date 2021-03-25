@@ -66,7 +66,7 @@ jobs:
           . $GITHUB_WORKSPACE/patches.sh
           . $GITHUB_WORKSPACE/merge_packages.sh
           rm -rf package/base; mkdir -p package/base; cd ../
-          svn export https://github.com/openwrt/packages/branches/openwrt-18.06 packages
+          svn export https://github.com/openwrt/packages/trunk packages
           pushd packages
           ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/packages/{} | grep Only | grep lede | grep -v -E lang\|devel\|ovn | awk '{print $3 $4}' | tr -d ':' | xargs -n1 -i mv {} ../lede/package/base/
           sed -i 's/include ..\/..\//include $(TOPDIR)\/feeds\/packages\//' ../lede/package/base/*/Makefile ../lede/feeds/packages/devel/ninja/ninja-cmake.mk
