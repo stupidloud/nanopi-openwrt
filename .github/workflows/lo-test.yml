@@ -60,6 +60,7 @@ jobs:
           if [ -d 'feeds' ]; then
             pushd feeds/packages; git restore .; popd
             pushd feeds/luci; git restore .; popd
+            pushd feeds/routing; git restore .; popd
           fi
           ./scripts/feeds update -a
           ./scripts/feeds install -a
