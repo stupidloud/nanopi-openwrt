@@ -195,12 +195,9 @@ jobs:
           ls *img.zst* | parallel --wc 'while true; do curl -T {} -H "$AUTH" -H "Content-Type: application/octet-stream" "https://uploads.$cache_path/$cache_repo_id/assets?name={}" && break || true; done'
 
       - name: Send tg notification
-        uses: appleboy/telegram-action@master
         if: env.TG
-        with:
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          args: The ${{env.DEVICE}} build ran completed at ${{job.status}}.
+        run: |
+          curl -k --data chat_id="${{secrets.TELEGRAM_CHAT_ID}}" --data "text=The ${{env.DEVICE}} build ran completed at ${{job.status}}." "https://api.telegram.org/bot${{secrets.TELEGRAM_BOT_TOKEN}}/sendMessage"
 
       - name: Debug via tmate
         uses: klever1988/ssh2actions@main
