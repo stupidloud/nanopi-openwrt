@@ -62,6 +62,7 @@ jobs:
             pushd feeds/packages; git restore .; popd
             pushd feeds/luci; git restore .; popd
             pushd feeds/routing; git restore .; popd
+            pushd feeds/telephony; git restore .; popd
           fi
           ./scripts/feeds update -a
           ./scripts/feeds install -a
