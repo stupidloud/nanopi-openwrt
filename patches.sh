@@ -24,3 +24,10 @@ if [ $DEVICE = 'r4s' ]; then
     git apply 6c3f6d2686679173b95495c47d861db1f41729dd.patch
     rm 6c3f6d2686679173b95495c47d861db1f41729dd.patch
 fi
+
+if [[ $DEVICE =~ ('r2s'|'r4s') ]]; then
+    wget https://github.com/coolsnowwolf/lede/raw/757e42d70727fe6b937bb31794a9ad4f5ce98081/target/linux/rockchip/config-default -NP target/linux/rockchip/
+    wget https://github.com/coolsnowwolf/lede/commit/f341ef96fe4b509a728ba1281281da96bac23673.patch
+    git apply f341ef96fe4b509a728ba1281281da96bac23673.patch
+    rm f341ef96fe4b509a728ba1281281da96bac23673.patch
+fi
