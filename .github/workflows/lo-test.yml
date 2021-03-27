@@ -48,8 +48,9 @@ jobs:
           mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
           if [ -d 'lede/.git' ]; then
           cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-          git remote set-branches --add origin openwrt-18.06
-          git fetch && git reset --hard origin/openwrt-18.06-k5.4 && git merge -X theirs --no-edit origin/openwrt-18.06
+          git fetch && git reset --hard origin/openwrt-18.06-k5.4
+          #git remote set-branches --add origin openwrt-18.06
+          #git merge -X theirs --no-edit origin/openwrt-18.06
           else
           sudo chown $USER:$(id -gn) lede && git clone -b openwrt-18.06-k5.4 --single-branch lede
           fi
