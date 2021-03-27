@@ -31,3 +31,7 @@ if [[ $DEVICE =~ ('r2s'|'r4s') ]]; then
     git apply f341ef96fe4b509a728ba1281281da96bac23673.patch
     rm f341ef96fe4b509a728ba1281281da96bac23673.patch
 fi
+
+sed -i '/182.140.223.146/d' scripts/download.pl
+sed -i '/\.cn\//d' scripts/download.pl
+sed -i '/tencent/d' scripts/download.pl

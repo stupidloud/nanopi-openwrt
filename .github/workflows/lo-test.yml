@@ -91,27 +91,7 @@ jobs:
       - name: Build and deploy packages
         run: |
           cd ~/lede
-
-          if [ ! -d build_dir ]; then
-          if [[ $DEVICE =~ ('r2s'|'r4s') ]]; then
-            sdk_src='https://downloads.openwrt.org/snapshots/targets/rockchip/armv8/openwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz'
-          elif [[ $DEVICE == 'r1s' ]]; then
-            sdk_src='https://downloads.openwrt.org/snapshots/targets/sunxi/cortexa53/openwrt-sdk-sunxi-cortexa53_gcc-8.4.0_musl.Linux-x86_64.tar.xz'
-          elif [ $DEVICE == 'r1s-h3' ]; then
-            sdk_src='https://downloads.openwrt.org/snapshots/targets/sunxi/cortexa7/openwrt-sdk-sunxi-cortexa7_gcc-8.4.0_musl_eabi.Linux-x86_64.tar.xz'
-          fi
-          mkdir sdk && wget -qO- $sdk_src | tar -xJf - -C sdk
-          rm -rf build_dir staging_dir; mv sdk/*/build_dir ./ && rsync -a --ignore-existing sdk/*/staging_dir/ ./staging_dir/
-          rm -rf sdk
-          fi
-          sed -i '/182.140.223.146/d' scripts/download.pl
-          sed -i '/\.cn\//d' scripts/download.pl
-          sed -i '/tencent/d' scripts/download.pl
-          make defconfig && make tools/upx/compile -j$(($(nproc) + 1))
-          sed -i '/\(tools\|toolchain\)\/Makefile/d' Makefile
-
           cat $GITHUB_WORKSPACE/extra_packages.seed >> .config
-          echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo CONFIG_PACKAGE_{}=y >> .config
           make defconfig && cat .config
           while true; do make download -j && break || true; done
@@ -122,7 +102,6 @@ jobs:
           gzip -f bin/targets/*/*/packages/Packages
 
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed '/CONFIG_PACKAGE_luci-app-/d' > .config
-          echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
           make defconfig
           mkdir -p files/local_feed/core files/local_feed/base
@@ -242,7 +221,6 @@ jobs:
           mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
           cd lede
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed > .config
-          echo -e '# CONFIG_SIGNED_PACKAGES is not set\n' >> .config
           make defconfig && make -j$(($(nproc) + 1))
           mkdir -p $GITHUB_WORKSPACE/release
           mv $(ls -1 ./bin/targets/*/*/*img.gz) $GITHUB_WORKSPACE/release/$DEVICE.img.gz
