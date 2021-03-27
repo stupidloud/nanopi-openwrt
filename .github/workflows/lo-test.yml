@@ -68,16 +68,18 @@ jobs:
           ./scripts/feeds install -a
           . $GITHUB_WORKSPACE/patches.sh
           . $GITHUB_WORKSPACE/merge_packages.sh
-          rm -rf package/base; mkdir -p package/base; cd ../
+          mkdir -p tmpkg; cd ../
           svn export https://github.com/openwrt/packages/trunk packages
           pushd packages
-          ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/packages/{} | grep Only | grep lede | grep -v -E lang\|devel\|ovn | awk '{print $3 $4}' | tr -d ':' | xargs -n1 -i mv {} ../lede/package/base/
-          sed -i 's/include ..\/..\//include $(TOPDIR)\/feeds\/packages\//' ../lede/package/base/*/Makefile ../lede/feeds/packages/devel/ninja/ninja-cmake.mk
+          ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/packages/{} | grep Only | grep lede | grep -v -E lang\|devel\|ovn | awk '{print $3 $4}' | tr -d ':' | xargs -n1 -i mv {} ../lede/tmpkg/
+          sed -i 's/include ..\/..\//include $(TOPDIR)\/feeds\/packages\//' ../lede/tmpkg/*/Makefile ../lede/feeds/packages/devel/ninja/ninja-cmake.mk
           popd
           svn export https://github.com/openwrt/luci/branches/openwrt-18.06 luci
           pushd luci
-          ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/luci/{} | grep Only | grep lede | grep -E applications\|themes | awk '{print $3 $4}' | tr -d ':' | xargs -n1 -i mv {} ../lede/package/base/
-          sed -i 's/include ..\/..\//include $(TOPDIR)\/feeds\/luci\//' ../lede/package/base/luci-*/Makefile
+          ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/luci/{} | grep Only | grep lede | grep -E applications\|themes | awk '{print $3 $4}' | tr -d ':' | xargs -n1 -i mv {} ../lede/tmpkg/
+          sed -i 's/include ..\/..\//include $(TOPDIR)\/feeds\/luci\//' ../lede/tmpkg/luci-*/Makefile
+          popd
+          cd lede; rsync -ach -del --no-t --progress tmpkg/ package/base/; rm tmpkg -rf
 
       - name: Custom configure file
         run: |
