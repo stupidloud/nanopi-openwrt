@@ -95,8 +95,10 @@ jobs:
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo CONFIG_PACKAGE_{}=y >> .config
           make defconfig && cat .config
           while true; do make download -j && break || true; done
-          make target/linux/compile -j$(($(nproc) + 1))
-          make package/compile -j$(($(nproc) + 1)) IGNORE_ERRORS=y
+          make tools/compile -j$[`nproc`+1]
+          make toolchain/compile -j$[`nproc`+1]
+          make target/linux/compile -j$[`nproc`+1]
+          make package/compile -j$[`nproc`+1] IGNORE_ERRORS=y
           make package/index
           sed -i "s/\-[a-z0-9]\{32\})/)/" bin/targets/*/*/packages/Packages bin/targets/*/*/packages/Packages.manifest
           gzip -f bin/targets/*/*/packages/Packages
@@ -108,7 +110,7 @@ jobs:
           sudo mount --bind bin/targets/*/*/packages/ files/local_feed/core
           sudo mount --bind bin/packages/*/base/ files/local_feed/base
           pushd bin/ && . ../files/etc/opkg/distfeeds.conf | tee ../files/etc/opkg/distfeeds.conf && popd
-          make -j$(($(nproc) + 1))
+          make -j$[`nproc`+1]
           sudo umount files/local_feed/core files/local_feed/base
           rm files/etc/opkg/distfeeds.conf
 
@@ -221,7 +223,7 @@ jobs:
           mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
           cd lede
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed > .config
-          make defconfig && make -j$(($(nproc) + 1))
+          make defconfig && make -j$[`nproc`+1]
           mkdir -p $GITHUB_WORKSPACE/release
           mv $(ls -1 ./bin/targets/*/*/*img.gz) $GITHUB_WORKSPACE/release/$DEVICE.img.gz
           cd $GITHUB_WORKSPACE/release/ && md5sum $DEVICE.img.gz > $DEVICE.img.md5
