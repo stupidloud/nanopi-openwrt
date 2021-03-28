@@ -11,8 +11,8 @@ proceed_command fdisk
 proceed_command sfdisk
 proceed_command losetup
 proceed_command resize2fs
-wget -P /tmp https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/raw/zstd-bin/truncate
-wget -P /tmp https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/raw/zstd-bin/ddnz
+wget -P /tmp https://ghproxy.com/https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/truncate
+wget -P /tmp https://ghproxy.com/https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/ddnz
 chmod +x /tmp/truncate /tmp/ddnz
 
 board_id=$(cat /etc/board.json | jsonfilter -e '@["model"].name' | tail -c 4 | tr -d "\n" | awk '{print tolower($0)}')
