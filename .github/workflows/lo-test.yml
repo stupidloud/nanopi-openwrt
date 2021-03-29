@@ -85,8 +85,6 @@ jobs:
         run: |
           cd ~/lede
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed '/CONFIG_PACKAGE_luci-app-/d' > .config
-          echo >> .config
-          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
 
       - name: Build and deploy packages
         run: |

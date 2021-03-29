@@ -82,8 +82,8 @@ CONFIG_PACKAGE_kmod-zram=y
 CONFIG_DROPBEAR_ECC=y
 CONFIG_DROPBEAR_ECC_FULL=y
 
-CONFIG_PACKAGE_kmod-drm-rockchip
-CONFIG_PACKAGE_kmod-gpu-lima
+CONFIG_PACKAGE_kmod-drm-rockchip=y
+CONFIG_PACKAGE_kmod-gpu-lima=y
 CONFIG_PACKAGE_kmod-rtl8821cu=y
 CONFIG_PACKAGE_iw=y
 CONFIG_PACKAGE_iwinfo=y
