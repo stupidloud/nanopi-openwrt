@@ -15,7 +15,7 @@ wget -P /tmp https://ghproxy.com/https://raw.githubusercontent.com/klever1988/na
 wget -P /tmp https://ghproxy.com/https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/ddnz
 chmod +x /tmp/truncate /tmp/ddnz
 
-board_id=$(cat /etc/board.json | jsonfilter -e '@["model"].name' | tail -c 4 | tr -d "\n" | awk '{print tolower($0)}')
+board_id=$(cat /etc/board.json | jsonfilter -e '@["model"].id' | sed 's/friendlyarm,nanopi-//;s/-h5//')
 mount -t tmpfs -o remount,size=650m tmpfs /tmp
 rm -rf /tmp/upg && mkdir /tmp/upg && cd /tmp/upg
 set +e
