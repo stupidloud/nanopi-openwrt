@@ -11,7 +11,7 @@ sed -i "/dep.*INCLUDE_.*=n/d" package/ctcgfw/luci-app-turboacc/Makefile
 
 sed -i '/Installed-Time/a\sed -i "s/\\([[:digit:]]\)-[a-z0-9]\{32\}/\1/" $(1)/usr/lib/opkg/status\' include/rootfs.mk
 find . -type f -name nft-qos.config | xargs sed -i "s/option limit_enable '1'/option limit_enable '0'/"
-sed -i "/\/etc\/coremark\.sh/d" package/feeds/packages/coremark/Makefile
+sed -i "/\/etc\/coremark\.sh/d" package/feeds/packages/coremark/coremark
 sed -i 's/192.168.1.1/192.168.2.1/' package/base-files/files/bin/config_generate
 
 rm -rf files
