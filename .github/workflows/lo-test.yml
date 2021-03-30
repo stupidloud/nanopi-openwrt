@@ -96,6 +96,7 @@ jobs:
           make defconfig && cat .config
           while true; do make download -j && break || true; done
           make -j$[`nproc`+1] IGNORE_ERRORS=1
+          mv `ls ~/lede/bin/targets/*/*/*imagebuilder*xz` ~/ib-$DEVICE.tar.xz
 
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed '/CONFIG_PACKAGE_luci-app-/d' > .config
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
@@ -162,6 +163,8 @@ jobs:
           ret=$(curl -sH "$AUTH" "https://api.$cache_path/tags/cache")
           echo $ret | jq -r '.assets[] | select(.name | contains ("'$DEVICE'.img")).id' | \
           xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
+          echo $ret | jq -r '.assets[] | select(.name == "ib-'$DEVICE'.tar.xz").id' | \
+          xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
           #zstdmt -c --adapt --long lede.img | parallel --wc --block 1.99G --pipe \
           #'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'$DEVICE'.img.zst.0{#} > /dev/null'
           zstdmt -c --long lede.img | split --numeric=1 -b 2000m - lede.$DEVICE.img.zst.
@@ -169,7 +172,7 @@ jobs:
           #do
           #  while true; do curl --data-binary @$f -H "$AUTH" -H 'Content-Type: application/octet-stream' "https://uploads.$cache_path/$cache_repo_id/assets?name=$f" && break || true; done
           #done
-          ls *img.zst* | parallel --wc 'while true; do curl -T {} -H "$AUTH" -H "Content-Type: application/octet-stream" "https://uploads.$cache_path/$cache_repo_id/assets?name={}" && break || true; done'
+          ls *img.zst* ib-$DEVICE.tar.xz | parallel --wc 'while true; do curl -T {} -H "$AUTH" -H "Content-Type: application/octet-stream" "https://uploads.$cache_path/$cache_repo_id/assets?name={}" && break || true; done'
 
       - name: Send tg notification
         if: env.TG
