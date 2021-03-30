@@ -86,7 +86,7 @@ jobs:
       - name: Custom configure file
         run: |
           cd ~/lede
-          cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed '/CONFIG_PACKAGE_luci-app-/d' > .config
+          cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed 's/\(CONFIG_PACKAGE_luci-app-.*=\)y/\1m/' > .config
 
       - name: Build and deploy packages
         run: |
@@ -97,17 +97,6 @@ jobs:
           while true; do make download -j && break || true; done
           make -j$[`nproc`+1] IGNORE_ERRORS=1
           mv `ls ~/lede/bin/targets/*/*/*imagebuilder*xz` ~/ib-$DEVICE.tar.xz
-
-          cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed '/CONFIG_PACKAGE_luci-app-/d' > .config
-          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo "# CONFIG_PACKAGE_{} is not set" >> .config
-          make defconfig
-          mkdir -p files/local_feed/core files/local_feed/base
-          sudo mount --bind bin/targets/*/*/packages/ files/local_feed/core
-          sudo mount --bind bin/packages/*/base/ files/local_feed/base
-          pushd bin/ && . ../files/etc/opkg/distfeeds.conf | tee ../files/etc/opkg/distfeeds.conf && popd
-          make -j$[`nproc`+1]
-          sudo umount files/local_feed/core files/local_feed/base
-          rm files/etc/opkg/distfeeds.conf
 
           echo "======================="
           echo "Space usage:"
@@ -191,6 +180,49 @@ jobs:
           SSH_PUBKEY: ${{secrets.SSH_PUBKEY}}
           NGROK_TOKEN: ${{secrets.NGROK_TOKEN}}
 
+  generate_slim_firmware:
+    needs: build_packages
+    name: Generate ${{ github.event.client_payload.device || github.event.inputs.device }} slim firmware
+    runs-on: ubuntu-18.04
+    env:
+      DEVICE: ${{ github.event.client_payload.device || github.event.inputs.device }}
+
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Generate firmware
+        run: |
+          sudo sysctl vm.swappiness=0
+          curl -L https://github.com/klever1988/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
+          mv *imagebuilder* ib && cd ib
+          mv $GITHUB_WORKSPACE/files ./
+          chmod 600 files/etc/dropbear/*
+          eval `cat .config | grep \" | head -n 10`
+          . files/etc/opkg/distfeeds.conf | tee files/etc/opkg/distfeeds.conf
+          mkdir -p files/local_feed && sudo mount --bind packages files/local_feed
+          sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
+          sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
+          make image PACKAGES="$PACKAGES $LP luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn" FILES="files"
+
+          mkdir -p $GITHUB_WORKSPACE/release
+          mv $(ls -1 ./bin/targets/*/*/*img.gz) $GITHUB_WORKSPACE/release/$DEVICE-slim.img.gz
+          cd $GITHUB_WORKSPACE/release/ && md5sum $DEVICE-slim.img.gz > $DEVICE-slim.img.md5
+          echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
+          echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
+
+      - name: Upload release asset
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./release/*
+          tag: ${{env.strDate}}
+          file_glob: true
+          overwrite: true
+          release_name: ${{env.strDate}} 自动发布
+
   generate_firmware:
     needs: build_packages
     if: always()
@@ -208,19 +240,21 @@ jobs:
       - name: Generate firmware
         run: |
           sudo sysctl vm.swappiness=0
-          nohup sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk &
-          cd
-          sudo curl -sL https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
-          for i in {1..10}
-          do
-            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
-          done | zstdmt -d -o lede.img
-          LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
-          sudo losetup -P --direct-io $LOOP_DEVICE lede.img
-          mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
-          cd lede
-          cat $GITHUB_WORKSPACE/$DEVICE.config.seed > .config
-          make defconfig && make -j$[`nproc`+1]
+          curl -L https://github.com/klever1988/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
+          mv *imagebuilder* ib && cd ib
+          mv $GITHUB_WORKSPACE/files ./
+          chmod 600 files/etc/dropbear/*
+          eval `cat .config | grep \" | head -n 10`
+          . files/etc/opkg/distfeeds.conf | tee files/etc/opkg/distfeeds.conf
+          sed -i '/local/d;s/#//' files/etc/opkg/distfeeds.conf
+          cat files/etc/opkg/distfeeds.conf
+          sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
+          sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
+          PACKAGES=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed | grep CONFIG_PACKAGE | sed '/dnsmasq_full_dhcpv6/d;/INCLUDE/d' | grep -v luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs echo)
+          PACKAGES=$(echo $PACKAGES `cat $GITHUB_WORKSPACE/$DEVICE.config.seed | grep CONFIG_PACKAGE | sed '/dnsmasq_full_dhcpv6/d;/INCLUDE/d' | grep luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//'`)
+          LP=$(cd packages; cat $GITHUB_WORKSPACE/$DEVICE.config.seed | grep luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | sed 's/app/i18n/' | xargs -n1 -i sh -c 'ls {}-zh-cn* 2>/dev/null' | sed 's/zh-.*.ipk/zh-cn/' | xargs echo;)
+          make image PACKAGES="$PACKAGES $LP luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn" FILES="files"
+
           mkdir -p $GITHUB_WORKSPACE/release
           mv $(ls -1 ./bin/targets/*/*/*img.gz) $GITHUB_WORKSPACE/release/$DEVICE.img.gz
           cd $GITHUB_WORKSPACE/release/ && md5sum $DEVICE.img.gz > $DEVICE.img.md5
@@ -236,15 +270,3 @@ jobs:
           file_glob: true
           overwrite: true
           release_name: ${{env.strDate}} 自动发布
-
-      - name: Debug via tmate
-        uses: klever1988/ssh2actions@main
-        if: ${{ failure() }}
-        with:
-          mode: ngrok
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          SSH_PASSWORD: ${{secrets.SSH_PASSWORD}}
-          SSH_PUBKEY: ${{secrets.SSH_PUBKEY}}
-          NGROK_TOKEN: ${{secrets.NGROK_TOKEN}}
