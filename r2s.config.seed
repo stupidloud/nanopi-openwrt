@@ -84,6 +84,7 @@ CONFIG_DROPBEAR_ECC_FULL=y
 CONFIG_PACKAGE_kmod-drm-rockchip=y
 CONFIG_PACKAGE_kmod-gpu-lima=y
 CONFIG_PACKAGE_kmod-rtl8821cu=y
+CONFIG_PACKAGE_kmod-rtl88x2bu=y
 CONFIG_PACKAGE_iw=y
 CONFIG_PACKAGE_iwinfo=y
 CONFIG_PACKAGE_wpad-wolfssl=y
