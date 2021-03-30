@@ -64,7 +64,6 @@ CONFIG_PACKAGE_sfdisk=y
 CONFIG_PACKAGE_usb-modeswitch=y
 CONFIG_PACKAGE_wget=y
 CONFIG_PACKAGE_collectd-mod-ping=y
-CONFIG_PACKAGE_collectd-mod-cpufreq=y
 CONFIG_PACKAGE_collectd-mod-thermal=y
 # CONFIG_OPENSSL_ENGINE_BUILTIN_AFALG is not set
 # CONFIG_OPENSSL_ENGINE_BUILTIN_DEVCRYPTO is not set
