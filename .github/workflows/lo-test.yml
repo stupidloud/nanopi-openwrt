@@ -67,7 +67,7 @@ jobs:
           [ -d 'package/base' ] && mv package/base ~/
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          [ -d '~/package/base' ] && mv ~/package/base ./
+          [ -d '~/base' ] && mv ~/base package/
           . $GITHUB_WORKSPACE/patches.sh
           . $GITHUB_WORKSPACE/merge_packages.sh
           mkdir -p tmpkg; cd ../
