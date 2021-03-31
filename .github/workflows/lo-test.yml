@@ -205,7 +205,8 @@ jobs:
           mkdir -p files/local_feed && sudo mount --bind packages files/local_feed
           sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
           sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
-          make image PACKAGES="$PACKAGES $LP luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn" FILES="files"
+          PACKAGES=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed | grep CONFIG_PACKAGE | sed '/dnsmasq_full_dhcpv6/d;/INCLUDE/d' | grep -v luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs echo)
+          make image PACKAGES="$PACKAGES $LUCI $LP luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn" FILES="files"
 
           mkdir -p $GITHUB_WORKSPACE/release
           mv $(ls -1 ./bin/targets/*/*/*img.gz) $GITHUB_WORKSPACE/release/$DEVICE-slim.img.gz
@@ -251,9 +252,9 @@ jobs:
           sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
           sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
           PACKAGES=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed | grep CONFIG_PACKAGE | sed '/dnsmasq_full_dhcpv6/d;/INCLUDE/d' | grep -v luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs echo)
-          PACKAGES=$(echo $PACKAGES `cat $GITHUB_WORKSPACE/$DEVICE.config.seed | grep CONFIG_PACKAGE | sed '/dnsmasq_full_dhcpv6/d;/INCLUDE/d' | grep luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//'`)
-          LP=$(cd packages; cat $GITHUB_WORKSPACE/$DEVICE.config.seed | grep luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | sed 's/app/i18n/' | xargs -n1 -i sh -c 'ls {}-zh-cn* 2>/dev/null' | sed 's/zh-.*.ipk/zh-cn/' | xargs echo;)
-          make image PACKAGES="$PACKAGES $LP luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn" FILES="files"
+          LUCI=$(echo $PACKAGES `cat $GITHUB_WORKSPACE/$DEVICE.config.seed | grep CONFIG_PACKAGE | sed '/dnsmasq_full_dhcpv6/d;/INCLUDE/d' | grep luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//'`)
+          LP=$(cd packages; echo $LUCI | sed 's/app/i18n/' | xargs -n1 -i sh -c 'ls {}-zh-cn* 2>/dev/null' | sed 's/zh-.*.ipk/zh-cn/')
+          make image PACKAGES="$PACKAGES $LUCI $LP luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn" FILES="files"
 
           mkdir -p $GITHUB_WORKSPACE/release
           mv $(ls -1 ./bin/targets/*/*/*img.gz) $GITHUB_WORKSPACE/release/$DEVICE.img.gz
