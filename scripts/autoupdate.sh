@@ -53,6 +53,7 @@ losetup -P $lodev FriendlyWrt.img
 mkdir -p /mnt/img
 mount -t ext4 ${lodev}p2 /mnt/img
 echo -e '\e[92m解压已完成，准备编辑镜像文件，写入备份信息\e[0m'
+sleep 10
 cd /mnt/img
 sysupgrade -b back.tar.gz
 tar zxf back.tar.gz
