@@ -198,10 +198,7 @@ jobs:
           sudo sysctl vm.swappiness=0
           curl -L https://github.com/klever1988/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
           mv *imagebuilder* ib && cd ib
-          mv $GITHUB_WORKSPACE/files ./
-          chmod 600 files/etc/dropbear/*
-          eval `cat .config | grep \" | head -n 10`
-          . files/etc/opkg/distfeeds.conf | tee files/etc/opkg/distfeeds.conf
+          . $GITHUB_WORKSPACE/merge_files.sh
           mkdir -p files/local_feed && sudo mount --bind packages files/local_feed
           sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
           sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
@@ -243,12 +240,8 @@ jobs:
           sudo sysctl vm.swappiness=0
           curl -L https://github.com/klever1988/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
           mv *imagebuilder* ib && cd ib
-          mv $GITHUB_WORKSPACE/files ./
-          chmod 600 files/etc/dropbear/*
-          eval `cat .config | grep \" | head -n 10`
-          . files/etc/opkg/distfeeds.conf | tee files/etc/opkg/distfeeds.conf
+          . $GITHUB_WORKSPACE/merge_files.sh
           sed -i '/local/d;s/#//' files/etc/opkg/distfeeds.conf
-          cat files/etc/opkg/distfeeds.conf
           sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
           sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
           PACKAGES=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed | grep CONFIG_PACKAGE | sed '/dnsmasq_full_dhcpv6/d;/INCLUDE/d' | grep -v luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs echo)
