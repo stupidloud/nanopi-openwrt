@@ -64,12 +64,12 @@ jobs:
             pushd feeds/routing; git restore .; popd
             pushd feeds/telephony; git restore .; popd
           fi
-          [ -d package/base ] && mv package/base ~/
+          rm -rf package/base luci package/luci-app-oled
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          [ -d ~/base ] && mv ~/base package/
           . $GITHUB_WORKSPACE/patches.sh
           . $GITHUB_WORKSPACE/merge_packages.sh
+          cd
           svn export https://github.com/openwrt/luci/branches/openwrt-18.06 luci
           pushd luci
           ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/luci/{} | grep Only | grep lede | grep -E applications\|themes | awk '{print $4}' | xargs -n1 -i echo CONFIG_PACKAGE_{}=m >> ~/lede/more_luci.txt
@@ -79,6 +79,7 @@ jobs:
         run: |
           cd ~/lede
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed 's/\(CONFIG_PACKAGE_luci-app-[^A-Z]*=\)y/\1m/' > .config
+          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo CONFIG_PACKAGE_{}=m >> .config
           cat $GITHUB_WORKSPACE/extra_packages.seed >> .config
           cat more_luci.txt >> .config
           make defconfig && cat .config
