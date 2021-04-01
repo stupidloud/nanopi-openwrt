@@ -70,30 +70,22 @@ jobs:
           [ -d ~/base ] && mv ~/base package/
           . $GITHUB_WORKSPACE/patches.sh
           . $GITHUB_WORKSPACE/merge_packages.sh
-          mkdir -p tmpkg; cd ../
-          svn export https://github.com/openwrt/packages/trunk packages
-          pushd packages
-          ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/packages/{} | grep Only | grep lede | grep -v -E lang\|devel\|ovn | awk '{print $3 $4}' | tr -d ':' | xargs -n1 -i mv {} ../lede/tmpkg/
-          sed -i 's/include ..\/..\//include $(TOPDIR)\/feeds\/packages\//' ../lede/tmpkg/*/Makefile ../lede/feeds/packages/devel/ninja/ninja-cmake.mk
-          popd
           svn export https://github.com/openwrt/luci/branches/openwrt-18.06 luci
           pushd luci
-          ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/luci/{} | grep Only | grep lede | grep -E applications\|themes | awk '{print $3 $4}' | tr -d ':' | xargs -n1 -i mv {} ../lede/tmpkg/
-          sed -i 's/include ..\/..\//include $(TOPDIR)\/feeds\/luci\//' ../lede/tmpkg/luci-*/Makefile
+          ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/luci/{} | grep Only | grep lede | grep -E applications\|themes | awk '{print $4}' | xargs -n1 -i echo CONFIG_PACKAGE_{}=m >> ~/lede/more_luci.txt
           popd
-          cd lede; rsync -ach -del --no-t --progress tmpkg/ package/base/; rm tmpkg -rf
 
       - name: Custom configure file
         run: |
           cd ~/lede
-          cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed 's/\(CONFIG_PACKAGE_luci-app-.*=\)y/\1m/' > .config
+          cat $GITHUB_WORKSPACE/$DEVICE.config.seed | sed 's/\(CONFIG_PACKAGE_luci-app-[^A-Z]*=\)y/\1m/' > .config
+          cat $GITHUB_WORKSPACE/extra_packages.seed >> .config
+          cat more_luci.txt >> .config
+          make defconfig && cat .config
 
       - name: Build and deploy packages
         run: |
           cd ~/lede
-          cat $GITHUB_WORKSPACE/extra_packages.seed >> .config
-          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo CONFIG_PACKAGE_{}=m >> .config
-          make defconfig && cat .config
           while true; do make download -j && break || true; done
           make -j$[`nproc`+1] IGNORE_ERRORS=1
           mv `ls ~/lede/bin/targets/*/*/*imagebuilder*xz` ~/ib-$DEVICE.tar.xz
