@@ -64,10 +64,9 @@ jobs:
             pushd feeds/routing; git restore .; popd
             pushd feeds/telephony; git restore .; popd
           fi
-          [ -d package/base ] && mv package/base ~/
+          [ -d package/base ] && rm -rf package/base
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          [ -d ~/base ] && mv ~/base package/
           . $GITHUB_WORKSPACE/patches.sh
           . $GITHUB_WORKSPACE/merge_packages.sh
           svn export https://github.com/openwrt/luci/branches/openwrt-18.06 luci
