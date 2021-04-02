@@ -22,6 +22,7 @@ if [ $DEVICE = 'r4s' ]; then
     sed -i 's/ctcgfw/kernel/g' 6c3f6d2686679173b95495c47d861db1f41729dd.patch
     git apply 6c3f6d2686679173b95495c47d861db1f41729dd.patch
     rm 6c3f6d2686679173b95495c47d861db1f41729dd.patch
+    sed -i 's/r8169/r8168/' target/linux/rockchip/image/armv8.mk
 fi
 
 if [[ $DEVICE =~ ('r2s'|'r4s') ]]; then
