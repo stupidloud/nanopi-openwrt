@@ -26,6 +26,7 @@ if [ $DEVICE = 'r4s' ]; then
 fi
 
 if [[ $DEVICE =~ ('r2s'|'r4s') ]]; then
+    git revert --no-edit 2d6e43739c8918ba74ff62af529eb6c2000afd67
     wget https://github.com/coolsnowwolf/lede/raw/757e42d70727fe6b937bb31794a9ad4f5ce98081/target/linux/rockchip/config-default -NP target/linux/rockchip/
     wget https://github.com/coolsnowwolf/lede/commit/f341ef96fe4b509a728ba1281281da96bac23673.patch
     git apply f341ef96fe4b509a728ba1281281da96bac23673.patch
