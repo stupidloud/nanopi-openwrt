@@ -16,7 +16,7 @@ wget -P /tmp https://ghproxy.com/https://raw.githubusercontent.com/klever1988/na
 chmod +x /tmp/truncate /tmp/ddnz
 
 board_id=$(cat /etc/board.json | jsonfilter -e '@["model"].id' | sed 's/friendlyarm,nanopi-//;s/-h5//')
-mount -t tmpfs -o remount,size=650m tmpfs /tmp
+mount -t tmpfs -o remount,size=850m tmpfs /tmp
 rm -rf /tmp/upg && mkdir /tmp/upg && cd /tmp/upg
 set +e
 wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$(date +%Y-%m-%d)/$board_id$ver.img.gz -O $board_id.img.gz
