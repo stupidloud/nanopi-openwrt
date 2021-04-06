@@ -104,33 +104,20 @@ jobs:
         run: |
           cd
           mkdir -p ./artifact/buildinfo
-          mkdir -p ./release
           cd lede
           cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ../artifact/buildinfo/
           cp -rf .config ../artifact/buildinfo/
-          mv $(ls -1 ./bin/targets/*/*/*img.gz) ../release/$DEVICE-slim.img.gz
           echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
           echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
           rm -rf bin tmp
           cd ..
-          mv artifact release $GITHUB_WORKSPACE
-          cd $GITHUB_WORKSPACE/release/ && md5sum $DEVICE-slim.img.gz > $DEVICE-slim.img.md5
+          mv artifact $GITHUB_WORKSPACE
 
       - name: Deliver buildinfo
         uses: actions/upload-artifact@v2
         with:
           name: OpenWrt_buildinfo
           path: ./artifact/buildinfo/
-
-      - name: Upload release asset
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./release/*
-          tag: ${{env.strDate}}
-          file_glob: true
-          overwrite: true
-          release_name: ${{env.strDate}} 自动发布
 
       - name: Save cache state
         if: env.TG
