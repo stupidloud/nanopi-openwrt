@@ -88,6 +88,7 @@ jobs:
         run: |
           cd ~/lede
           while true; do make download -j && break || true; done
+          make package/feeds/packages/lua-maxminddb/clean
           make -j$[`nproc`+1] IGNORE_ERRORS=1
           mv `ls ~/lede/bin/targets/*/*/*imagebuilder*xz` ~/ib-$DEVICE.tar.xz
 
