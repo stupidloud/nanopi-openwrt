@@ -66,8 +66,8 @@ jobs:
           fi
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          . $GITHUB_WORKSPACE/patches.sh
           . $GITHUB_WORKSPACE/merge_packages.sh
+          . $GITHUB_WORKSPACE/patches.sh
           cd
           svn export https://github.com/openwrt/luci/branches/openwrt-18.06 luci
           echo > more_luci.txt
