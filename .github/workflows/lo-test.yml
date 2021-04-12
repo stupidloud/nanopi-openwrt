@@ -278,6 +278,7 @@ jobs:
           mkdir -p $GITHUB_WORKSPACE/release
           mv $(ls -1 ./bin/targets/*/*/*img.gz) $GITHUB_WORKSPACE/release/$DEVICE-with-docker.img.gz
           cd $GITHUB_WORKSPACE/release/ && md5sum $DEVICE-with-docker.img.gz > $DEVICE-with-docker.img.gz.md5
+          gzip -dc $DEVICE-with-docker.img.gz | md5sum | sed "s/-/$DEVICE-with-docker.img/" > $DEVICE-with-docker.img.md5
           echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
           echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
 
