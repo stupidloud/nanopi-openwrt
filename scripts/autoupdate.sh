@@ -11,6 +11,7 @@ proceed_command fdisk
 proceed_command sfdisk
 proceed_command losetup
 proceed_command resize2fs
+opkg install coreutils-truncate || true
 wget -P /tmp https://ghproxy.com/https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/truncate
 wget -P /tmp https://ghproxy.com/https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/ddnz
 chmod +x /tmp/truncate /tmp/ddnz
@@ -45,7 +46,7 @@ fi
 mv $board_id.img FriendlyWrt.img
 
 bs=`expr $(cat /sys/block/mmcblk0/size) \* 512`
-../truncate -s $bs FriendlyWrt.img
+truncate -s $bs FriendlyWrt.img || ../truncate -s $bs FriendlyWrt.img
 echo ", +" | sfdisk -N 2 FriendlyWrt.img
 
 lodev=$(losetup -f)
