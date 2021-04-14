@@ -19,3 +19,4 @@ merge_package https://github.com/project-lede/luci-app-godproxy
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd luci-app-ksmbd
 merge_package https://github.com/coolsnowwolf/packages/trunk/kernel/ksmbd
 merge_package https://github.com/coolsnowwolf/packages/trunk/net/ksmbd-tools
+merge_package https://github.com/Beginner-Go/luci-app-tencentddns
