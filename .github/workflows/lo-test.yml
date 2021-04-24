@@ -48,11 +48,11 @@ jobs:
           mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
           if [ -d 'lede/.git' ]; then
           cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
-          git fetch && git reset --hard origin/openwrt-18.06-k5.4
-          #git remote set-branches --add origin openwrt-18.06
-          #git merge -X theirs --no-edit origin/openwrt-18.06
+          git fetch && git reset --hard origin/openwrt-21.02
+          #git remote set-branches --add origin openwrt-21.02
+          #git merge -X theirs --no-edit origin/openwrt-21.02
           else
-          sudo chown $USER:$(id -gn) lede && git clone -b openwrt-18.06-k5.4 --single-branch https://github.com/immortalwrt/immortalwrt/tree/openwrt-21.02 lede
+          sudo chown $USER:$(id -gn) lede && git clone -b openwrt-21.02 --single-branch https://github.com/immortalwrt/immortalwrt lede
           fi
 
       - name: Update feeds and packages
@@ -69,7 +69,7 @@ jobs:
           . $GITHUB_WORKSPACE/merge_packages.sh
           . $GITHUB_WORKSPACE/patches.sh
           cd
-          svn export https://github.com/openwrt/luci/branches/openwrt-18.06 luci
+          svn export https://github.com/openwrt/luci/branches/openwrt-21.02 luci
           echo > more_luci.txt
           pushd luci
           ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/luci/{} | grep Only | grep lede | grep -E applications\|themes | awk '{print $4}' | xargs -n1 -i echo CONFIG_PACKAGE_{}=m >> ~/lede/more_luci.txt
