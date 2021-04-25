@@ -1,10 +1,9 @@
-CONFIG_TARGET_rockchip=y
-CONFIG_TARGET_rockchip_armv8=y
-CONFIG_TARGET_rockchip_armv8_DEVICE_friendlyarm_nanopi-r2s=y
+CONFIG_TARGET_x86=y
+CONFIG_TARGET_x86_64=y
+CONFIG_TARGET_x86_64_DEVICE_generic=y
 CONFIG_DEVEL=y
 # CONFIG_CCACHE is not set
 CONFIG_TARGET_OPTIONS=y
-CONFIG_TARGET_OPTIMIZATION="-O3 -pipe -march=armv8-a+crypto+crc -mcpu=cortex-a53+crypto+crc -mtune=cortex-a53"
 CONFIG_TARGET_ROOTFS_PARTSIZE=600
 CONFIG_TARGET_ROOTFS_EXT4FS=y
 # CONFIG_TARGET_ROOTFS_SQUASHFS is not set
@@ -22,7 +21,6 @@ CONFIG_PACKAGE_luci-app-aria2=y
 CONFIG_PACKAGE_luci-app-arpbind=y
 CONFIG_PACKAGE_luci-app-baidupcs-web=y
 CONFIG_PACKAGE_luci-app-cifsd=y
-CONFIG_PACKAGE_luci-app-cpufreq=y
 CONFIG_PACKAGE_luci-app-ddns=y
 CONFIG_PACKAGE_ddnsto=y
 CONFIG_PACKAGE_luci-app-ddnsto=y
@@ -99,8 +97,6 @@ CONFIG_PACKAGE_kmod-zram=y
 CONFIG_DROPBEAR_ECC=y
 CONFIG_DROPBEAR_ECC_FULL=y
 
-CONFIG_PACKAGE_kmod-drm-rockchip=y
-CONFIG_PACKAGE_kmod-gpu-lima=y
 CONFIG_PACKAGE_kmod-mt76x0u=y
 CONFIG_PACKAGE_kmod-mt76x2u=y
 CONFIG_PACKAGE_kmod-rtl8821cu=y
@@ -111,5 +107,3 @@ CONFIG_PACKAGE_wpad-wolfssl=y
 CONFIG_DRIVER_11AC_SUPPORT=y
 CONFIG_DRIVER_11N_SUPPORT=y
 CONFIG_DRIVER_11W_SUPPORT=y
-
-CONFIG_PACKAGE_luci-app-oled=y
