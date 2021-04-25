@@ -263,6 +263,9 @@ jobs:
 
       - name: Generate firmware
         run: |
+          if [[ ${{ github.event.client_payload.device || github.event.inputs.device }} == *"r1s"* ]]; then
+            sudo poweroff
+          fi
           sudo sysctl vm.swappiness=0
           curl -L https://github.com/klever1988/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
           mv *imagebuilder* ib && cd ib
