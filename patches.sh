@@ -1,7 +1,7 @@
-sed -i "s/option hw_flow '1'/option hw_flow '0'/" package/ctcgfw/luci-app-turboacc/root/etc/config/turboacc
-sed -i "s/option sfe_flow '1'/option sfe_flow '0'/" package/ctcgfw/luci-app-turboacc/root/etc/config/turboacc
-sed -i "s/option sfe_bridge '1'/option sfe_bridge '0'/" package/ctcgfw/luci-app-turboacc/root/etc/config/turboacc
-sed -i "/dep.*INCLUDE_.*=n/d" package/ctcgfw/luci-app-turboacc/Makefile
+sed -i "s/option hw_flow '1'/option hw_flow '0'/" package/feeds/luci/luci-app-turboacc/root/etc/config/turboacc
+sed -i "s/option sfe_flow '1'/option sfe_flow '0'/" package/feeds/luci/luci-app-turboacc/root/etc/config/turboacc
+sed -i "s/option sfe_bridge '1'/option sfe_bridge '0'/" package/feeds/luci/luci-app-turboacc/root/etc/config/turboacc
+sed -i "/dep.*INCLUDE_.*=n/d" package/feeds/luci/luci-app-turboacc/Makefile
 
 find . -type f -name nft-qos.config | xargs sed -i "s/option limit_enable '1'/option limit_enable '0'/"
 sed -i "/\/etc\/coremark\.sh/d" package/feeds/packages/coremark/coremark
