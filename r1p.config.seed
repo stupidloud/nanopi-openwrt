@@ -103,6 +103,7 @@ CONFIG_DROPBEAR_ECC_FULL=y
 
 CONFIG_PACKAGE_kmod-drm-rockchip=y
 CONFIG_PACKAGE_kmod-gpu-lima=y
+CONFIG_PACKAGE_kmod-ath9k-htc=y
 CONFIG_PACKAGE_kmod-mt76x0u=y
 CONFIG_PACKAGE_kmod-mt76x2u=y
 CONFIG_PACKAGE_kmod-rtl8821cu=y
