@@ -7,6 +7,14 @@ if [ $DEVICE = 'r2s' ]; then
     chmod +x files/etc/init.d/fa-rk3328-pwmfan
     ln -sf ../init.d/fa-rk3328-pwmfan files/etc/rc.d/S96fa-rk3328-pwmfan
 fi
+if [ $DEVICE = 'r4s' ]; then
+    mkdir -p files/usr/bin files/etc/init.d files/etc/rc.d
+    wget https://raw.githubusercontent.com/btyh17mxy/friendlywrt/fix/rk3399-fan-ctl/target/linux/rockchip-rk3399/base-files/usr/bin/start-rk3399-pwm-fan.sh -qNP files/usr/bin
+    chmod +x files/usr/bin/start-rk3399-pwm-fan.sh
+    wget https://raw.githubusercontent.com/friendlyarm/friendlywrt/master-v19.07.1/target/linux/rockchip-rk3399/base-files/etc/init.d/fa-rk3399-pwmfan -qNP files/etc/init.d
+    chmod +x files/etc/init.d/fa-rk3399-pwmfan
+    ln -sf ../init.d/fa-rk3399-pwmfan files/etc/rc.d/S96fa-rk3399-pwmfan
+fi
 chmod 600 files/etc/dropbear/*
 eval `cat .config | grep \" | head -n 10`
 . files/etc/opkg/distfeeds.conf | tee files/etc/opkg/distfeeds.conf
