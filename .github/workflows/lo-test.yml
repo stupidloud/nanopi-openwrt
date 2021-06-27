@@ -182,6 +182,7 @@ jobs:
           mv *imagebuilder* ib && cd ib
           . $GITHUB_WORKSPACE/merge_files.sh
           mkdir -p files/local_feed && sudo mount --bind packages files/local_feed
+          sed -i '/luci-lib-base/d;/luci-lib-ipkg/d' include/target.mk
           sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
           sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
           PACKAGES=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed | grep CONFIG_PACKAGE | sed '/dnsmasq_full_dhcpv6/d;/INCLUDE/d' | grep -v luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs echo)
@@ -226,6 +227,7 @@ jobs:
           mv *imagebuilder* ib && cd ib
           . $GITHUB_WORKSPACE/merge_files.sh
           sed -i '/local/d;s/#//' files/etc/opkg/distfeeds.conf
+          sed -i '/luci-lib-base/d;/luci-lib-ipkg/d' include/target.mk
           sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
           sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
           PACKAGES=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed | grep CONFIG_PACKAGE | sed '/dnsmasq_full_dhcpv6/d;/INCLUDE/d' | grep -v luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs echo)
