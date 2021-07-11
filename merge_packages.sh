@@ -20,3 +20,4 @@ merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-c
 merge_package https://github.com/coolsnowwolf/packages/trunk/kernel/ksmbd
 merge_package https://github.com/coolsnowwolf/packages/trunk/net/ksmbd-tools
 merge_package https://github.com/Beginner-Go/luci-app-tencentddns
+merge_package https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-services-wolplus
