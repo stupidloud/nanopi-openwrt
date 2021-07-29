@@ -18,7 +18,7 @@ chmod +x /tmp/truncate /tmp/ddnz
 
 board_id=$(cat /etc/board.json | jsonfilter -e '@["model"].id' | sed 's/friendly.*,nanopi-//;s/xunlong,orangepi-//;s/^r1s-h5$/r1s/;s/^r1$/r1s-h3/;s/^r1-plus$/r1p/')
 if [[ $board_id =~ .*qemu.* ]]; then
-    echo -e '\e[91m当前环境为qemu虚拟机，默认下载x86固件\e[0m'
+    echo -e '\e[91m当前环境为qemu虚拟机，默认下载x86固件，如需停止请按Ctrl+C\e[0m'
     board_id=x86
 fi
 mount -t tmpfs -o remount,size=850m tmpfs /tmp
