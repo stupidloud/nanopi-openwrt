@@ -13,8 +13,16 @@ function merge_package(){
     fi
     mv $pn package/
 }
+function merge_feed(){
+    if [ ! -d "feed/$1" ]; then
+        echo >> feeds.conf.default
+        echo "src-git $1 $2" >> feeds.conf.default
+    fi
+    ./scripts/feeds update $1
+    ./scripts/feeds install -a -p $1
+}
 
-merge_package https://github.com/linkease/ddnsto-openwrt
+merge_feed nas "https://github.com/linkease/nas-packages.git;master"
 merge_package https://github.com/project-lede/luci-app-godproxy
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd luci-app-ksmbd
 merge_package https://github.com/coolsnowwolf/packages/trunk/kernel/ksmbd
