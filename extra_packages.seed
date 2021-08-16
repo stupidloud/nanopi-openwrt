@@ -1,3 +1,4 @@
+CONFIG_PACKAGE_fstrim=m
 CONFIG_PACKAGE_igmpproxy=m
 CONFIG_PACKAGE_node-npm=m
 CONFIG_PACKAGE_smartmontools-drivedb=m

@@ -1,8 +1,8 @@
 function merge_package(){
     pn=`echo $1 | rev | cut -d'/' -f 1 | rev`
-    find package/ \( -type l -o -type d \) -name $pn | xargs -r rm -r
+    find package/ feeds/ \( -type l -o -type d \) -name $pn | xargs -r rm -r
     if [ ! -z "$2" ]; then
-        find package/ \( -type l -o -type d \) -name $2 | xargs -r rm -r
+        find package/ feeds/ \( -type l -o -type d \) -name $2 | xargs -r rm -r
     fi
 
     if [[ $1 == *'/trunk/'* ]]; then
@@ -29,3 +29,5 @@ merge_package https://github.com/coolsnowwolf/packages/trunk/kernel/ksmbd
 merge_package https://github.com/coolsnowwolf/packages/trunk/net/ksmbd-tools
 merge_package https://github.com/Beginner-Go/luci-app-tencentddns
 merge_package https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-services-wolplus
+merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-mount
+merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3

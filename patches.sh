@@ -10,6 +10,7 @@ sed -i 's/=1/=0/g' package/kernel/linux/files/sysctl-br-netfilter.conf
 
 sed -i '/DEPENDS/ s/$/ +libcap-bin/' `find . -type f -path '*/luci-app-openclash/Makefile'`
 sed -i '/DEPENDS+/ s/$/ +wsdd2/' `find . -type f -path '*/ksmbd-tools/Makefile'`
+sed -i 's/ +ntfs-3g/ +ntfs3-mount/' `find . -type f -path '*/automount/Makefile'`
 
 if [ $DEVICE = 'r2s' ]; then
     sed -i "s/enable '0'/enable '1'/" `find feeds/ -type f -name oled | grep config`
