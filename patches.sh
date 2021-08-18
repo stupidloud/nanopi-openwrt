@@ -1,16 +1,19 @@
-sed -i "s/option hw_flow '1'/option hw_flow '0'/" package/feeds/luci/luci-app-turboacc/root/etc/config/turboacc
-sed -i "s/option sfe_flow '1'/option sfe_flow '0'/" package/feeds/luci/luci-app-turboacc/root/etc/config/turboacc
-sed -i "s/option sfe_bridge '1'/option sfe_bridge '0'/" package/feeds/luci/luci-app-turboacc/root/etc/config/turboacc
-sed -i "/dep.*INCLUDE_.*=n/d" package/feeds/luci/luci-app-turboacc/Makefile
+config_file_turboacc=`find package/ -follow -type f -path '*/luci-app-turboacc/root/etc/config/turboacc'`
+sed -i "s/option hw_flow '1'/option hw_flow '0'/" $config_file_turboacc
+sed -i "s/option sfe_flow '1'/option sfe_flow '0'/" $config_file_turboacc
+sed -i "s/option sfe_bridge '1'/option sfe_bridge '0'/" $config_file_turboacc
+sed -i "/dep.*INCLUDE_.*=n/d" `find package/ -follow -type f -path '*/luci-app-turboacc/Makefile'`
 
-find . -type f -name nft-qos.config | xargs sed -i "s/option limit_enable '1'/option limit_enable '0'/"
-sed -i "/\/etc\/coremark\.sh/d" package/feeds/packages/coremark/coremark
+sed -i "s/option limit_enable '1'/option limit_enable '0'/" `find package/ -follow -type f -path '*/nft-qos/files/nft-qos.config'`
+sed -i "/\/etc\/coremark\.sh/d" `find package/ -follow -type f -path '*/coremark/coremark'`
 sed -i 's/192.168.1.1/192.168.2.1/' package/base-files/files/bin/config_generate
 sed -i 's/=1/=0/g' package/kernel/linux/files/sysctl-br-netfilter.conf
 
-sed -i '/DEPENDS/ s/$/ +libcap-bin/' `find . -type f -path '*/luci-app-openclash/Makefile'`
-sed -i '/DEPENDS+/ s/$/ +wsdd2/' `find . -type f -path '*/ksmbd-tools/Makefile'`
-sed -i 's/ +ntfs-3g/ +ntfs3-mount/' `find . -type f -path '*/automount/Makefile'`
+sed -i '/DEPENDS/ s/$/ +libcap-bin/' `find package/ -follow -type f -path '*/luci-app-openclash/Makefile'`
+sed -i '/DEPENDS+/ s/$/ +wsdd2/' `find package/ -follow -type f -path '*/ksmbd-tools/Makefile'`
+
+sed -i 's/ +ntfs-3g/ +ntfs3-mount/' `find package/ -follow -type f -path '*/automount/Makefile'`
+sed -i '/skip\=/ a skip=`mount | grep -q /dev/$device; echo $?`' `find package/ -follow -type f -path */automount/files/15-automount`
 
 if [ $DEVICE = 'r2s' ]; then
     sed -i "s/enable '0'/enable '1'/" `find feeds/ -type f -name oled | grep config`
