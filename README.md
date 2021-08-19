@@ -1,4 +1,4 @@
-# Nanopi R1S R2S R4S Openwrt 固件
+# Nanopi R1S R2S R2C R4S Openwrt 固件
 
 [刷机工具](https://www.balena.io/etcher/)  
 [下载地址](#下载地址)  
@@ -37,7 +37,7 @@ wget -qO- https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoup
 因为本项目预编译了Image builder，生成固件仅需1-3分钟，如果有兴趣自定义固件可以Fork本项目，编辑设备对应的config.seed文件，例如r2s.config.seed, 去掉(整行删除)不需要的luci app软件包配置行，添加自己所需的软件，可用软件的列表可以在github actions构件输出处获取，例如  
 <img src="https://user-images.githubusercontent.com/56048681/114531174-3beafb80-9c7e-11eb-8bcc-b098c3b1cee8.png" width="250" />  
 <img src="https://user-images.githubusercontent.com/56048681/124495884-43d4ba80-ddeb-11eb-95e9-fb096dcfda45.png" width="250" />  
-完成之后进入Actions，点击左侧Build，点击右侧Run workflow输入设备名（r2s/r4s/r1s/r1s-h3/r1p）  
+完成之后进入Actions，点击左侧Build，点击右侧Run workflow输入设备名（r2s/r2c/r4s/r1s/r1s-h3/r1p）  
 <img src="https://user-images.githubusercontent.com/56048681/114531768-c7648c80-9c7e-11eb-8d72-fe38f9df960d.png" width="250" />  
 再点击Run即可获取自己所需的固件
 
