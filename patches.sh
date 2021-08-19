@@ -16,12 +16,13 @@ sed -i 's/ +ntfs-3g/ +ntfs3-mount/' `find package/ -follow -type f -path '*/auto
 sed -i '/skip\=/ a skip=`mount | grep -q /dev/$device; echo $?`' `find package/ -follow -type f -path */automount/files/15-automount`
 
 if [ $DEVICE = 'r2s' ]; then
-    sed -i "s/enable '0'/enable '1'/" `find feeds/ -type f -name oled | grep config`
     sed -i 's/1400000/1450000/' target/linux/rockchip/patches-5.4/991-arm64-dts-rockchip-add-more-cpu-operating-points-for.patch
-    truncate -s-1 package/feeds/luci/luci-app-cpufreq/root/etc/config/cpufreq
-    echo -e "\toption governor0 'schedutil'" >> package/feeds/luci/luci-app-cpufreq/root/etc/config/cpufreq
-    echo -e "\toption minfreq0 '816000'" >> package/feeds/luci/luci-app-cpufreq/root/etc/config/cpufreq
-    echo -e "\toption maxfreq0 '1512000'\n" >> package/feeds/luci/luci-app-cpufreq/root/etc/config/cpufreq
+    sed -i "s/enable '0'/enable '1'/" `find package/ -follow -type f -path '*/luci-app-oled/root/etc/config/oled'`
+    config_file_cpufreq=`find package/ -follow -type f -path '*/luci-app-cpufreq/root/etc/config/cpufreq'`
+    truncate -s-1 $config_file_cpufreq
+    echo -e "\toption governor0 'schedutil'" >> $config_file_cpufreq
+    echo -e "\toption minfreq0 '816000'" >> $config_file_cpufreq
+    echo -e "\toption maxfreq0 '1512000'\n" >> $config_file_cpufreq
 fi
 
 if [ $DEVICE = 'r4s' ]; then
