@@ -1,5 +1,5 @@
 mv $GITHUB_WORKSPACE/files ./
-if [ $DEVICE = 'r2s' ]; then
+if [ $DEVICE = 'r2s' -o $DEVICE = 'r2c' ]; then
     mkdir -p files/usr/bin files/etc/init.d files/etc/rc.d
     wget https://github.com/friendlyarm/friendlywrt/raw/master-v19.07.1/target/linux/rockchip-rk3328/base-files/usr/bin/start-rk3328-pwm-fan.sh -qNP files/usr/bin
     chmod +x files/usr/bin/start-rk3328-pwm-fan.sh
