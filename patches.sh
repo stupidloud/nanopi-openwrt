@@ -26,9 +26,6 @@ if [ $DEVICE = 'r2s' -o $DEVICE = 'r2c' ]; then
 fi
 
 if [ $DEVICE = 'r4s' ]; then
-    wget https://github.com/immortalwrt/immortalwrt/commit/6c3f6d2686679173b95495c47d861db1f41729dd.patch
-    sed -i 's/package\/ctcgfw\/r8168\///g' 6c3f6d2686679173b95495c47d861db1f41729dd.patch
-    mv 6c3f6d2686679173b95495c47d861db1f41729dd.patch package/kernel/r8168/patches/099-6c3f6d2686679173b95495c47d861db1f41729dd.patch
     sed -i 's/r8169/r8168/' target/linux/rockchip/image/armv8.mk
 fi
 
