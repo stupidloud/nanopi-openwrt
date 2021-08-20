@@ -42,3 +42,14 @@ fi
 sed -i '/182.140.223.146/d' scripts/download.pl
 sed -i '/\.cn\//d' scripts/download.pl
 sed -i '/tencent/d' scripts/download.pl
+
+status_page=`find package/ -follow -type f -path '*/autocore/files/arm/index.htm'`
+line_number_FV=`grep -n 'Firmware Version' $status_page | cut -d : -f 1`
+sed -i '/ver\./d' $status_page
+strDate=`TZ=UTC-8 date +%Y-%m-%d`
+sed -i $line_number_FV' a <a href="https://github.com/klever1988/nanopi-openwrt" target="_blank">klever1988/nanopi-openwrt</a> '$strDate $status_page
+status_page=`find package/ -follow -type f -path '*/autocore/files/x86/index.htm'`
+line_number_FV=`grep -n 'Firmware Version' $status_page | cut -d : -f 1`
+sed -i '/ver\./d' $status_page
+strDate=`TZ=UTC-8 date +%Y-%m-%d`
+sed -i $line_number_FV' a <a href="https://github.com/klever1988/nanopi-openwrt" target="_blank">klever1988/nanopi-openwrt</a> '$strDate $status_page
