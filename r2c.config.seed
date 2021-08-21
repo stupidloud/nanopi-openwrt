@@ -1,6 +1,6 @@
 CONFIG_TARGET_rockchip=y
 CONFIG_TARGET_rockchip_armv8=y
-CONFIG_TARGET_rockchip_armv8_DEVICE_friendlyarm_nanopi-r2s=y
+CONFIG_TARGET_rockchip_armv8_DEVICE_friendlyarm_nanopi-r2c=y
 # CONFIG_KERNEL_KALLSYMS is not set
 CONFIG_DEVEL=y
 # CONFIG_CCACHE is not set
