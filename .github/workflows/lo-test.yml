@@ -29,7 +29,7 @@ jobs:
           sudo sysctl vm.swappiness=0
           nohup sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk &
           sudo -E apt update
-          nohup sudo -E apt -y --no-install-recommends install jq build-essential cmake asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python2.7 python3 python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool mkisofs rsync swig &
+          nohup sudo -E apt -y --no-install-recommends install pv jq build-essential cmake asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python2.7 python3 python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool mkisofs rsync swig &
 
       - uses: actions/checkout@v2
         with:
@@ -47,7 +47,7 @@ jobs:
           sudo losetup -P --direct-io $LOOP_DEVICE lede.img
           mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
           if [ -d 'lede/.git' ]; then
-          cd lede && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
+          cd lede && rm -f zerospace && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
           git fetch && git reset --hard origin/openwrt-18.06-k5.4
           #git remote set-branches --add origin openwrt-18.06
           #git merge -X theirs --no-edit origin/openwrt-18.06
@@ -84,6 +84,13 @@ jobs:
           cat more_luci.txt >> .config
           make defconfig && cat .config
 
+      - name: Clean build cache
+        if: ${{ github.event.client_payload.package_clean == 'true' }}
+        run: |
+          cd ~/lede
+          df -h .
+          make package/clean
+          df -h .
       - name: Build and deploy packages
         run: |
           cd ~/lede
@@ -99,6 +106,13 @@ jobs:
           du -h --max-depth=1 ./ --exclude=build_dir --exclude=bin
           du -h --max-depth=1 ./build_dir
           du -h --max-depth=1 ./bin
+      - name: Clean build cache
+        if: ${{ github.event.client_payload.package_clean == 'true' }}
+        run: |
+          cd ~/lede
+          df -h .
+          make package/clean
+          df -h .
 
       - name: Prepare artifact
         run: |
@@ -124,6 +138,8 @@ jobs:
         run: |
           cd
           sleep 120
+          sudo mount -o remount,compress=no,nodatacow,nodatasum lede
+          cd lede/; pv /dev/zero > zerospace || true; cd -
           sudo umount lede
           sudo losetup -d $LOOP_DEVICE
           export AUTH="Authorization: token ${{ secrets.SEC_TOKEN }}"

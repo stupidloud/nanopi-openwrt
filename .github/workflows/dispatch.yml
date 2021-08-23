@@ -6,6 +6,10 @@ on:
         description: 'select device to build'
         default: 'r2s'
         required: false
+      package_clean:
+        description: 'check to make clean package'
+        default: 'false'
+        required: true
 
 jobs:
   build:
@@ -17,4 +21,5 @@ jobs:
             -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \
             -H "Accept: application/vnd.github.everest-preview+json" \
             -H "Authorization: token ${{ secrets.SEC_TOKEN }}" \
-            -d '{"event_type": "${{ github.event.inputs.device }}", "client_payload": {"device": "${{ github.event.inputs.device }}"}}'
+            -d '{"event_type": "${{ github.event.inputs.device }}", "client_payload": {"device": "${{ github.event.inputs.device }}", "package_clean": "${{ github.event.inputs.package_clean }}"}}' \
+            -v
