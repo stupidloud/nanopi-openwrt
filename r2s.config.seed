@@ -15,6 +15,7 @@ CONFIG_IB_STANDALONE=y
 CONFIG_PACKAGE_luci-app-argon-config=y
 CONFIG_PACKAGE_luci-app-ssr-plus=y
 CONFIG_PACKAGE_luci-app-vlmcsd=y
+CONFIG_PACKAGE_luci-app-openclash=y
 CONFIG_PACKAGE_luci-theme-argonv3=y
 
 # CONFIG_OPENSSL_ENGINE_BUILTIN_AFALG is not set
