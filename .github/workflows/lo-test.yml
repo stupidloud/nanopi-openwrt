@@ -82,7 +82,6 @@ jobs:
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo CONFIG_PACKAGE_{}=m >> .config
           cat $GITHUB_WORKSPACE/extra_packages.seed >> .config
           cat more_luci.txt >> .config
-          echo -e 'CONFIG_PACKAGE_iptables-mod-fullconenat=y\nCONFIG_PACKAGE_kmod-ipt-fullconenat=y\n' >> .config
           make defconfig && cat .config
 
       - name: Build and deploy packages
