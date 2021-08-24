@@ -18,7 +18,6 @@ jobs:
       DEVICE: ${{ github.event.client_payload.device || github.event.inputs.device }}
       BRANCH: ${{ github.event.client_payload.branch }}
       TG: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      DEPLOY_SSHKEY: ${{ secrets.SSH_KEY }}
     if: github.repository_owner=='klever1988'
 
     steps:
@@ -169,13 +168,14 @@ jobs:
         uses: klever1988/ssh2actions@main
         if: ${{ failure() && env.TG }}
         with:
-          mode: ngrok
+          mode: ssh
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SSH_PASSWORD: ${{secrets.SSH_PASSWORD}}
           SSH_PUBKEY: ${{secrets.SSH_PUBKEY}}
-          NGROK_TOKEN: ${{secrets.NGROK_TOKEN}}
+          NGROK_TOKEN: ${{secrets.TUNNEL_KEY}}
+          TUNNEL_HOST: ${{secrets.TUNNEL_HOST}}
 
   generate_slim_firmware:
     needs: build_packages
