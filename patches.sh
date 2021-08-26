@@ -40,13 +40,29 @@ sed -i '/182.140.223.146/d' scripts/download.pl
 sed -i '/\.cn\//d' scripts/download.pl
 sed -i '/tencent/d' scripts/download.pl
 
-status_page=`find package/ -follow -type f -path '*/autocore/files/arm/index.htm'`
-line_number_FV=`grep -n 'Firmware Version' $status_page | cut -d : -f 1`
-sed -i '/ver\./d' $status_page
+#inject the firmware version
 strDate=`TZ=UTC-8 date +%Y-%m-%d`
-sed -i $line_number_FV' a <a href="https://github.com/klever1988/nanopi-openwrt" target="_blank">klever1988/nanopi-openwrt</a> '$strDate $status_page
-status_page=`find package/ -follow -type f -path '*/autocore/files/x86/index.htm'`
-line_number_FV=`grep -n 'Firmware Version' $status_page | cut -d : -f 1`
-sed -i '/ver\./d' $status_page
-strDate=`TZ=UTC-8 date +%Y-%m-%d`
-sed -i $line_number_FV' a <a href="https://github.com/klever1988/nanopi-openwrt" target="_blank">klever1988/nanopi-openwrt</a> '$strDate $status_page
+status_pages=`find package/ -follow -type f \( -path '*/autocore/files/arm/index.htm' -o -path '*/autocore/files/x86/index.htm' -o -path '*/autocore/files/arm/rpcd_10_system.js' \)`
+for status_page in $status_pages; do
+case $status_page in
+  *htm)
+    line_number_FV=`grep -n 'Firmware Version' $status_page | cut -d: -f 1`
+    sed -i '/ver\./d' $status_page
+    sed -i $line_number_FV' a <a href="https://github.com/klever1988/nanopi-openwrt" target="_blank">klever1988/nanopi-openwrt</a> '$strDate $status_page
+    ;;
+  *js)
+    line_number_FV=`grep -m1 -n 'corelink' $status_page | cut -d: -f1`
+    sed -i $line_number_FV' i var pfv = document.createElement('\''placeholder'\'');pfv.innerHTML = '\''<a href="https://github.com/klever1988/nanopi-openwrt" target="_blank">klever1988/nanopi-openwrt</a> '$strDate"';" $status_page
+    line_number_FV=`grep -n 'Firmware Version' $status_page | cut -d : -f 1`
+    sed -i '/Firmware Version/d' $status_page
+    sed -i $line_number_FV' a _('\''Firmware Version'\''), pfv,' $status_page
+    ;;
+esac
+done
+
+#fix argon css
+css_file=`find package/ -follow -type f -path '*/argon/css/cascade.css'`
+line_number_h6=`grep -m1 -n 'h6 {' $css_file | cut -d: -f1`
+if [[ ! -z "$line_number_h6" ]]; then
+sed -i $line_number_h6',+10 s/font-weight: normal/font-weight: bold/' $css_file
+fi

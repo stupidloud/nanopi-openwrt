@@ -2,10 +2,14 @@ name: Repo Dispatcher
 on:
   workflow_dispatch:
     inputs:
+      branch:
+        description: 'select code branch to build'
+        default: '18.06'
+        require: true
       device:
         description: 'select device to build'
         default: 'r2s'
-        required: false
+        required: true
       package_clean:
         description: 'check to make clean package'
         default: 'false'
@@ -21,5 +25,4 @@ jobs:
             -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \
             -H "Accept: application/vnd.github.everest-preview+json" \
             -H "Authorization: token ${{ secrets.SEC_TOKEN }}" \
-            -d '{"event_type": "${{ github.event.inputs.device }}", "client_payload": {"device": "${{ github.event.inputs.device }}", "package_clean": "${{ github.event.inputs.package_clean }}"}}' \
-            -v
+            -d '{"event_type": "${{ github.event.inputs.device }}", "client_payload": {"branch": "${{ github.event.inputs.branch }}", "device": "${{ github.event.inputs.device }}", "package_clean": "${{ github.event.inputs.package_clean }}" }}'
