@@ -66,3 +66,6 @@ line_number_h6=`grep -m1 -n 'h6 {' $css_file | cut -d: -f1`
 if [[ ! -z "$line_number_h6" ]]; then
 sed -i $line_number_h6',+10 s/font-weight: normal/font-weight: bold/' $css_file
 fi
+
+#set default theme to argon
+sed -i '/exit 0/i set luci.main.mediaurlbase=/luci-static/argon' `find package -type f -path '*/default-settings/files/zzz-default-settings'`
