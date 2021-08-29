@@ -68,8 +68,8 @@ cd /tmp/upg
 umount /mnt/img
 
 sleep 5
-umount ${lodev}p1
-umount ${lodev}p2
+if cat /proc/mounts | grep -q ${lodev}p1; then umount ${lodev}p1; fi
+if cat /proc/mounts | grep -q ${lodev}p2; then umount ${lodev}p2; fi
 e2fsck -yf ${lodev}p2 || true
 resize2fs ${lodev}p2
 
