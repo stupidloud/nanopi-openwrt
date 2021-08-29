@@ -2,14 +2,6 @@ name: Repo Dispatcher
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'select code branch to build'
-        default: '18.06'
-        require: true
-      device:
-        description: 'select device to build'
-        default: 'r2s'
-        required: true
       package_clean:
         description: 'check to make clean package'
         default: 'false'
@@ -18,11 +10,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        device: [r1p, r1s, r1s-h3, r2c, r2s, r4s, x86]
     steps:
         - name: Trigger Compile
           run: |
+            if [ ${{ matrix.device }} = 'r1s' ]; then
+              branch='18.06';
+            else
+              branch='master';
+            fi
             curl \
             -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \
             -H "Accept: application/vnd.github.everest-preview+json" \
             -H "Authorization: token ${{ secrets.SEC_TOKEN }}" \
-            -d '{"event_type": "${{ github.event.inputs.device }}", "client_payload": {"branch": "${{ github.event.inputs.branch }}", "device": "${{ github.event.inputs.device }}", "package_clean": "${{ github.event.inputs.package_clean }}" }}'
+            -d '{"event_type": "${{ matrix.device }}", "client_payload": {"branch": "'$branch'", "device": "${{ matrix.device }}", "package_clean": "${{ github.event.inputs.package_clean }}" }}'
