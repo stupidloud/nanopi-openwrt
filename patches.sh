@@ -71,10 +71,15 @@ fi
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' `find package -type f -path '*/default-settings/files/zzz-default-settings'`
 
 #bring the ethinfo back
+if [ $DEVICE != 'r1s' ]; then
 cd package/emortal/autocore/files/x86
-cp ethinfo rpcd_10_system.js rpcd_21_ethinfo.js rpcd_luci rpcd_luci-mod-status.json ../arm
-sed '/arm\/cpuinfo/a\\t$(INSTALL_DATA) ./files/x86/rpcd_21_ethinfo.js $(1)/www/luci-static/resources/view/status/include/21_ethinfo.js' `find package -path */autocore/Makefile`
-
+cp rpcd_luci rpcd_10_system.js rpcd_luci-mod-status.json ../arm
+cd -
+mf_autcore=`find package/ -path '*/autocore/Makefile'`
+sed -i '/arm\/cpuinfo/a\\t$(INSTALL_DATA) ./files/x86/rpcd_21_ethinfo.js $(1)/www/luci-static/resources/view/status/include/21_ethinfo.js' $mf_autcore
+sed -i '/arm\/cpuinfo/a\\t$(INSTALL_DIR) $(1)/www/luci-static/resources/view/status/include' $mf_autcore
+sed -i '/arm\/cpuinfo/a\\t$(INSTALL_BIN) ./files/x86/ethinfo $(1)/sbin/ethinfo' $mf_autcore
+fi
 
 #remove the mirros from cn
 sed -i '/182.140.223.146/d;/\.cn\//d;/tencent/d' scripts/download.pl
