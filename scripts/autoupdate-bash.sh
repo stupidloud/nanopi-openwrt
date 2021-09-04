@@ -79,7 +79,7 @@ if [ -f FriendlyWrt.img ]; then
 	echo 1 > /proc/sys/kernel/sysrq
 	echo u > /proc/sysrq-trigger && umount / || true
 	#pv FriendlyWrt.img | dd of=/dev/mmcblk0 conv=fsync
-	../ddnz FriendlyWrt.img /dev/mmcblk0
+	dd if=FriendlyWrt.img of=/dev/mmcblk0 conv=sparse status=progress
 	echo -e '\e[92m刷机完毕，正在重启...\e[0m'
 	echo b > /proc/sysrq-trigger
 fi
