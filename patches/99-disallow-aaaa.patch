@@ -1,0 +1,12 @@
+diff --git a/src/dns_query.c b/src/dns_query.c
+index 0b6c9c0..81f2f7a 100644
+--- a/src/dns_query.c
++++ b/src/dns_query.c
+@@ -413,6 +413,7 @@ static int rrs2cent(unsigned char *msg, size_t msgsz, unsigned char **ptr, size_
+ 				break;
+ #if IS_CACHED_AAAA
+ 			case T_AAAA:
++				break;
+ 				/* Validate types we use internally */
+ 				if(rdlength!=16) goto invalid_length;
+ 				goto default_case;

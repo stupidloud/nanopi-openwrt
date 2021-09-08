@@ -67,8 +67,8 @@ jobs:
           fi
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          . $GITHUB_WORKSPACE/merge_packages.sh
-          . $GITHUB_WORKSPACE/patches.sh
+          . $GITHUB_WORKSPACE/scripts/merge_packages.sh
+          . $GITHUB_WORKSPACE/scripts/patches.sh
           cd
           [ $BRANCH != 'master' ] && BRANCH='openwrt-18.06'
           svn export https://github.com/openwrt/luci/branches/$BRANCH luci
@@ -199,7 +199,7 @@ jobs:
           sudo sysctl vm.swappiness=0
           curl -L https://github.com/klever1988/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
           mv *imagebuilder* ib && cd ib
-          . $GITHUB_WORKSPACE/merge_files.sh
+          . $GITHUB_WORKSPACE/scripts/merge_files.sh
           mkdir -p files/local_feed && sudo mount --bind packages files/local_feed
           sed -i '/luci-lib-base/d;/luci-lib-ipkg/d' include/target.mk
           sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
@@ -246,7 +246,7 @@ jobs:
           sudo sysctl vm.swappiness=0
           curl -L https://github.com/klever1988/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
           mv *imagebuilder* ib && cd ib
-          . $GITHUB_WORKSPACE/merge_files.sh
+          . $GITHUB_WORKSPACE/scripts/merge_files.sh
           sed -i '/local/d;s/#//' files/etc/opkg/distfeeds.conf
           sed -i '/luci-lib-base/d;/luci-lib-ipkg/d' include/target.mk
           sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
