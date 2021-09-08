@@ -42,7 +42,7 @@ fi
 
 #inject the firmware version
 strDate=`TZ=UTC-8 date +%Y-%m-%d`
-status_pages=`find package/ -follow -type f \( -path '*/autocore/files/arm/index.htm' -o -path '*/autocore/files/x86/index.htm' -o -path '*/autocore/files/arm/rpcd_10_system.js' \)`
+status_pages=`find package/ -follow -type f \( -path '*/autocore/files/arm/index.htm' -o -path '*/autocore/files/x86/index.htm' -o -path '*/autocore/files/arm/rpcd_10_system.js' -o -path '*/autocore/files/x86/rpcd_10_system.js' \)`
 for status_page in $status_pages; do
 case $status_page in
   *htm)
