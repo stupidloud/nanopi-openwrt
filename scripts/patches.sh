@@ -35,6 +35,7 @@ if [ $DEVICE != 'r1s' ]; then
 
   # remove non-exist package from x86 profile
   sed -i 's/kmod-i40evf//' target/linux/x86/Makefile
+  sed -i 's/KERNEL_PATCHVER:=5.10/KERNEL_PATCHVER:=5.4/' target/linux/x86/Makefile
 
   # enable r2s oled plugin by default
   sed -i "s/enable '0'/enable '1'/" `find package/ -follow -type f -path '*/luci-app-oled/root/etc/config/oled'`
