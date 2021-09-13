@@ -30,6 +30,9 @@ mv $GITHUB_WORKSPACE/patches/99-disallow-aaaa.patch `find package/ -follow -type
 
 if [ $DEVICE != 'r1s' ]; then
 
+  # fix po path for snapshot
+  find package/ -follow -type d -path '*/po/zh-cn' | xargs dirname | xargs -n1 -i sh -c "rm -f {}/zh_Hans; ln -sf zh-cn {}/zh_Hans"
+
   # remove non-exist package from x86 profile
   sed -i 's/kmod-i40evf//' target/linux/x86/Makefile
 
