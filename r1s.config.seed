@@ -16,7 +16,6 @@ CONFIG_TARGET_ROOTFS_PARTSIZE=360
 
 CONFIG_PACKAGE_luci-app-cpufreq=y
 CONFIG_PACKAGE_luci-app-adguardhome
-CONFIG_PACKAGE_luci-app-airwhu
 CONFIG_PACKAGE_luci-app-appfilter
 CONFIG_PACKAGE_luci-app-argon-config
 CONFIG_PACKAGE_luci-app-aria2
@@ -28,8 +27,6 @@ CONFIG_PACKAGE_luci-app-mwan3
 CONFIG_PACKAGE_luci-app-mwan3helper
 CONFIG_PACKAGE_luci-app-netdata
 CONFIG_PACKAGE_luci-app-nps
-CONFIG_PACKAGE_luci-app-openvpn
-CONFIG_PACKAGE_luci-app-openvpn-server
 CONFIG_PACKAGE_luci-app-samba
 CONFIG_PACKAGE_luci-app-timewol
 CONFIG_PACKAGE_luci-app-ttyd
@@ -37,6 +34,4 @@ CONFIG_PACKAGE_luci-app-turboacc
 CONFIG_PACKAGE_luci-app-uhttpd
 CONFIG_PACKAGE_luci-app-unblockneteasemusic
 CONFIG_PACKAGE_luci-app-upnp
-CONFIG_PACKAGE_luci-app-vlmcsd
-CONFIG_PACKAGE_luci-app-vsftpd
 CONFIG_PACKAGE_luci-app-wol
