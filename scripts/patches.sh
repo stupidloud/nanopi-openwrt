@@ -66,27 +66,27 @@ if [ $DEVICE != 'r1s' ]; then
   sed -i '/arm\/cpuinfo/a\\t$(INSTALL_DIR) $(1)/www/luci-static/resources/view/status/include' $mf_autcore
   sed -i '/arm\/cpuinfo/a\\t$(INSTALL_BIN) ./files/x86/ethinfo $(1)/sbin/ethinfo' $mf_autcore
 
-  # inject the firmware version
-  strDate=`TZ=UTC-8 date +%Y-%m-%d`
-  status_pages=`find package/ -follow -type f \( -path '*/autocore/files/arm/index.htm' -o -path '*/autocore/files/x86/index.htm' -o -path '*/autocore/files/arm/rpcd_10_system.js' -o -path '*/autocore/files/x86/rpcd_10_system.js' \)`
-  for status_page in $status_pages; do
-  case $status_page in
-    *htm)
-      line_number_FV=`grep -n 'Firmware Version' $status_page | cut -d: -f 1`
-      sed -i '/ver\./d' $status_page
-      sed -i $line_number_FV' a <a href="https://github.com/klever1988/nanopi-openwrt" target="_blank">klever1988/nanopi-openwrt</a> '$strDate $status_page
-      ;;
-    *js)
-      line_number_FV=`grep -m1 -n 'corelink' $status_page | cut -d: -f1`
-      sed -i $line_number_FV' i var pfv = document.createElement('\''placeholder'\'');pfv.innerHTML = '\''<a href="https://github.com/klever1988/nanopi-openwrt" target="_blank">klever1988/nanopi-openwrt</a> '$strDate"';" $status_page
-      line_number_FV=`grep -n 'Firmware Version' $status_page | cut -d : -f 1`
-      sed -i '/Firmware Version/d' $status_page
-      sed -i $line_number_FV' a _('\''Firmware Version'\''), pfv,' $status_page
-      ;;
-  esac
-  done
-
 fi
+
+# inject the firmware version
+strDate=`TZ=UTC-8 date +%Y-%m-%d`
+status_pages=`find package/ -follow -type f \( -path '*/autocore/files/arm/index.htm' -o -path '*/autocore/files/x86/index.htm' -o -path '*/autocore/files/arm/rpcd_10_system.js' -o -path '*/autocore/files/x86/rpcd_10_system.js' \)`
+for status_page in $status_pages; do
+case $status_page in
+  *htm)
+    line_number_FV=`grep -n 'Firmware Version' $status_page | cut -d: -f 1`
+    sed -i '/ver\./d' $status_page
+    sed -i $line_number_FV' a <a href="https://github.com/klever1988/nanopi-openwrt" target="_blank">klever1988/nanopi-openwrt</a> '$strDate $status_page
+    ;;
+  *js)
+    line_number_FV=`grep -m1 -n 'corelink' $status_page | cut -d: -f1`
+    sed -i $line_number_FV' i var pfv = document.createElement('\''placeholder'\'');pfv.innerHTML = '\''<a href="https://github.com/klever1988/nanopi-openwrt" target="_blank">klever1988/nanopi-openwrt</a> '$strDate"';" $status_page
+    line_number_FV=`grep -n 'Firmware Version' $status_page | cut -d : -f 1`
+    sed -i '/Firmware Version/d' $status_page
+    sed -i $line_number_FV' a _('\''Firmware Version'\''), pfv,' $status_page
+    ;;
+esac
+done
 
 # little optimization argon css
 css_file=`find package/ -follow -type f -path '*/argon/css/cascade.css'`
