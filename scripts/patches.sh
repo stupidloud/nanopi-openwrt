@@ -20,7 +20,7 @@ svn export https://github.com/klever1988/helloworld/trunk/luci-app-ssr-plus
 dir_ssrp=`find package/ -follow -type d -path '*/luci-app-ssr-plus'`
 cp luci-app-ssr-plus/root/etc/ssrplus/black.list ${dir_ssrp}/root/etc/ssrplus/black.list
 cp luci-app-ssr-plus/root/etc/ssrplus/white.list ${dir_ssrp}/root/etc/ssrplus/white.list
-cp luci-app-ssr-plus/root/etc/ssrplus/blackipv6.sh ${dir_ssrp}/root/etc/ssrplus/blackipv6.sh
+cp luci-app-ssr-plus/root/etc/ssrplus/blockipv6.sh ${dir_ssrp}/root/etc/ssrplus/blockipv6.sh
 cp luci-app-ssr-plus/root/etc/ssrplus/blackipv4.sh ${dir_ssrp}/root/etc/ssrplus/blackipv4.sh
 cp luci-app-ssr-plus/root/usr/bin/ssr-rules ${dir_ssrp}/root/usr/bin/ssr-rules
 rm -rf luci-app-ssr-plus/
