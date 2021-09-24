@@ -44,8 +44,9 @@ if [ `md5sum -c md5sum.txt|grep -c "OK"` -eq 0 ]; then
 fi
 
 mv $board_id.img FriendlyWrt.img
-
-bs=`expr $(cat /sys/block/mmcblk0/size) \* 512`
+block_device='mmcblk0'
+[ $board_id = 'x86' ] && block_device='sda'
+bs=`expr $(cat /sys/block/$block_device/size) \* 512`
 truncate -s $bs FriendlyWrt.img || ../truncate -s $bs FriendlyWrt.img
 echo ", +" | sfdisk -N 2 FriendlyWrt.img
 
@@ -79,8 +80,8 @@ echo -e '\e[92m开始写入，请勿中断...\e[0m'
 if [ -f FriendlyWrt.img ]; then
 	echo 1 > /proc/sys/kernel/sysrq
 	echo u > /proc/sysrq-trigger && umount / || true
-	#pv FriendlyWrt.img | dd of=/dev/mmcblk0 conv=fsync
-	../ddnz FriendlyWrt.img /dev/mmcblk0
+	#pv FriendlyWrt.img | dd of=/dev/$block_device conv=fsync
+	../ddnz FriendlyWrt.img /dev/$block_device
 	echo -e '\e[92m刷机完毕，正在重启...\e[0m'
 	echo b > /proc/sysrq-trigger
 fi
