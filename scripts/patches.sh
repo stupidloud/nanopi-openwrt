@@ -28,14 +28,13 @@ rm -rf luci-app-ssr-plus/
 mkdir -p `find package/ -follow -type d -path '*/pdnsd-alt'`/patches
 mv $GITHUB_WORKSPACE/patches/99-disallow-aaaa.patch `find package/ -follow -type d -path '*/pdnsd-alt'`/patches
 
-if [ $DEVICE != 'r1s' ]; then
+if [ $BRANCH == 'master' ]; then
 
   # fix po path for snapshot
   find package/ -follow -type d -path '*/po/zh-cn' | xargs dirname | xargs -n1 -i sh -c "rm -f {}/zh_Hans; ln -sf zh-cn {}/zh_Hans"
 
   # remove non-exist package from x86 profile
   sed -i 's/kmod-i40evf//' target/linux/x86/Makefile
-  sed -i 's/KERNEL_PATCHVER:=5.10/KERNEL_PATCHVER:=5.4/' target/linux/x86/Makefile
 
   # enable r2s oled plugin by default
   sed -i "s/enable '0'/enable '1'/" `find package/ -follow -type f -path '*/luci-app-oled/root/etc/config/oled'`

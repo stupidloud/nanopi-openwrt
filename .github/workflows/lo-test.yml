@@ -209,7 +209,7 @@ jobs:
           sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
           ls packages/*.ipk | xargs -n1 basename > package.files
           PACKAGES=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed $GITHUB_WORKSPACE/common.seed | grep CONFIG_PACKAGE | grep -v CONFIG_PACKAGE_luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs -n1 -i grep -o {} package.files | sort -u | xargs echo)
-          [ $DEVICE != 'r1s' ] && PACKAGES="$PACKAGES luci-i18n-opkg-zh-cn"
+          [ $BRANCH == 'master' ] && PACKAGES="$PACKAGES luci-i18n-opkg-zh-cn"
           make image PACKAGES="$PACKAGES $LUCI $LP luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn" FILES="files"
 
           mkdir -p $GITHUB_WORKSPACE/release
