@@ -21,7 +21,7 @@ function merge_feed(){
     ./scripts/feeds update $1
     ./scripts/feeds install -a -p $1
 }
-
+sed -i '/mosdns/d' feeds.conf.default; rm feeds/mosdns* -rf
 merge_feed nas "https://github.com/linkease/nas-packages;master"
 merge_feed nas_luci "https://github.com/linkease/nas-packages-luci;main"
 merge_package https://github.com/klever1988/openwrt-mos/trunk/luci-app-mosdns
