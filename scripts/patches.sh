@@ -57,6 +57,8 @@ if [ $BRANCH == 'master' ]; then
   git apply f341ef96fe4b509a728ba1281281da96bac23673.patch
   rm f341ef96fe4b509a728ba1281281da96bac23673.patch
 
+  sed -i '/SECCOMP/d' target/linux/sunxi/config-5.4
+
   # bring the ethinfo back
   cd package/emortal/autocore/files/x86
   cp rpcd_luci rpcd_10_system.js rpcd_luci-mod-status.json ../arm
