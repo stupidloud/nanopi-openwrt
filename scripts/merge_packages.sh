@@ -22,7 +22,7 @@ function merge_feed(){
     ./scripts/feeds install -a -p $1
 }
 
-mkdir -p package/custom
+rm -rf package/custom; mkdir package/custom
 merge_feed nas "https://github.com/linkease/nas-packages;master"
 merge_feed nas_luci "https://github.com/linkease/nas-packages-luci;main"
 merge_package https://github.com/klever1988/openwrt-mos/trunk/luci-app-mosdns
