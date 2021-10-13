@@ -37,3 +37,5 @@ merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-u
 merge_package https://github.com/kuoruan/luci-app-frpc
 merge_package https://github.com/small-5/luci-app-adblock-plus
 merge_package https://github.com/zxlhhyccc/luci-app-v2raya
+merge_package https://github.com/messense/aliyundrive-webdav/trunk/openwrt/aliyundrive-webdav
+merge_package https://github.com/messense/aliyundrive-webdav/trunk/openwrt/luci-app-aliyundrive-webdav

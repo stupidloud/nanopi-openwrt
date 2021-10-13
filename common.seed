@@ -15,6 +15,7 @@ CONFIG_DROPBEAR_ECC_FULL=y
 CONFIG_DROPBEAR_ECC=y
 CONFIG_PACKAGE_luci-app-adblock-plus=y
 CONFIG_PACKAGE_luci-app-adguardhome=y
+CONFIG_PACKAGE_luci-app-aliyundrive-webdav=y
 CONFIG_PACKAGE_luci-app-argon-config=y
 CONFIG_PACKAGE_luci-app-aria2=y
 CONFIG_PACKAGE_luci-app-arpbind=y
