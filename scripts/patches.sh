@@ -31,6 +31,8 @@ mv $GITHUB_WORKSPACE/patches/99-disallow-aaaa.patch `find package/ -follow -type
 
 if [ $BRANCH == 'master' ]; then
 
+  sed -i 's/5.10/5.4/' target/linux/rockchip/Makefile
+
   # fix po path for snapshot
   find package/ -follow -type d -path '*/po/zh-cn' | xargs dirname | xargs -n1 -i sh -c "rm -f {}/zh_Hans; ln -sf zh-cn {}/zh_Hans"
 
