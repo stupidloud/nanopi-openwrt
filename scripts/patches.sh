@@ -61,6 +61,7 @@ if [ $BRANCH == 'master' ]; then
   rm f341ef96fe4b509a728ba1281281da96bac23673.patch
 
   #this is a ugly fix
+  sed -i '/procd-ujail/d' include/target.mk
   echo 'CONFIG_PACKAGE_procd-seccomp=y' >> $GITHUB_WORKSPACE/common.seed
 
   # bring the ethinfo back
