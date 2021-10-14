@@ -201,6 +201,7 @@ jobs:
         run: |
           sudo apt update && sudo apt install qemu-utils
           sudo sysctl vm.swappiness=0
+          ulimit -SHn 65000
           curl -L https://github.com/klever1988/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
           mv *imagebuilder* ib && cd ib
           . $GITHUB_WORKSPACE/scripts/merge_files.sh
