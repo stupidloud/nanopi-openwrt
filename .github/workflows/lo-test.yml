@@ -204,7 +204,7 @@ jobs:
           curl -L https://github.com/klever1988/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
           mv *imagebuilder* ib && cd ib
           . $GITHUB_WORKSPACE/scripts/merge_files.sh
-          mkdir -p files/local_feed && sudo mount --bind packages files/local_feed
+          cp -a packages files/local_feed
           sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
           sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
           ls packages/*.ipk | xargs -n1 basename > package.files
