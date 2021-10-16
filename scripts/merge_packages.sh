@@ -1,14 +1,14 @@
 function merge_package(){
     pn=`echo $1 | rev | cut -d'/' -f 1 | rev`
-    find package/ feeds/ \( -type l -o -type d \) -name $pn -not -path "package/custom/*" | xargs -r rm -r
+    find package/ -follow -name $pn -not -path "package/custom/*" | xargs -rt rm -r
     if [ ! -z "$2" ]; then
-        find package/ feeds/ \( -type l -o -type d \) -name $2 | xargs -r rm -r
+        find package/ -follow -name $2 -not -path "package/custom/*" | xargs -rt rm -r
     fi
 
-    if [[ $1 == *'/trunk/'* ]]; then
+    if [[ $1 == *'/trunk/'* || $1 == *'/branches/'* ]]; then
         svn export $1
     else
-        git clone $3 --depth=1 $1
+        git clone --depth=1 --single-branch $3 $1
         rm -rf $pn/.git
     fi
     mv $pn package/custom/
