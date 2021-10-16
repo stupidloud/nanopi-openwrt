@@ -12,9 +12,6 @@ proceed_command sfdisk
 proceed_command losetup
 proceed_command resize2fs
 opkg install coreutils-truncate || true
-wget -NP /tmp https://ghproxy.com/https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/truncate
-wget -NP /tmp https://ghproxy.com/https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/ddnz
-chmod +x /tmp/truncate /tmp/ddnz
 
 board_id=$(cat /etc/board.json | jsonfilter -e '@["model"].id' | sed 's/friendly.*,nanopi-//;s/xunlong,orangepi-//;s/^r1s-h5$/r1s/;s/^r1$/r1s-h3/;s/^r1-plus$/r1p/;s/default-string-default-string/x86/')
 mount -t tmpfs -o remount,size=850m tmpfs /tmp
@@ -79,7 +76,7 @@ if [ -f FriendlyWrt.img ]; then
 	echo 1 > /proc/sys/kernel/sysrq
 	echo u > /proc/sysrq-trigger && umount / || true
 	#pv FriendlyWrt.img | dd of=/dev/mmcblk0 conv=fsync
-	dd if=FriendlyWrt.img of=/dev/$drive conv=sparse status=progress
+	dd if=FriendlyWrt.img of=/dev/$drive conv=sparse status=progress bs=1M
 	echo -e '\e[92m刷机完毕，正在重启...\e[0m'
 	echo b > /proc/sysrq-trigger
 fi
