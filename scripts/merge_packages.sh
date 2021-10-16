@@ -13,6 +13,9 @@ function merge_package(){
     fi
     mv $pn package/custom/
 }
+function drop_package(){
+    find package/ -follow -name $pn -not -path "package/custom/*" | xargs -rt rm -r
+}
 function merge_feed(){
     if [ ! -d "feed/$1" ]; then
         echo >> feeds.conf.default
@@ -40,3 +43,4 @@ merge_package https://github.com/small-5/luci-app-adblock-plus
 merge_package https://github.com/zxlhhyccc/luci-app-v2raya
 merge_package https://github.com/messense/aliyundrive-webdav/trunk/openwrt/aliyundrive-webdav
 merge_package https://github.com/messense/aliyundrive-webdav/trunk/openwrt/luci-app-aliyundrive-webdav
+drop_package luci-app-cd8021x
