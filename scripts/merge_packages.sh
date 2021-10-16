@@ -28,9 +28,9 @@ function merge_feed(){
 rm -rf package/custom; mkdir package/custom
 merge_feed nas "https://github.com/linkease/nas-packages;master"
 merge_feed nas_luci "https://github.com/linkease/nas-packages-luci;main"
-merge_package https://github.com/klever1988/helloworld/trunk/luci-app-ssr-plus
-merge_package https://github.com/klever1988/openwrt-mos/trunk/luci-app-mosdns
-merge_package https://github.com/klever1988/openwrt-mos/trunk/mosdns
+merge_package https://github.com/klever1988/helloworld/branches/tmp/luci-app-ssr-plus
+merge_package https://github.com/klever1988/helloworld/branches/tmp/mosdns
+#merge_package https://github.com/klever1988/openwrt-mos/trunk/luci-app-mosdns
 merge_package https://github.com/project-lede/luci-app-godproxy
 merge_package https://github.com/Beginner-Go/luci-app-tencentddns
 merge_package https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-services-wolplus
