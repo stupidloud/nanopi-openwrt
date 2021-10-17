@@ -43,6 +43,5 @@ CONFIG_DRIVER_11W_SUPPORT=y
 
 CONFIG_PACKAGE_luci-app-hd-idle=y
 CONFIG_PACKAGE_luci-app-ramfree=y
-CONFIG_PACKAGE_luci-app-vssr=y
 CONFIG_PACKAGE_luci-app-watchcat=y
 # CONFIG_PACKAGE_luci-app-oled is not set
