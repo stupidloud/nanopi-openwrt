@@ -40,7 +40,7 @@ if [ $md5r != $md5sum ]; then
 fi
 
 mv $board_id.img FriendlyWrt.img
-[ $board_id = 'x86' ] && drive='sda' || device='mmcblk0'
+[ $board_id = 'x86' ] && drive='sda' || drive='mmcblk0'
 bs=`expr $(cat /sys/block/$drive/size) \* 512`
 truncate -s $bs FriendlyWrt.img || ../truncate -s $bs FriendlyWrt.img
 echo ", +" | sfdisk -N 2 FriendlyWrt.img
