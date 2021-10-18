@@ -54,6 +54,7 @@ sleep 10
 cd /mnt/img
 sysupgrade -b back.tar.gz
 tar zxf back.tar.gz
+opkg list-installed | grep "luci-i18n\|luci-app" | cut -d\  -f1 > packages_needed
 if ! grep -q macaddr /etc/config/network; then
 	echo -e '\e[91m注意：由于已知的问题，“网络接口”配置无法继承，重启后需要重新设置WAN拨号和LAN网段信息\e[0m'
 	rm etc/config/network;
