@@ -44,3 +44,4 @@ merge_package https://github.com/zxlhhyccc/luci-app-v2raya
 merge_package https://github.com/messense/aliyundrive-webdav/trunk/openwrt/aliyundrive-webdav
 merge_package https://github.com/messense/aliyundrive-webdav/trunk/openwrt/luci-app-aliyundrive-webdav
 drop_package luci-app-cd8021x
+drop_package luci-app-cifs
