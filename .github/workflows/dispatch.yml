@@ -17,7 +17,7 @@ jobs:
     steps:
         - name: Trigger Compile
           run: |
-            if [ '${{ matrix.device }}' = 'r1s' ] || [ '${{ matrix.device }}' = 'x86' ]; then
+            if [ '${{ matrix.device }}' = 'r1s' ]; then
               branch='18.06';
             else
               branch='master';

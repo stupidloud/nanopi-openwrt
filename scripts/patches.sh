@@ -20,7 +20,7 @@ sed -i '/skip\=/ a skip=`mount | grep -q /dev/$device; echo $?`' `find package/ 
 mkdir -p `find package/ -follow -type d -path '*/pdnsd-alt'`/patches
 mv $GITHUB_WORKSPACE/patches/99-disallow-aaaa.patch `find package/ -follow -type d -path '*/pdnsd-alt'`/patches
 
-sed -i 's/5.0/1.0/' .ccache/ccache.conf
+sed -i 's/5.0/1.0/' .ccache/ccache.conf || true
 
 if [ $BRANCH == 'master' ]; then
 
