@@ -14,7 +14,7 @@ function merge_package(){
     mv $pn package/custom/
 }
 function drop_package(){
-    find package/ -follow -name $pn -not -path "package/custom/*" | xargs -rt rm -r
+    find package/ -follow -name $1 -not -path "package/custom/*" | xargs -rt rm -r
 }
 function merge_feed(){
     if [ ! -d "feed/$1" ]; then
