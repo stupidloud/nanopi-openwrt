@@ -38,6 +38,7 @@ merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-moun
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/uugamebooster
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-uugamebooster
+merge_package https://github.com/kuoruan/openwrt-frp frp
 merge_package https://github.com/kuoruan/luci-app-frpc
 merge_package https://github.com/small-5/luci-app-adblock-plus
 merge_package https://github.com/zxlhhyccc/luci-app-v2raya
