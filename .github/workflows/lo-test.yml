@@ -88,7 +88,8 @@ jobs:
           find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo CONFIG_PACKAGE_{}=m >> .config
           cat $GITHUB_WORKSPACE/extra_packages.seed >> .config
           cat more_luci.txt >> .config
-          make defconfig && cat .config
+          make defconfig && sed -i -E 's/# (CONFIG_.*_COMPRESS_UPX) is not set/\1=y/' .config && make defconfig
+          cat .config
 
       - name: Clean build cache
         if: ${{ github.event.client_payload.package_clean == 'true' || github.event.inputs.device != '' }}
