@@ -56,6 +56,11 @@ if [ $BRANCH == 'master' ]; then
   git apply f341ef96fe4b509a728ba1281281da96bac23673.patch
   rm f341ef96fe4b509a728ba1281281da96bac23673.patch
 
+  # enable fan control
+  wget https://github.com/friendlyarm/friendlywrt/commit/cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
+  git apply cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
+  rm cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
+
   #this is a ugly fix
   sed -i '/procd-ujail/d' include/target.mk
   echo 'CONFIG_PACKAGE_procd-seccomp=y' >> $GITHUB_WORKSPACE/common.seed

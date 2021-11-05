@@ -32,7 +32,6 @@ merge_package https://github.com/klever1988/helloworld/branches/tmp/luci-app-ssr
 merge_package https://github.com/klever1988/helloworld/branches/tmp/mosdns
 #merge_package https://github.com/klever1988/openwrt-mos/trunk/luci-app-mosdns
 merge_package https://github.com/project-lede/luci-app-godproxy
-merge_package https://github.com/Beginner-Go/luci-app-tencentddns
 merge_package https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-services-wolplus
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-mount
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3
