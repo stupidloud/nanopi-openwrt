@@ -24,6 +24,7 @@ sed -i 's/5.0/1.0/' .ccache/ccache.conf || true
 
 if [ $BRANCH == 'master' ]; then
 
+  sed -i 's/5.10/5.4/' target/linux/rockchip/Makefile
   echo '# CONFIG_CRYPTO_GHASH_ARM_CE is not set' >> target/linux/sunxi/cortexa7/config-5.10
   echo '# CONFIG_CRYPTO_CRCT10DIF_ARM_CE is not set' >> target/linux/sunxi/cortexa7/config-5.10
   echo '# CONFIG_SUN50I_IOMMU is not set' >> target/linux/sunxi/cortexa7/config-5.10
