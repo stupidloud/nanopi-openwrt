@@ -24,6 +24,8 @@ CONFIG_PACKAGE_luci-theme-openwrt-2020=y
 CONFIG_PACKAGE_collectd-mod-ping=y
 CONFIG_PACKAGE_collectd-mod-thermal=y
 
+CONFIG_PACKAGE_xl2tpd=y
+CONFIG_PACKAGE_ppp-mod-pppol2tp=y
 
 CONFIG_PACKAGE_kmod-drm-rockchip=y
 CONFIG_PACKAGE_kmod-gpu-lima=y
