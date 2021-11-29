@@ -1,4 +1,4 @@
-CONFIG_DEFAULT_SETTINGS_OPTIMIZE_FOR_CHINESE=y
+CONFIG_PACKAGE_default-settings-chn=y
 CONFIG_PACKAGE_kmod-ebtables-ipv6=m
 CONFIG_PACKAGE_kmod-ipt-raw6=m
 CONFIG_PACKAGE_kmod-usb2=m
