@@ -24,9 +24,12 @@ sed -i 's/5.0/1.0/' .ccache/ccache.conf || true
 
 if [ $BRANCH == 'master' ]; then
 
+  git checkout target/linux/rockchip
+  git checkout target/linux/x86
   sed -i 's/5.10/5.4/' target/linux/rockchip/Makefile
   git revert --no-commit -X theirs 91eed5d9fb74e6c740291362ba12e11a2222a9fd
   
+  echo '# CONFIG_KCSAN is not set' >> target/linux/x86/config-5.10
   echo '# CONFIG_CRYPTO_GHASH_ARM_CE is not set' >> target/linux/sunxi/cortexa7/config-5.10
   echo '# CONFIG_CRYPTO_CRCT10DIF_ARM_CE is not set' >> target/linux/sunxi/cortexa7/config-5.10
   echo '# CONFIG_SUN50I_IOMMU is not set' >> target/linux/sunxi/cortexa7/config-5.10
@@ -64,6 +67,7 @@ if [ $BRANCH == 'master' ]; then
   wget https://github.com/friendlyarm/friendlywrt/commit/cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
   git apply cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
   rm cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
+  sed -i 's/pwmchip1/pwmchip0/' target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol.sh target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol-direct.sh
 
   #this is a ugly fix
   sed -i '/procd-ujail/d' include/target.mk
@@ -108,7 +112,7 @@ sed -i $line_number_h6',+10 s/font-weight: normal/font-weight: bold/' $css_file
 fi
 
 # set default theme to openwrt2020
-sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/openwrt2020"' `find package -type f -path '*/default-settings/files/zzz-default-settings'`
+sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/openwrt2020"' `find package -type f -path '*/default-settings/files/99-default-settings'`
 
 # remove the mirros from cn
 sed -i '/182.140.223.146/d;/\.cn\//d;/tencent/d' scripts/download.pl
