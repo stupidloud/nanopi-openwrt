@@ -43,3 +43,8 @@ CONFIG_DRIVER_11N_SUPPORT=y
 CONFIG_DRIVER_11W_SUPPORT=y
 
 CONFIG_PACKAGE_luci-app-oled=y
+
+CONFIG_PACKAGE_luci-i18n-passwall-zh-cn=m
+CONFIG_PACKAGE_luci-i18n-uugamebooster-zh-cn=m
+CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn=m
+
