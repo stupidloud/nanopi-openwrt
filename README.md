@@ -9,7 +9,7 @@
 [1分钟生成自己所需固件](#1分钟生成自己所需固件)  
 
 ### 下载地址：
-https://github.com/klever1988/nanopi-openwrt/releases  
+https://github.com/klever1988/nanopi-openwrt/tags  
 (img.gz档不需要解压，可以直接使用刷机工具刷入)
 
 ### 使用提示：
