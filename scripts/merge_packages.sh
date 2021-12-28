@@ -33,8 +33,9 @@ merge_package https://github.com/klever1988/helloworld/branches/tmp/mosdns
 #merge_package https://github.com/klever1988/openwrt-mos/trunk/luci-app-mosdns
 merge_package https://github.com/project-lede/luci-app-godproxy
 merge_package https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-wolplus
-merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-mount
-merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3
+merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/automount
+merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-oot-mount
+merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-oot
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/uugamebooster
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-uugamebooster
 merge_package https://github.com/kuoruan/openwrt-frp frp
