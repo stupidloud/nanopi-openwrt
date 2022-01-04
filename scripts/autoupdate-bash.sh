@@ -1,4 +1,11 @@
 #!/bin/bash
+
+get_latest_release() {
+	curl --silent "https://api.github.com/repos/$1/releases/latest" |	# Get latest release from GitHub api
+	grep '"tag_name":' |												# Get tag line
+	sed -E 's/.*"([^"]+)".*/\1/'										# Pluck JSON value
+}
+
 set -e $1
 
 opkg update || true
@@ -17,20 +24,12 @@ board_id=$(cat /etc/board.json | jsonfilter -e '@["model"].id' | sed 's/friendly
 mount -t tmpfs -o remount,size=850m tmpfs /tmp
 rm -rf /tmp/upg && mkdir /tmp/upg && cd /tmp/upg
 
-md5sum=`wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$(date +%Y-%m-%d)/$board_id$ver.img.gz -O- | tee >(gzip -dc>$board_id.img) | md5sum | awk '{print $1}'`
+latest_release_tag=`get_latest_release klever1988/nanopi-openwrt`
+echo -e '\e[92m准备更新到'$latest_release_tag'\e[0m'
+md5sum=`wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$latest_release_tag/$board_id$ver.img.gz -O- | tee >(gzip -dc>$board_id.img) | md5sum | awk '{print $1}'`
 if [ "$md5sum" != "d41d8cd98f00b204e9800998ecf8427e" ]; then
-	wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$(date +%Y-%m-%d)/$board_id$ver.img.gz.md5 -O md5sum.txt
-	echo -e '\e[92m今天固件已下载，准备解压\e[0m'
-else
-	echo -e '\e[91m今天的固件还没更新，尝试下载昨天的固件\e[0m'
-	md5sum=`wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d)/$board_id$ver.img.gz -O- | tee >(gzip -dc>$board_id.img) | md5sum | awk '{print $1}'`
-	if [ "$md5sum" != "d41d8cd98f00b204e9800998ecf8427e" ]; then
-		wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$(date -d "@$(( $(busybox date +%s) - 86400))" +%Y-%m-%d)/$board_id$ver.img.gz.md5 -O md5sum.txt
-		echo -e '\e[92m昨天的固件已下载，准备解压\e[0m'
-	else
-		echo -e '\e[91m没找到最新的固件，脚本退出\e[0m'
-		exit 1
-	fi
+	wget https://ghproxy.com/https://github.com/klever1988/nanopi-openwrt/releases/download/$latest_release_tag/$board_id$ver.img.gz.md5 -O md5sum.txt
+	echo -e '\e[92m'$latest_release_tag'固件已下载\e[0m'
 fi
 
 md5r=`awk '{print $1}' md5sum.txt`

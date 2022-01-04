@@ -19,11 +19,11 @@ https://github.com/klever1988/nanopi-openwrt/tags
 
 ### 终端内在线升级方法：
 ```bash
-wget -qO- https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoupdate.sh | sh
+wget -qO- https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoupdate-bash.sh | bash
 ```
 slim版
 ```bash
-wget -qO- https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoupdate.sh | ver=-slim sh
+wget -qO- https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoupdate-bash.sh | ver=-slim bash
 ```
 (脚本由gary lau提供，非常感谢！)
 
