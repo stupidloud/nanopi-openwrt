@@ -17,11 +17,7 @@ jobs:
     steps:
         - name: Trigger Compile
           run: |
-            if [ '${{ matrix.device }}' = 'r1s' ]; then
-              branch='18.06';
-            else
-              branch='master';
-            fi
+            branch='master';
             curl \
             -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \
             -H "Accept: application/vnd.github.everest-preview+json" \
