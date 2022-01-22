@@ -1,3 +1,4 @@
+# 这些是会预装到“胖版”固件，并且也会预置到slim版软件源的配置
 CONFIG_CCACHE=y
 CONFIG_DEVEL=y
 CONFIG_IB_STANDALONE=y

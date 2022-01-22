@@ -1,3 +1,4 @@
+# 这些是除了common.seed之外会预置到slim版本软件中心的软件配置
 CONFIG_PACKAGE_default-settings-chn=y
 CONFIG_PACKAGE_kmod-ebtables-ipv6=m
 CONFIG_PACKAGE_kmod-ipt-raw6=m
@@ -12,6 +13,7 @@ CONFIG_PACKAGE_luci-app-vssr=m
 CONFIG_PACKAGE_luci-app-wireguard=m
 CONFIG_PACKAGE_luci-proto-bonding=m
 CONFIG_PACKAGE_luci-proto-openconnect=m
+CONFIG_PACKAGE_cifsmount=m
 CONFIG_PACKAGE_ebtables=m
 CONFIG_PACKAGE_fstrim=m
 CONFIG_PACKAGE_igmpproxy=m
