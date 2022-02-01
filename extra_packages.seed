@@ -7,6 +7,7 @@ CONFIG_PACKAGE_kmod-usb3=m
 CONFIG_PACKAGE_kmod-usb-net-asix-ax88179=m
 CONFIG_PACKAGE_kmod-usb-net-rndis=m
 CONFIG_PACKAGE_ksmbd-utils=m
+CONFIG_PACKAGE_luci-app-frps=m
 CONFIG_PACKAGE_luci-app-openvpn=m
 CONFIG_PACKAGE_luci-app-udpxy=m
 CONFIG_PACKAGE_luci-app-vssr=m
