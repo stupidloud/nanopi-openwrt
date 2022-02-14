@@ -36,7 +36,7 @@ merge_package https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-wolp
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/automount
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-mount
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/ntfs3-oot
-merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/uugamebooster
+merge_package https://github.com/coolsnowwolf/packages/trunk/net/uugamebooster
 merge_package https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-uugamebooster
 merge_package https://github.com/kuoruan/openwrt-frp frp
 merge_package https://github.com/kuoruan/luci-app-frpc
