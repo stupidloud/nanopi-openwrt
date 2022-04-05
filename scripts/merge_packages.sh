@@ -43,6 +43,12 @@ merge_package "-b 18.06 https://github.com/jerrykuku/luci-theme-argon"
 merge_package https://github.com/vernesong/OpenClash/trunk/luci-app-openclash
 merge_package https://github.com/NateLol/luci-app-oled
 merge_package "-b lede https://github.com/pymumu/luci-app-smartdns"
+merge_package "-b luci https://github.com/xiaorouji/openwrt-passwall"
+merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/brook
+merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/chinadns-ng
+merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/hysteria
+merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/trojan-go
+merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/trojan-plus
 drop_package luci-app-cd8021x
 drop_package luci-app-cifs
 drop_package verysync
