@@ -49,6 +49,8 @@ merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/chinadns-ng
 merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/hysteria
 merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/trojan-go
 merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/trojan-plus
+merge_package https://github.com/jerrykuku/lua-maxminddb
+merge_package https://github.com/jerrykuku/luci-app-vssr
 drop_package luci-app-cd8021x
 drop_package luci-app-cifs
 drop_package verysync
