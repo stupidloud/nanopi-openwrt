@@ -51,6 +51,7 @@ merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/trojan-go
 merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/trojan-plus
 merge_package https://github.com/jerrykuku/lua-maxminddb
 merge_package https://github.com/jerrykuku/luci-app-vssr
+merge_package https://github.com/kongfl888/luci-app-adguardhome
 drop_package luci-app-cd8021x
 drop_package luci-app-cifs
 drop_package verysync
