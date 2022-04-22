@@ -12,6 +12,10 @@ CONFIG_TARGET_ROOTFS_PARTSIZE=360
 
 
 
-
-
 CONFIG_PACKAGE_luci-app-cpufreq=y
+
+
+
+
+
+CONFIG_PACKAGE_luci-theme-argon=y

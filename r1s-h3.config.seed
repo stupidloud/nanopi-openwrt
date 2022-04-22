@@ -18,10 +18,7 @@ CONFIG_PACKAGE_luci-app-cpufreq=y
 
 
 
-
-
-
-
+CONFIG_PACKAGE_luci-theme-argon=y
 
 
 
