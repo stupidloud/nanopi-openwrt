@@ -21,6 +21,8 @@ mv $GITHUB_WORKSPACE/patches/99-disallow-aaaa.patch `find package/ -follow -type
 
 sed -i 's/5.0/1.0/' .ccache/ccache.conf || true
 
+sed -i 's/6a289406c1c0583763e5a9754e31a1eced55cd5f162a7bc2a3a315d5eb05c7a1/skip/' package/feeds/packages/containerd/Makefile
+
 if [ $BRANCH == 'master' ]; then
 
   # fix po path for snapshot
