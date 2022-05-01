@@ -1,7 +1,10 @@
 CONFIG_TARGET_sunxi=y
 CONFIG_TARGET_sunxi_cortexa7=y
 CONFIG_TARGET_sunxi_cortexa7_DEVICE_friendlyarm_nanopi-r1=y
+
+
 CONFIG_TARGET_ROOTFS_PARTSIZE=360
+
 
 
 
@@ -19,7 +22,6 @@ CONFIG_PACKAGE_luci-app-cpufreq=y
 
 
 CONFIG_PACKAGE_luci-theme-argon=y
-
 
 
 
