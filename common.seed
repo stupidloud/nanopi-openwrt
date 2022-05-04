@@ -88,7 +88,8 @@ CONFIG_PACKAGE_kmod-fast-classifier=y
 CONFIG_PACKAGE_kmod-ipt-offload=y
 CONFIG_PACKAGE_kmod-pppol2tp=y
 CONFIG_PACKAGE_kmod-tcp-bbr=y
-CONFIG_PACKAGE_kmod-usb-net-rtl8152=y
+# CONFIG_PACKAGE_kmod-usb-net-rtl8152 is not set
+CONFIG_PACKAGE_kmod-usb-net-rtl8152-vendor=y
 CONFIG_PACKAGE_losetup=y
 CONFIG_PACKAGE_openssh-sftp-server=y
 CONFIG_PACKAGE_pv=y
