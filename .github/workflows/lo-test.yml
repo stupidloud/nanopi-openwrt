@@ -32,7 +32,13 @@ jobs:
         run: |
           nohup sh -c '
           sudo apt update;
-          sudo apt -y --no-upgrade --no-install-recommends install pv jq build-essential cmake asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python2.7 python3 python3-pip python-ply python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool mkisofs rsync swig
+          sudo apt -y --no-upgrade --no-install-recommends install pv jq \
+          ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+          bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib \
+          git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev \
+          libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz \
+          mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pip qemu-utils \
+          rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk
           sudo sysctl vm.swappiness=0
           ' &
