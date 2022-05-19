@@ -15,13 +15,8 @@ CONFIG_PACKAGE_luci-app-netdata=y
 CONFIG_PACKAGE_luci-app-openclash=y
 CONFIG_PACKAGE_luci-app-cpufreq=y
 CONFIG_PACKAGE_luci-app-passwall=y
-CONFIG_PACKAGE_luci-app-qbittorrent=y
 CONFIG_PACKAGE_luci-app-statistics=y
-CONFIG_PACKAGE_luci-app-transmission=y
-CONFIG_PACKAGE_luci-app-uugamebooster=y
-CONFIG_PACKAGE_luci-theme-argon=y
 CONFIG_PACKAGE_luci-theme-openwrt=y
-CONFIG_PACKAGE_luci-theme-openwrt-2020=y
 CONFIG_PACKAGE_collectd-mod-ping=y
 CONFIG_PACKAGE_collectd-mod-thermal=y
 
@@ -41,4 +36,3 @@ CONFIG_DRIVER_11AC_SUPPORT=y
 CONFIG_DRIVER_11N_SUPPORT=y
 CONFIG_DRIVER_11W_SUPPORT=y
 
-CONFIG_PACKAGE_luci-app-oled=y
