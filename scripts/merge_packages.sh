@@ -53,6 +53,7 @@ merge_package https://github.com/xiaorouji/openwrt-passwall/trunk/dns2tcp
 merge_package https://github.com/jerrykuku/lua-maxminddb
 merge_package https://github.com/jerrykuku/luci-app-vssr
 merge_package https://github.com/kongfl888/luci-app-adguardhome
+merge_package https://github.com/nickilchen/luci-app-socat
 drop_package luci-app-cd8021x
 drop_package luci-app-cifs
 drop_package verysync
