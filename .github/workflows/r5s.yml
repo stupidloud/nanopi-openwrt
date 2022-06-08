@@ -77,5 +77,5 @@ jobs:
           asset_content_type: application/zip
 
       - name: Error notification
-        if: ${{ failure() && env.TG }}
+        if: ${{ failure() }}
         run: curl -k --data chat_id="${{secrets.TELEGRAM_CHAT_ID}}" --data "text= Errors occured in building $GITHUB_ACTION" "https://api.telegram.org/bot${{secrets.TELEGRAM_BOT_TOKEN}}/sendMessage"
