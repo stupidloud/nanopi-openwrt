@@ -75,3 +75,7 @@ jobs:
           asset_path: ./artifact.zip
           asset_name: ${{ steps.assemble_artifact.outputs.release_tag }}-ROM.zip
           asset_content_type: application/zip
+
+      - name: Error notification
+        if: ${{ failure() && env.TG }}
+        run: curl -k --data chat_id="${{secrets.TELEGRAM_CHAT_ID}}" --data "text= Errors occured in building $GITHUB_ACTION" "https://api.telegram.org/bot${{secrets.TELEGRAM_BOT_TOKEN}}/sendMessage"
