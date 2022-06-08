@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches: [ r5s-fuse ]
-    paths:
-      - '.github/workflows/r5s.yml'
   schedule:
     - cron: '10 09 * * *'
 
