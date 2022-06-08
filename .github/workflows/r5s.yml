@@ -2,7 +2,7 @@ name: r5s-fuse-test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ r5s-fuse ]
     paths:
       - '.github/workflows/r5s.yml'
   schedule:
