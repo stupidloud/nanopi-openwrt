@@ -48,4 +48,5 @@ https://github.com/klever1988/nanopi-openwrt/blob/master/CHANGELOG.md
 <img src="https://raw.githubusercontent.com/klever1988/nanopi-openwrt/master/assets/NAT.jpg" width="450" />
 
 #### 固件源码：
+https://github.com/coolsnowwolf/lede
 https://github.com/immortalwrt/immortalwrt
