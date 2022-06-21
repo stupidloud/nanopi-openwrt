@@ -61,10 +61,7 @@ if [ $BRANCH == 'master' ]; then
   echo -e "\toption minfreq0 '816000'" >> $config_file_cpufreq
   echo -e "\toption maxfreq0 '1512000'\n" >> $config_file_cpufreq
 
-  # enable fan control
-  wget https://github.com/friendlyarm/friendlywrt/commit/cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
-  git apply cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
-  rm cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
+  # fix fan control
   sed -i 's/pwmchip1/pwmchip0/' target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol.sh target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol-direct.sh
 
 fi
