@@ -112,5 +112,4 @@ if [[ $DEVICE == 'r4s' || $DEVICE == 'r2s' || $DEVICE == 'r2c' || $DEVICE == 'r1
 fi
 
 # ...
-git revert d15af9ff7c534853695a52bb94f07beb4ffec02a
 sed -i 's/kmod-usb-net-rtl8152/kmod-usb-net-rtl8152-vendor/' target/linux/rockchip/image/armv8.mk target/linux/sunxi/image/cortexa53.mk target/linux/sunxi/image/cortexa7.mk
