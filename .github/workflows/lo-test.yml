@@ -79,7 +79,7 @@ jobs:
           . $GITHUB_WORKSPACE/scripts/merge_packages.sh
           . $GITHUB_WORKSPACE/scripts/patches.sh
           cd
-          svn export https://github.com/openwrt/luci/trunk luci
+          svn export https://github.com/openwrt/luci/branches/master luci
           pushd luci
           ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/luci/{} | grep Only | grep lede | grep -E applications\|themes | awk '{print $4}' | xargs -n1 -i echo CONFIG_PACKAGE_{}=m > ~/lede/more_luci.txt
           popd
