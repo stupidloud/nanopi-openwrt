@@ -99,7 +99,7 @@ jobs:
         run: |
           cd ~/lede
           df -h .
-          make package/clean
+          make clean
           df -h .
       - name: Build and deploy packages
         timeout-minutes: 1440

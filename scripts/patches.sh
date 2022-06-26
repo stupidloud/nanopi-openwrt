@@ -36,7 +36,7 @@ sed -i $line_number_INCLUDE_V2ray'd' package/custom/openwrt-passwall/luci-app-pa
 sed -i $line_number_INCLUDE_V2ray'd' package/custom/openwrt-passwall/luci-app-passwall/Makefile
 
 
-if [ $BRANCH == 'master' ]; then
+if [[ $BRANCH == 'master' ]]; then
 
   # fix po path for snapshot
   #find package/ -follow -type d -path '*/po/zh-cn' | xargs dirname | xargs -n1 -i sh -c "rm -f {}/zh_Hans; ln -sf zh-cn {}/zh_Hans"
@@ -55,13 +55,15 @@ if [ $BRANCH == 'master' ]; then
   #sed -i 's/r8169/r8168/' target/linux/rockchip/image/armv8.mk
 
   # change the voltage value for over-clock stablization
-  config_file_cpufreq=`find package/ -follow -type f -path '*/luci-app-cpufreq/root/etc/config/cpufreq'`
-  truncate -s-1 $config_file_cpufreq
-  echo -e "\toption governor0 'schedutil'" >> $config_file_cpufreq
-  echo -e "\toption minfreq0 '816000'" >> $config_file_cpufreq
-  echo -e "\toption maxfreq0 '1512000'\n" >> $config_file_cpufreq
+  if [[ $DEVICE == 'r2s' ]]; then
+    config_file_cpufreq=`find package/ -follow -type f -path '*/luci-app-cpufreq/root/etc/config/cpufreq'`
+    truncate -s-1 $config_file_cpufreq
+    echo -e "\toption governor0 'schedutil'" >> $config_file_cpufreq
+    echo -e "\toption minfreq0 '816000'" >> $config_file_cpufreq
+    echo -e "\toption maxfreq0 '1512000'\n" >> $config_file_cpufreq
+  fi
 
-  # enable fan control
+  # add pwm fan control service
   wget https://github.com/friendlyarm/friendlywrt/commit/cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
   git apply cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
   rm cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
@@ -91,9 +93,6 @@ done
 
 # set default theme to argon
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' `find package -type f -path '*/default-settings/files/*-default-settings'`
-
-# remove the mirros from cn
-sed -i '/182.140.223.146/d;/\.cn\//d;/tencent/d' scripts/download.pl
 
 # add r1s support to Lean's repo
 if [[ $DEVICE == 'r1s' ]]; then

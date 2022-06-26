@@ -1,0 +1,173 @@
+name: build r5s firmware
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        type: choice
+        description: where to run
+        options: 
+        - self-hosted
+        - ubuntu-18.04
+
+
+jobs:
+
+  build:
+    timeout-minutes: 1440
+    runs-on: ${{ github.event.inputs.runner }}
+    env:
+      TG: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      DEVICE: r5s
+
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: initialization
+        run: |
+          sudo apt install -y hwinfo && sudo hwinfo --short
+          git config --global user.email "action@github.com" && git config --global user.name "GitHub Action"
+          sudo apt-get update
+          sudo apt-get -y --no-install-recommends install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
+          wget -O - https://raw.githubusercontent.com/friendlyarm/build-env-on-ubuntu-bionic/master/install.sh  | sed '/#/d;/os-release/d;/UBUNTU_CODENAME/d' | sed 's/\\//g;s/exit 0//g;s/sudo apt -y install//g;s/sudo apt-get -y install//g;s/:i386//g' | xargs sudo apt-get -y --no-install-recommends install android-tools-fsutils python-networkx
+          docker images -q | xargs -ri docker rmi {}
+          git clone https://github.com/friendlyarm/repo
+          sudo cp repo/repo /usr/bin/
+
+      - name: checkout out cache
+        run: |
+          cd
+          curl -sL https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
+          sudo umount lede || true
+          sudo fdisk -l | grep loop | grep '30 GiB' | awk '{print $2}' | tr -d ':' | xargs -r -n1 sudo losetup -d
+          rm -r lede* luci packages || true
+          for i in {1..20}
+          do
+            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
+          done | zstdmt -d -o lede.img || (truncate -s 55g lede.img && mkfs.btrfs -M lede.img)
+          LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
+          sudo losetup -P --direct-io $LOOP_DEVICE lede.img
+          cd -
+          mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
+          sudo chown -R $USER:$(id -gn) lede
+
+      - name: init sources
+        run: |
+          mkdir friendlywrt-rk3568 && sudo mount --bind lede friendlywrt-rk3568
+          cd friendlywrt-rk3568
+          repo init -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v22.03 -m rk3568.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle --depth=1
+          if [ -d friendlywrt/.git ]; then
+            cd friendlywrt
+            git reset --hard origin/`git branch -va | grep remotes/m | awk '{print $3}' | awk -F\/ '{print $2}'`
+            git clean -f -d
+            git branch -D tmp
+            git remote remove upstream
+            cd -
+          fi
+          repo sync -c --no-tags --no-clone-bundle -j8
+          cd friendlywrt
+          git fetch --unshallow || true
+          git remote add upstream https://github.com/coolsnowwolf/lede && git fetch upstream
+          git checkout upstream/master -b tmp
+          rm -r package/boot/uboot-rockchip/ target/linux/rockchip/
+          git checkout f0e0bcba5edc6db768f7942fbb7105889ea6b00a -- package/boot/uboot-rockchip/ target/linux/rockchip/ package/base-files/files/etc/shadow package/kernel/mac80211/files/lib/wifi/mac80211.sh
+          git add . && git commit -m prepare
+          git checkout `git branch -va | grep remotes/m | awk '{print $3}' | awk -F\/ '{print $2}'`
+          git rebase efcced5190bfd69ff438073853494f711a384052^ --onto tmp
+
+      - name: fix
+        run: |
+          cd friendlywrt-rk3568/friendlywrt
+          git revert `git log package/network/utils/umbim | head -1 | awk '{print $2}'` --no-edit
+          git revert `git log tools/automake | head -1 | awk '{print $2}'` --no-edit
+          git rm -r package/utils/usbmode
+
+      - name: mods
+        run: |
+          cd friendlywrt-rk3568
+          sed -i '/=m/d;/CONFIG_VERSION/d;/CONFIG_SDK/d;/CONFIG_BUILDBOT/d;/CONFIG_ALL_KMODS/d;/CONFIG_ALL_NONSHARED/d;/CONFIG_DISPLAY_SUPPORT/d;/CONFIG_AUDIO_SUPPORT/d;/CONFIG_MAKE_TOOLCHAIN/d;/CGROUPS/d;/CONFIG_PACKAGE_luci-lib/d;/LLVM/d;/vsftpd=/d;/docker/Id;' `find configs/ -type f` scripts/mk-friendlywrt.sh
+          cat $GITHUB_WORKSPACE/r2s.config.seed $GITHUB_WORKSPACE/common.seed $GITHUB_WORKSPACE/extra_packages.seed | sed '/CONFIG_PACKAGE_kmod/d' > configs/rockchip/05-others
+          echo 'CONFIG_TARGET_ROOTFS_PARTSIZE=800' >> configs/rockchip/05-others
+          echo 'CONFIG_PACKAGE_autocore=y' >> configs/rockchip/05-others
+          echo 'CONFIG_PACKAGE_mtd=y' >> configs/rockchip/05-others
+          sed -i '/find/d' scripts/mk-friendlywrt.sh
+          sed -i '/make download/i\build_config=`cat .config`' scripts/mk-friendlywrt.sh
+          sed -i '/make download/i\echo "::debug::$build_config"' scripts/mk-friendlywrt.sh
+          sed -i 's/RAW_SIZE_MB=1000/RAW_SIZE_MB=2000/' scripts/sd-fuse/mk-sd-image.sh
+          cd friendlywrt
+          if [ -d 'feeds' ]; then
+            pushd feeds/packages; git restore .; popd
+            pushd feeds/luci; git restore .; popd
+            pushd feeds/routing; git restore .; popd
+            pushd feeds/telephony; git restore .; popd
+          fi
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+          . $GITHUB_WORKSPACE/scripts/merge_packages.sh
+          BRANCH='master'
+          . $GITHUB_WORKSPACE/scripts/patches.sh
+
+      - name: compile
+        run: |
+          cd friendlywrt-rk3568
+          ./build.sh nanopi_r5s.mk || (cd friendlywrt && make V=sc)
+          cd friendlywrt
+          make target/imagebuilder/compile
+
+      - name: Save cache state
+        run: |
+          sleep 60
+          sudo mount -o remount,compress=no,nodatacow,nodatasum lede
+          cd lede/; pv /dev/zero > zerospace || true; sync; rm -f zerospace; cd -
+          sleep 60
+          sudo umount friendlywrt-rk3568
+          sudo umount lede
+          sudo losetup -d $LOOP_DEVICE
+          export AUTH="Authorization: token ${{ secrets.SEC_TOKEN }}"
+          export cache_path='github.com/repos/klever1988/sshactions/releases'
+          export cache_repo_id='39020554'
+          zstdmt -c --long ~/lede.img | split --numeric=1 -b 2000m - lede.$DEVICE.img.zst.
+          while true; do
+          ret=$(curl -sH "$AUTH" "https://api.$cache_path/tags/cache")
+          echo $ret | jq -r '.assets[] | select(.name | contains ("'$DEVICE'.img")).id' | \
+          xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
+          echo $ret | jq -r '.assets[] | select(.name == "ib-'$DEVICE'.tar.xz").id' | \
+          xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
+          ls *img.zst* ib-$DEVICE.tar.xz | parallel --wc 'while true; do curl -T {} -H "$AUTH" -H "Content-Type: application/octet-stream" "https://uploads.$cache_path/$cache_repo_id/assets?name={}" && break || true; done'
+          set +e
+          for i in {1..20}; do curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break; done | zstdmt -d -o /dev/null
+          if [ $? -eq 0 ]; then break; fi
+          done
+
+          sudo mount -o loop ~/lede.img friendlywrt-rk3568
+
+      - name: prepare relase
+        run: |
+          sed -i 's/bin\/targets\/rockchip\/armv8\/packages/ib\/packages/' friendlywrt-rk3568/device/friendlyelec/rk3568/base.mk
+          cd friendlywrt-rk3568/friendlywrt
+          mv bin/targets/*/*/*imagebuilder*xz ib.tar.xz
+          tar xf ib.tar.xz && mv *imagebuilder* ib
+          cd ib && make image && cd -
+          cd ..
+          ./build.sh sd-img
+          cd ..
+
+          mkdir -p $GITHUB_WORKSPACE/release
+          mv $(ls -1 friendlywrt-rk3568/out/*img.gz | head -1) $GITHUB_WORKSPACE/release/$DEVICE.img.gz
+          cd $GITHUB_WORKSPACE/release/ && md5sum $DEVICE.img.gz > $DEVICE.img.gz.md5
+          gzip -dc $DEVICE.img.gz | md5sum | sed "s/-/$DEVICE.img/" > $DEVICE.img.md5
+          echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
+          echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
+
+      - name: create release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./release/*
+          tag: ${{env.strDate}}
+          file_glob: true
+          overwrite: true
+          release_name: ${{env.strDate}} 自动发布
