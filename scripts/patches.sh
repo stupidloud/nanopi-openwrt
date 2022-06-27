@@ -54,20 +54,22 @@ if [[ $BRANCH == 'master' ]]; then
   # swap the network adapter driver to r8168 to gain better performance for r4s
   #sed -i 's/r8169/r8168/' target/linux/rockchip/image/armv8.mk
 
-  # change the voltage value for over-clock stablization
-  if [[ $DEVICE == 'r2s' ]]; then
+
+  case $DEVICE in
+  (r2s|r2c|r1p)
+    # change the voltage value for over-clock stablization
     config_file_cpufreq=`find package/ -follow -type f -path '*/luci-app-cpufreq/root/etc/config/cpufreq'`
     truncate -s-1 $config_file_cpufreq
     echo -e "\toption governor0 'schedutil'" >> $config_file_cpufreq
     echo -e "\toption minfreq0 '816000'" >> $config_file_cpufreq
     echo -e "\toption maxfreq0 '1512000'\n" >> $config_file_cpufreq
-  fi
 
-  # add pwm fan control service
-  wget https://github.com/friendlyarm/friendlywrt/commit/cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
-  git apply cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
-  rm cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
-  sed -i 's/pwmchip1/pwmchip0/' target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol.sh target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol-direct.sh
+    # add pwm fan control service
+    wget https://github.com/friendlyarm/friendlywrt/commit/cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
+    git apply cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
+    rm cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
+    sed -i 's/pwmchip1/pwmchip0/' target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol.sh target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol-direct.sh
+  esac
 
 fi
 

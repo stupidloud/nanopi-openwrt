@@ -7,8 +7,8 @@ on:
         type: choice
         description: where to run
         options: 
-        - self-hosted
         - ubuntu-18.04
+        - self-hosted
 
 
 jobs:
@@ -62,7 +62,7 @@ jobs:
           if [ -d friendlywrt/.git ]; then
             cd friendlywrt
             git reset --hard origin/`git branch -va | grep remotes/m | awk '{print $3}' | awk -F\/ '{print $2}'`
-            git clean -f -d
+            git clean -fd
             git branch -D tmp
             git remote remove upstream
             cd -
