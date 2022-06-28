@@ -19,6 +19,7 @@ jobs:
     env:
       TG: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       DEVICE: r5s
+      BRANCH: master
 
     steps:
 
@@ -107,13 +108,12 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           . $GITHUB_WORKSPACE/scripts/merge_packages.sh
-          BRANCH='master'
           . $GITHUB_WORKSPACE/scripts/patches.sh
 
       - name: compile
         run: |
           cd friendlywrt-rk3568
-          ./build.sh nanopi_r5s.mk || (cd friendlywrt && make V=sc)
+          ./build.sh nanopi_r5s.mk || (cd friendlywrt && make V=sc && exit 255)
           cd friendlywrt
           make target/imagebuilder/compile
 
