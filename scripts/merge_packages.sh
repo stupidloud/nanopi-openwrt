@@ -34,7 +34,8 @@ merge_feed helloworld "https://github.com/klever1988/helloworld;tmp"
 merge_package https://github.com/project-lede/luci-app-godproxy
 merge_package https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-wolplus
 merge_package https://github.com/kuoruan/openwrt-frp frp
-merge_package https://github.com/kuoruan/luci-app-frpc
+merge_package https://github.com/liudf0716/luci-app-xfrpc
+merge_package https://github.com/liudf0716/xfrpc
 merge_package https://github.com/messense/aliyundrive-webdav/trunk/openwrt/aliyundrive-webdav
 merge_package https://github.com/messense/aliyundrive-webdav/trunk/openwrt/luci-app-aliyundrive-webdav
 merge_package https://github.com/jerrykuku/luci-app-jd-dailybonus
