@@ -42,7 +42,7 @@ jobs:
         run: |
           cd
           curl -sL https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
-          sudo umount lede || true
+          sudo umount lede friendlywrt-rk3568 || true
           sudo fdisk -l | grep loop | grep '45 GiB' | awk '{print $2}' | tr -d ':' | xargs -r -n1 sudo losetup -d
           rm -r lede* luci packages || true
           for i in {1..20}
@@ -123,8 +123,7 @@ jobs:
           sudo mount -o remount,compress=no,nodatacow,nodatasum lede
           cd lede/; pv /dev/zero > zerospace || true; sync; rm -f zerospace; cd -
           sleep 60
-          sudo umount friendlywrt-rk3568
-          sudo umount lede
+          sudo umount friendlywrt-rk3568 lede
           sudo losetup -d $LOOP_DEVICE
           export AUTH="Authorization: token ${{ secrets.SEC_TOKEN }}"
           export cache_path='github.com/repos/klever1988/sshactions/releases'
