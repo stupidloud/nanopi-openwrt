@@ -1,4 +1,4 @@
-# Nanopi R1S R2S R2C R4S R5S X86 Openwrt 固件
+# Nanopi R1S R2S R2C R4S X86 Openwrt 固件
 
 [刷机工具](https://www.balena.io/etcher/)  
 [下载地址](#下载地址)  
