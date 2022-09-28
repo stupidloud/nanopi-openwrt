@@ -25,7 +25,7 @@ function merge_feed(){
     ./scripts/feeds install -a -p $1
 }
 
-rm -r feeds/packages/net/mosdns package/feeds/packages/mosdns
+rm -rf feeds/packages/net/mosdns package/feeds/packages/mosdns
 rm -rf package/custom; mkdir package/custom
 merge_feed nas "https://github.com/linkease/nas-packages;master"
 merge_feed nas_luci "https://github.com/linkease/nas-packages-luci;main"
