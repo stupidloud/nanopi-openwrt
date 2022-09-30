@@ -104,6 +104,12 @@ if [[ $DEVICE == 'r1s' ]]; then
   merge_package https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/emortal/autocore
 fi
 
+# fix for r1p-lts
+if [[ $DEVICE == 'r1p-lts' ]]; then
+  git revert bd522ba3a1389457fdd3b63aba92731f16a18163 -X theirs --no-commit
+  sed -i 's/1.46/1.49/' package/boot/uboot-rockchip/Makefile
+fi
+
 case $DEVICE in
   r2s|r2c|r1p|r1p-lts)
     sed -i 's/5.10/5.4/g' target/linux/rockchip/Makefile
