@@ -125,7 +125,7 @@ jobs:
           cd ~/lede
           df -h .
           rm -rf dl/
-          make clean
+          make package/clean
           df -h .
 
       - name: Prepare artifact
