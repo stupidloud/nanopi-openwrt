@@ -8,7 +8,7 @@ on:
         options:
         - true
         - false
-        default: 'false'
+        default: 'true'
         required: true
       debug:
         type: choice
@@ -16,7 +16,7 @@ on:
         options:
         - true
         - false
-        default: 'true'
+        default: 'false'
         required: true
 
 jobs:
