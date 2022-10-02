@@ -94,6 +94,19 @@ jobs:
           make defconfig && sed -i -E 's/# (CONFIG_.*_COMPRESS_UPX) is not set/\1=y/' .config && make defconfig
           cat .config
 
+      - name: Debug via tmate
+        uses: klever1988/ssh2actions@main
+        if: ${{ github.event.client_payload.debug == 'true' }}
+        with:
+          mode: ssh
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SSH_PASSWORD: ${{secrets.SSH_PASSWORD}}
+          SSH_PUBKEY: ${{secrets.SSH_PUBKEY}}
+          NGROK_TOKEN: ${{secrets.TUNNEL_KEY}}
+          TUNNEL_HOST: ${{secrets.TUNNEL_HOST}}
+
       - name: Clean build cache
         if: ${{ github.event.client_payload.package_clean == 'true' || github.event.inputs.device != '' }}
         run: |
