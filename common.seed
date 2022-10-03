@@ -84,6 +84,8 @@ CONFIG_PACKAGE_kmod-fs-f2fs=y
 CONFIG_PACKAGE_kmod-ipt-offload=y
 CONFIG_PACKAGE_kmod-pppol2tp=y
 CONFIG_PACKAGE_kmod-tcp-bbr=y
+CONFIG_PACKAGE_kmod-usb2=m
+CONFIG_PACKAGE_kmod-usb3=m
 # CONFIG_PACKAGE_kmod-usb-net-rtl8152 is not set
 CONFIG_PACKAGE_kmod-usb-net-rtl8152-vendor=y
 CONFIG_PACKAGE_losetup=y

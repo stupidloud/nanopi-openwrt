@@ -2,8 +2,6 @@
 CONFIG_PACKAGE_default-settings-chn=y
 CONFIG_PACKAGE_kmod-ebtables-ipv6=m
 CONFIG_PACKAGE_kmod-ipt-raw6=m
-CONFIG_PACKAGE_kmod-usb2=m
-CONFIG_PACKAGE_kmod-usb3=m
 CONFIG_PACKAGE_kmod-usb-net-asix-ax88179=m
 CONFIG_PACKAGE_kmod-usb-net-rndis=m
 CONFIG_PACKAGE_ksmbd-utils=m
