@@ -132,15 +132,6 @@ jobs:
           du -h --max-depth=1 ./ --exclude=build_dir --exclude=bin
           du -h --max-depth=1 ./build_dir
           du -h --max-depth=1 ./bin
-      - name: Clean build cache
-        if: ${{ github.event.client_payload.package_clean == 'true' }}
-        run: |
-          cd ~/lede
-          df -h .
-          rm -rf dl/
-          make package/clean
-          df -h .
-
       - name: Prepare artifact
         run: |
           cd
@@ -150,9 +141,16 @@ jobs:
           cp -rf .config ../artifact/buildinfo/
           echo "strDate=$(TZ=UTC-8 date +%Y-%m-%d)" >> $GITHUB_ENV
           echo "strDevice=$(echo $DEVICE | awk '{print toupper($0)}')" >> $GITHUB_ENV
-          rm -rf bin tmp
           cd ..
           mv artifact $GITHUB_WORKSPACE
+      - name: Clean build cache
+        if: ${{ github.event.client_payload.package_clean == 'true' }}
+        run: |
+          cd ~/lede
+          df -h .
+          make clean
+          rm -rf bin tmp
+          df -h .
 
       - name: Deliver buildinfo
         uses: actions/upload-artifact@v2
