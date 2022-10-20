@@ -68,8 +68,8 @@ jobs:
       - name: Update feeds and packages
         run: |
           cd ~/lede
+          rm -rf ./tmp && rm -rf ./feeds && rm -rf ./pacakges/feeds
           if [ -d 'feeds' ]; then
-            rm -rf ./tmp && rm -rf ./feeds && rm -rf ./pacakges/feeds
             pushd feeds/packages; git restore .; popd
             pushd feeds/luci; git restore .; popd
             pushd feeds/routing; git restore .; popd
