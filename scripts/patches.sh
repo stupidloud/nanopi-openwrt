@@ -95,6 +95,9 @@ done
 # set default theme to argon
 sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' `find package -type f -path '*/default-settings/files/*-default-settings'`
 
+## ugly fix of the read-only issue
+sed -i '3 i sed -i "/^exit.*/i\\/bin\\/mount -o remount,rw /" /etc/rc.local' `find package -type f -path '*/default-settings/files/*-default-settings'`
+
 # add r1s support to Lean's repo
 if [[ $DEVICE == 'r1s' ]]; then
   cd ~ && rm -rf immortalwrt/ && git clone -b openwrt-21.02 https://github.com/immortalwrt/immortalwrt && cd immortalwrt
