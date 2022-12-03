@@ -22,7 +22,7 @@ jobs:
       DEVICE: ${{ github.event.client_payload.device || github.event.inputs.device }}
       BRANCH: ${{ github.event.client_payload.branch || github.event.inputs.branch }}
       TG: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-    if: github.repository_owner=='klever1988'
+    if: github.repository_owner=='stupidloud'
 
     steps:
 
@@ -50,10 +50,10 @@ jobs:
       - name: Checkout
         run: |
           cd
-          curl -sL https://raw.githubusercontent.com/klever1988/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
+          curl -sL https://raw.githubusercontent.com/stupidloud/nanopi-openwrt/zstd-bin/zstd | sudo tee /usr/bin/zstd > /dev/null
           for i in {1..20}
           do
-            curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
+            curl -sL --fail https://github.com/stupidloud/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
           done | zstdmt -d -o lede.img || (truncate -s 33g lede.img && mkfs.btrfs -M lede.img)
           LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
           sudo losetup -P --direct-io $LOOP_DEVICE lede.img
@@ -96,7 +96,7 @@ jobs:
           cat .config
 
       - name: Debug via tmate
-        uses: klever1988/ssh2actions@main
+        uses: stupidloud/ssh2actions@main
         if: ${{ github.event.client_payload.debug == 'true' }}
         with:
           mode: ssh
@@ -170,7 +170,7 @@ jobs:
           sudo umount lede
           sudo losetup -d $LOOP_DEVICE
           export AUTH="Authorization: token ${{ secrets.SEC_TOKEN }}"
-          export cache_path='github.com/repos/klever1988/sshactions/releases'
+          export cache_path='github.com/repos/stupidloud/sshactions/releases'
           export cache_repo_id='39020554'
           #zstdmt -c --adapt --long lede.img | parallel --wc --block 1.99G --pipe \
           #'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'$DEVICE'.img.zst.0{#} > /dev/null'
@@ -187,7 +187,7 @@ jobs:
           xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
           ls *img.zst* ib-$DEVICE.tar.xz | parallel --wc 'while true; do curl -T {} -H "$AUTH" -H "Content-Type: application/octet-stream" "https://uploads.$cache_path/$cache_repo_id/assets?name={}" && break || true; done'
           set +e
-          for i in {1..20}; do curl -sL --fail https://github.com/klever1988/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break; done | zstdmt -d -o /dev/null
+          for i in {1..20}; do curl -sL --fail https://github.com/stupidloud/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break; done | zstdmt -d -o /dev/null
           if [ $? -eq 0 ]; then break; fi
           done
           set -e
@@ -198,7 +198,7 @@ jobs:
           curl -k --data chat_id="${{secrets.TELEGRAM_CHAT_ID}}" --data "text=The ${{env.DEVICE}} build ran completed at ${{job.status}}." "https://api.telegram.org/bot${{secrets.TELEGRAM_BOT_TOKEN}}/sendMessage"
 
       - name: Debug via tmate
-        uses: klever1988/ssh2actions@main
+        uses: stupidloud/ssh2actions@main
         if: ${{ failure() && env.TG }}
         with:
           mode: ssh
@@ -228,7 +228,7 @@ jobs:
           sudo apt update && sudo apt install qemu-utils
           sudo sysctl vm.swappiness=0
           ulimit -SHn 65000
-          curl -L https://github.com/klever1988/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
+          curl -L https://github.com/stupidloud/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
           mv *imagebuilder* ib && cd ib
           . $GITHUB_WORKSPACE/scripts/merge_files.sh
           mkdir -p files/local_feed && sudo mount --bind packages files/local_feed
@@ -275,7 +275,7 @@ jobs:
           sudo apt update && sudo apt install qemu-utils
           sudo sysctl vm.swappiness=0
           ulimit -SHn 65000
-          curl -L https://github.com/klever1988/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
+          curl -L https://github.com/stupidloud/sshactions/releases/download/cache/ib-$DEVICE.tar.xz | tar -Jxvf -
           set -x
           mv *imagebuilder* ib && cd ib
           . $GITHUB_WORKSPACE/scripts/merge_files.sh
