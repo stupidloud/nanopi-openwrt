@@ -25,6 +25,10 @@ slim版
 ```bash
 wget -qO- https://github.com/stupidloud/nanopi-openwrt/raw/master/scripts/autoupdate-bash.sh | ver=-slim bash
 ```
+x86安装盘不是sda的情况下使用
+```bash
+wget -qO- https://github.com/klever1988/nanopi-openwrt/raw/master/scripts/autoupdate-bash.sh | disk=sdb bash
+```
 (脚本由gary lau提供，非常感谢！)
 
 ### 固件特性：
