@@ -113,6 +113,11 @@ if [[ $DEVICE == 'r1p-lts' ]]; then
   sed -i 's/1.46/1.49/' package/boot/uboot-rockchip/Makefile
 fi
 
+# fix for r1s-h3
+if [[ $DEVICE == 'r1s-h3' ]]; then
+  sed -i 's/kmod-leds-gpio//' target/linux/sunxi/image/cortexa7.mk
+fi
+
 case $DEVICE in
   r2s|r2c|r1p|r1p-lts)
     sed -i 's/5.10/5.4/g' target/linux/rockchip/Makefile
