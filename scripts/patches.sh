@@ -117,8 +117,6 @@ fi
 # fix for r1s-h3
 if [[ $DEVICE == 'r1s-h3' ]]; then
   sed -i 's/kmod-leds-gpio//' target/linux/sunxi/image/cortexa7.mk
-  sed -i 's/\+320\,7/+320\,8/;/NEED_HMAC_SHA384_KDF/a+NEED_GAS=y' package/network/services/hostapd/patches/050-build_fix.patch
-  sed -i '0,/NEED_GAS/{/NEED_GAS/d;}'  package/network/services/hostapd/patches/050-build_fix.patch
 fi
 
 case $DEVICE in
@@ -127,7 +125,11 @@ case $DEVICE in
     line_number_CONFIG_CRYPTO_LIB_BLAKE2S=$[`grep -n 'CONFIG_CRYPTO_LIB_BLAKE2S' package/kernel/linux/modules/crypto.mk | cut -d: -f 1`+1]
     sed -i $line_number_CONFIG_CRYPTO_LIB_BLAKE2S' s/HIDDEN:=1/DEPENDS:=@(LINUX_5_4||LINUX_5_10)/' package/kernel/linux/modules/crypto.mk
     sed -i 's/libblake2s.ko@lt5.9/libblake2s.ko/;s/libblake2s-generic.ko@lt5.9/libblake2s-generic.ko/' package/kernel/linux/modules/crypto.mk
-  ;;
+    ;;
+  r1s|r1s-h3)
+    sed -i 's/\+320\,7/+320\,8/;/NEED_HMAC_SHA384_KDF/a+NEED_GAS=y' package/network/services/hostapd/patches/050-build_fix.patch
+    sed -i '0,/NEED_GAS/{/NEED_GAS/d;}'  package/network/services/hostapd/patches/050-build_fix.patch
+    ;;
 esac
 
 # ...
