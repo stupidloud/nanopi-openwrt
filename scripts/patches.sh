@@ -127,7 +127,7 @@ case $DEVICE in
     sed -i 's/libblake2s.ko@lt5.9/libblake2s.ko/;s/libblake2s-generic.ko@lt5.9/libblake2s-generic.ko/' package/kernel/linux/modules/crypto.mk
     ;;
   r1s|r1s-h3)
-    sed -i 's/\+320\,7/+320\,8/;/NEED_HMAC_SHA384_KDF/a+NEED_GAS=y' package/network/services/hostapd/patches/050-build_fix.patch
+    sed -i 's/\+1031\,9/+1031,10/;/NEED_AES_WRAP/a+NEED_GAS=y' package/network/services/hostapd/patches/050-build_fix.patch
     sed -i '0,/NEED_GAS/{/NEED_GAS/d;}'  package/network/services/hostapd/patches/050-build_fix.patch
     ;;
 esac
