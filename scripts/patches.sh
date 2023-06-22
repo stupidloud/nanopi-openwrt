@@ -126,7 +126,7 @@ case $DEVICE in
     sed -i $line_number_CONFIG_CRYPTO_LIB_BLAKE2S' s/HIDDEN:=1/DEPENDS:=@(LINUX_5_4||LINUX_5_10)/' package/kernel/linux/modules/crypto.mk
     sed -i 's/libblake2s.ko@lt5.9/libblake2s.ko/;s/libblake2s-generic.ko@lt5.9/libblake2s-generic.ko/' package/kernel/linux/modules/crypto.mk
     ;;
-  r1s|r1s-h3)
+  r1s|r1s-h3|r5s)
     sed -i 's/\+1031\,9/+1031,10/;/NEED_AES_WRAP/a+NEED_GAS=y' package/network/services/hostapd/patches/200-multicall.patch
     ;;
 esac
