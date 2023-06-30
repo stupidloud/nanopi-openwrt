@@ -127,7 +127,7 @@ case $DEVICE in
     sed -i 's/libblake2s.ko@lt5.9/libblake2s.ko/;s/libblake2s-generic.ko@lt5.9/libblake2s-generic.ko/' package/kernel/linux/modules/crypto.mk
     ;;
   r1s|r1s-h3|r5s)
-    sed -i 's/\+1017\,12/+1017\,13/;/ifdef CONFIG_MBO/a+NEED_GAS=y' package/network/services/hostapd/patches/200-multicall.patch
+    sed -i 's/\+1017\,12/+1017\,13/;/ifdef CONFIG_MBO/i+NEED_GAS=y' package/network/services/hostapd/patches/200-multicall.patch
     ;;
 esac
 
