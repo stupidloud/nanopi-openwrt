@@ -7,6 +7,11 @@ function merge_package(){
 
     if [[ $1 == *'/trunk/'* || $1 == *'/branches/'* ]]; then
         svn export $1
+    elif [[ $1 == *'/tree/'* ]]; then
+        repo=`echo $1|awk -F'/tree/' '{print $1}'`
+        git clone --depth=1 --single-branch $repo .tmprepo
+        mv .tmprepo/$pn $pn
+        rm .tmprepo -rf
     else
         git clone --depth=1 --single-branch $3 $1
         rm -rf $pn/.git
@@ -42,11 +47,10 @@ merge_package "-b 18.06 https://github.com/jerrykuku/luci-theme-argon"
 merge_package https://github.com/vernesong/OpenClash/trunk/luci-app-openclash
 merge_package https://github.com/NateLol/luci-app-oled
 merge_package "-b lede https://github.com/pymumu/luci-app-smartdns"
-drop_package brook
-drop_package chinadns-ng
-drop_package trojan-go
-drop_package trojan-plus
-merge_package "-b luci https://github.com/xiaorouji/openwrt-passwall"
+merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/brook
+merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/chinadns-ng
+merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/trojan-go
+merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/trojan-plus
 merge_package https://github.com/jerrykuku/lua-maxminddb
 merge_package https://github.com/jerrykuku/luci-app-vssr
 merge_package https://github.com/kongfl888/luci-app-adguardhome
