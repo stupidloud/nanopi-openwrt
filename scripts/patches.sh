@@ -102,8 +102,9 @@ sed -i '3 i sed -i "/^exit.*/i\\/bin\\/mount -o remount,rw /" /etc/rc.local' `fi
 if [[ $DEVICE == 'r1s' ]]; then
   cd ~ && rm -rf immortalwrt/ && git clone -b openwrt-21.02 https://github.com/immortalwrt/immortalwrt && cd immortalwrt
   git log --grep r1s -i | grep '^commit ' | head -n -2 | cut -d' ' -f2 | tac | xargs git show | sed '0,/UENV/s//ATF/' > r1s.diff
-  git show 124116564e8a6081e79cb2e87b0d87b2af99c583 632c4c91e7640a354dc421fa324fd705b734252d 7fb1b00f5f6214bf7a29d3781d260a7e7c8547c9 >> r1s.diff
+  git show 632c4c91e7640a354dc421fa324fd705b734252d 7fb1b00f5f6214bf7a29d3781d260a7e7c8547c9 >> r1s.diff
   cd ~/lede && chmod +x target/linux/sunxi/base-files/etc/board.d/* && git apply ~/immortalwrt/r1s.diff
+  sed -i 's/kmod-rtl8189es//' target/linux/sunxi/image/cortexa53.mk
   sed -i 's/arm-trusted-firmware-sunxi-a64/trusted-firmware-a-sunxi-a64/' package/boot/uboot-sunxi/Makefile
   merge_package https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/emortal/autocore
 fi
