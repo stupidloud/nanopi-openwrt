@@ -83,14 +83,14 @@ jobs:
           cd
           svn export https://github.com/openwrt/luci/branches/master luci
           pushd luci
-          ls -d */ | xargs -n1 -i diff -q {} ../lede/feeds/luci/{} | grep Only | grep lede | grep -E applications\|themes | awk '{print $4}' | xargs -n1 -i echo CONFIG_PACKAGE_{}=m > ~/lede/more_luci.txt
+          ls -d */ | xargs -ri diff -q {} ../lede/feeds/luci/{} | grep Only | grep lede | grep -E applications\|themes | awk '{print $4}' | xargs -ri echo CONFIG_PACKAGE_{}=m > ~/lede/more_luci.txt
           popd
 
       - name: Custom configure file
         run: |
           cd ~/lede && rm -rf tmp/
           cat $GITHUB_WORKSPACE/$DEVICE.config.seed $GITHUB_WORKSPACE/common.seed | sed 's/\(CONFIG_PACKAGE_luci-app-[^A-Z]*=\)y/\1m/' > .config
-          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -n1 -i echo CONFIG_PACKAGE_{}=m >> .config
+          find package/ -type d -name luci-app-* | rev | cut -d'/' -f1 | rev | xargs -ri echo CONFIG_PACKAGE_{}=m >> .config
           cat $GITHUB_WORKSPACE/extra_packages.seed >> .config
           cat more_luci.txt >> .config
           make defconfig && sed -i -E 's/# (CONFIG_.*_COMPRESS_UPX) is not set/\1=y/' .config && make defconfig
@@ -183,9 +183,9 @@ jobs:
           while true; do
           ret=$(curl -sH "$AUTH" "https://api.$cache_path/tags/cache")
           echo $ret | jq -r '.assets[] | select(.name | contains ("'$DEVICE'.img")).id' | \
-          xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
+          xargs -ri curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
           echo $ret | jq -r '.assets[] | select(.name == "ib-'$DEVICE'.tar.xz").id' | \
-          xargs -n1 -i curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
+          xargs -ri curl -X DELETE -H "$AUTH" "https://api.$cache_path/assets/{}"
           ls *img.zst* ib-$DEVICE.tar.xz | parallel --wc 'while true; do curl -T {} -H "$AUTH" -H "Content-Type: application/octet-stream" "https://uploads.$cache_path/$cache_repo_id/assets?name={}" && break || true; done'
           set +e
           for i in {1..20}; do curl -sL --fail https://github.com/stupidloud/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break; done | zstdmt -d -o /dev/null
@@ -236,7 +236,7 @@ jobs:
           sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
           sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
           ls packages/*.ipk | xargs -n1 basename > package.files
-          PACKAGES=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed $GITHUB_WORKSPACE/common.seed | grep CONFIG_PACKAGE | grep '=y' | grep -v CONFIG_PACKAGE_luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs -n1 -i grep -o {} package.files | sort -u | xargs echo)
+          PACKAGES=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed $GITHUB_WORKSPACE/common.seed | grep CONFIG_PACKAGE | grep '=y' | grep -v CONFIG_PACKAGE_luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs -ri grep -o {} package.files | sort -u | xargs echo)
           PACKAGES="$PACKAGES `grep -o luci-i18n-opkg-zh-cn package.files || true`"
           make image PACKAGES="$PACKAGES $LUCI $LP luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn" FILES="files"
 
@@ -284,10 +284,10 @@ jobs:
           sed -i 's/luci-app-[^ ]*//g' include/target.mk $(find target/ -name Makefile)
           sed -i 's/$(OPKG) install $(BUILD_PACKAGES)/$(OPKG) install --force-overwrite $(BUILD_PACKAGES)/' Makefile
           ls packages/*.ipk | xargs -n1 basename > package.files
-          PACKAGES=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed $GITHUB_WORKSPACE/common.seed | grep CONFIG_PACKAGE | grep '=y' | grep -v CONFIG_PACKAGE_luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs -n1 -i grep -o {} package.files | sort -u | xargs echo)
+          PACKAGES=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed $GITHUB_WORKSPACE/common.seed | grep CONFIG_PACKAGE | grep '=y' | grep -v CONFIG_PACKAGE_luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs -ri grep -o {} package.files | sort -u | xargs echo)
           PACKAGES="$PACKAGES `grep -o luci-i18n-opkg-zh-cn package.files || true`"
-          LUCI=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed $GITHUB_WORKSPACE/common.seed | grep CONFIG_PACKAGE_luci-app | grep '=y' | grep -v docker | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs -n1 -i grep -o {} package.files | sort -u | xargs echo)
-          LP=$(echo $LUCI | sed 's/-app-/-i18n-/g;s/ /\n/g' | xargs -n1 -i grep -o {}-zh-cn package.files | xargs echo)
+          LUCI=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed $GITHUB_WORKSPACE/common.seed | grep CONFIG_PACKAGE_luci-app | grep '=y' | grep -v docker | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs -ri grep -o {} package.files | sort -u | xargs echo)
+          LP=$(echo $LUCI | sed 's/-app-/-i18n-/g;s/ /\n/g' | xargs -ri grep -o {}-zh-cn package.files | xargs echo)
           make image PACKAGES="$PACKAGES $LUCI $LP luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn" FILES="files"
 
           mkdir -p $GITHUB_WORKSPACE/release
@@ -302,8 +302,8 @@ jobs:
           fi
           cd $GITHUB_WORKSPACE/ib
           rm -rf bin/
-          LUCI=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed $GITHUB_WORKSPACE/common.seed | grep CONFIG_PACKAGE_luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs -n1 -i grep -o {} package.files | sort -u | xargs echo)
-          LP=$(echo $LUCI | sed 's/-app-/-i18n-/g;s/ /\n/g' | xargs -n1 -i grep -o {}-zh-cn package.files | xargs echo | xargs echo)
+          LUCI=$(cat $GITHUB_WORKSPACE/$DEVICE.config.seed $GITHUB_WORKSPACE/common.seed | grep CONFIG_PACKAGE_luci-app | sed 's/CONFIG_PACKAGE_//;s/=y//' | xargs -ri grep -o {} package.files | sort -u | xargs echo)
+          LP=$(echo $LUCI | sed 's/-app-/-i18n-/g;s/ /\n/g' | xargs -ri grep -o {}-zh-cn package.files | xargs echo | xargs echo)
           make image PACKAGES="$PACKAGES $LUCI $LP luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn" FILES="files"
           mv $(ls -1 ./bin/targets/*/*/*img.gz | head -1) $GITHUB_WORKSPACE/release/$DEVICE-with-docker.img.gz
           cd $GITHUB_WORKSPACE/release/ && md5sum $DEVICE-with-docker.img.gz > $DEVICE-with-docker.img.gz.md5

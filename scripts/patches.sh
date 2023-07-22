@@ -37,7 +37,7 @@ sed -i $line_number_INCLUDE_V2ray'd' package/custom/openwrt-passwall/luci-app-pa
 if [[ $BRANCH == 'master' ]]; then
 
   # fix po path for snapshot
-  #find package/ -follow -type d -path '*/po/zh-cn' | xargs dirname | xargs -n1 -i sh -c "rm -f {}/zh_Hans; ln -sf zh-cn {}/zh_Hans"
+  #find package/ -follow -type d -path '*/po/zh-cn' | xargs dirname | xargs -ri sh -c "rm -f {}/zh_Hans; ln -sf zh-cn {}/zh_Hans"
 
   # remove non-exist package from x86 profile
   sed -i 's/kmod-i40evf//;s/kmod-iavf//' target/linux/x86/Makefile
