@@ -117,7 +117,7 @@ fi
 
 # fix for r1s-h3
 if [[ $DEVICE == 'r1s-h3' ]]; then
-  sed -i 's/kmod-leds-gpio//' target/linux/sunxi/image/cortexa7.mk
+  sed -i 's/kmod-leds-gpio//;s/wpad-basic-wolfssl/wpad-basic-openssl/;' target/linux/sunxi/image/cortexa7.mk
 fi
 
 case $DEVICE in
