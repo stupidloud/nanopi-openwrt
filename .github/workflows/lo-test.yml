@@ -31,7 +31,6 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           nohup sh -c '
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk /opt/hostedtoolcache
           sudo sysctl vm.swappiness=0
           sudo apt update;
           sudo apt -y --no-install-recommends install pv jq \
@@ -43,6 +42,7 @@ jobs:
           libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip \
           vim wget xmlto xxd zlib1g-dev
           ' &
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk /opt/hostedtoolcache
 
       - uses: actions/checkout@v2
         with:
