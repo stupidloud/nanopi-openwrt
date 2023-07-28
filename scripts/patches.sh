@@ -109,12 +109,6 @@ if [[ $DEVICE == 'r1s' ]]; then
   merge_package https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/emortal/autocore
 fi
 
-# fix for r1p-lts
-if [[ $DEVICE == 'r1p-lts' ]]; then
-  git revert bd522ba3a1389457fdd3b63aba92731f16a18163 -X theirs --no-commit
-  sed -i 's/1.46/1.49/' package/boot/uboot-rockchip/Makefile
-fi
-
 # fix for r1s-h3
 if [[ $DEVICE == 'r1s-h3' ]]; then
   sed -i 's/kmod-leds-gpio//' target/linux/sunxi/image/cortexa7.mk
