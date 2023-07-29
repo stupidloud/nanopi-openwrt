@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        device: [r1p, r1p-lts, r1s, r1s-h3, r2c, r2s, r4s, r5s, x86]
+        device: [r1p, r1p-lts, r1s, r1s-h3, r2c, r2s, r4s, r4se, r5s, r5c, x86]
     steps:
         - name: Trigger Compile
           run: |
