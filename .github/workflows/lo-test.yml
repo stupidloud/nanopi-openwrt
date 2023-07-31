@@ -106,7 +106,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SSH_PASSWORD: ${{secrets.SSH_PASSWORD}}
           SSH_PUBKEY: ${{secrets.SSH_PUBKEY}}
-          NGROK_TOKEN: ${{secrets.TUNNEL_KEY}}
+          TUNNEL_KEY: ${{secrets.TUNNEL_KEY}}
           TUNNEL_HOST: ${{secrets.TUNNEL_HOST}}
 
       - name: Clean build cache
@@ -208,7 +208,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SSH_PASSWORD: ${{secrets.SSH_PASSWORD}}
           SSH_PUBKEY: ${{secrets.SSH_PUBKEY}}
-          NGROK_TOKEN: ${{secrets.TUNNEL_KEY}}
+          TUNNEL_KEY: ${{secrets.TUNNEL_KEY}}
           TUNNEL_HOST: ${{secrets.TUNNEL_HOST}}
 
   generate_slim_firmware:
