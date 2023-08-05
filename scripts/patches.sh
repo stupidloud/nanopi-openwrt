@@ -70,7 +70,6 @@ if [[ $BRANCH == 'master' ]]; then
       echo -e "\toption minfreq0 '816000'" >> $config_file_cpufreq
       echo -e "\toption maxfreq0 '1512000'\n" >> $config_file_cpufreq
 
-      sed -i 's/5.10/5.4/g' target/linux/rockchip/Makefile
       line_number_CONFIG_CRYPTO_LIB_BLAKE2S=$[`grep -n 'CONFIG_CRYPTO_LIB_BLAKE2S' package/kernel/linux/modules/crypto.mk | cut -d: -f 1`+1]
       sed -i $line_number_CONFIG_CRYPTO_LIB_BLAKE2S' s/HIDDEN:=1/DEPENDS:=@(LINUX_5_4||LINUX_5_10)/' package/kernel/linux/modules/crypto.mk
       sed -i 's/libblake2s.ko@lt5.9/libblake2s.ko/;s/libblake2s-generic.ko@lt5.9/libblake2s-generic.ko/' package/kernel/linux/modules/crypto.mk
