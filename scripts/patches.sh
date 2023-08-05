@@ -52,6 +52,15 @@ if [[ $BRANCH == 'master' ]]; then
   # swap the network adapter driver to r8168 to gain better performance for r4s
   #sed -i 's/r8169/r8168/' target/linux/rockchip/image/armv8.mk
 
+  # add pwm fan control service
+  wget https://github.com/friendlyarm/friendlywrt/commit/cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
+  git apply cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
+  rm cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
+  sed -i 's/pwmchip1/pwmchip0/' target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol.sh target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol-direct.sh
+  ;;
+
+  # ...
+  sed -i 's/kmod-usb-net-rtl8152/kmod-usb-net-rtl8152-vendor/' target/linux/rockchip/image/armv8.mk target/linux/sunxi/image/cortexa53.mk target/linux/sunxi/image/cortexa7.mk
 
   case $DEVICE in
     r2s|r2c|r1p|r1p-lts)
@@ -62,11 +71,10 @@ if [[ $BRANCH == 'master' ]]; then
       echo -e "\toption minfreq0 '816000'" >> $config_file_cpufreq
       echo -e "\toption maxfreq0 '1512000'\n" >> $config_file_cpufreq
 
-      # add pwm fan control service
-      wget https://github.com/friendlyarm/friendlywrt/commit/cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
-      git apply cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
-      rm cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
-      sed -i 's/pwmchip1/pwmchip0/' target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol.sh target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol-direct.sh
+      sed -i 's/5.10/5.4/g' target/linux/rockchip/Makefile
+      line_number_CONFIG_CRYPTO_LIB_BLAKE2S=$[`grep -n 'CONFIG_CRYPTO_LIB_BLAKE2S' package/kernel/linux/modules/crypto.mk | cut -d: -f 1`+1]
+      sed -i $line_number_CONFIG_CRYPTO_LIB_BLAKE2S' s/HIDDEN:=1/DEPENDS:=@(LINUX_5_4||LINUX_5_10)/' package/kernel/linux/modules/crypto.mk
+      sed -i 's/libblake2s.ko@lt5.9/libblake2s.ko/;s/libblake2s-generic.ko@lt5.9/libblake2s-generic.ko/' package/kernel/linux/modules/crypto.mk
       ;;
   esac
 
@@ -114,16 +122,4 @@ if [[ $DEVICE == 'r1s-h3' ]]; then
   sed -i 's/kmod-leds-gpio//' target/linux/sunxi/image/cortexa7.mk
 fi
 
-case $DEVICE in
-  r2s|r2c|r1p|r1p-lts)
-    sed -i 's/5.10/5.4/g' target/linux/rockchip/Makefile
-    line_number_CONFIG_CRYPTO_LIB_BLAKE2S=$[`grep -n 'CONFIG_CRYPTO_LIB_BLAKE2S' package/kernel/linux/modules/crypto.mk | cut -d: -f 1`+1]
-    sed -i $line_number_CONFIG_CRYPTO_LIB_BLAKE2S' s/HIDDEN:=1/DEPENDS:=@(LINUX_5_4||LINUX_5_10)/' package/kernel/linux/modules/crypto.mk
-    sed -i 's/libblake2s.ko@lt5.9/libblake2s.ko/;s/libblake2s-generic.ko@lt5.9/libblake2s-generic.ko/' package/kernel/linux/modules/crypto.mk
-    ;;
-esac
-
 sed -i 's/\+1017\,12/+1017\,13/;/ifdef CONFIG_MBO/i+NEED_GAS=y' package/network/services/hostapd/patches/200-multicall.patch
-
-# ...
-sed -i 's/kmod-usb-net-rtl8152/kmod-usb-net-rtl8152-vendor/' target/linux/rockchip/image/armv8.mk target/linux/sunxi/image/cortexa53.mk target/linux/sunxi/image/cortexa7.mk
