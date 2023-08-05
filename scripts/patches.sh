@@ -57,7 +57,6 @@ if [[ $BRANCH == 'master' ]]; then
   git apply cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
   rm cebdc1f94dcd6363da3a5d7e1e69fd741b8b718e.patch
   sed -i 's/pwmchip1/pwmchip0/' target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol.sh target/linux/rockchip/armv8/base-files/usr/bin/fa-fancontrol-direct.sh
-  ;;
 
   # ...
   sed -i 's/kmod-usb-net-rtl8152/kmod-usb-net-rtl8152-vendor/' target/linux/rockchip/image/armv8.mk target/linux/sunxi/image/cortexa53.mk target/linux/sunxi/image/cortexa7.mk
