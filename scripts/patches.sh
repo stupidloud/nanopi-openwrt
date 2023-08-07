@@ -20,6 +20,9 @@ sed -i 's/START=95/START=99/' `find package/ -follow -type f -path */ddns-script
 #sed -i 's/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=master/' package/kernel/rtl8821cu/Makefile
 #sed -i 's/PKG_MIRROR_HASH:=.*/PKG_MIRROR_HASH:=skip/' package/kernel/rtl8821cu/Makefile
 
+# enable r2s oled plugin by default
+sed -i "s/enable '0'/enable '1'/" `find package/ -follow -type f -path '*/luci-app-oled/root/etc/config/oled'`
+
 mkdir -p `find package/ -follow -type d -path '*/pdnsd-alt'`/patches
 mv $GITHUB_WORKSPACE/patches/99-disallow-aaaa.patch `find package/ -follow -type d -path '*/pdnsd-alt'`/patches
 
@@ -65,9 +68,6 @@ sed -i 's/kmod-i40evf//;s/kmod-iavf//' target/linux/x86/Makefile
 # kernel:fix bios boot partition is under 1 MiB
 # https://github.com/WYC-2020/lede/commit/fe628c4680115b27f1b39ccb27d73ff0dfeecdc2
 sed -i 's/256/1024/' target/linux/x86/image/Makefile
-
-# enable r2s oled plugin by default
-sed -i "s/enable '0'/enable '1'/" `find package/ -follow -type f -path '*/luci-app-oled/root/etc/config/oled'`
 
 # swap the network adapter driver to r8168 to gain better performance for r4s
 #sed -i 's/r8169/r8168/' target/linux/rockchip/image/armv8.mk
