@@ -23,6 +23,9 @@ sed -i 's/START=95/START=99/' `find package/ -follow -type f -path */ddns-script
 # enable r2s oled plugin by default
 sed -i "s/enable '0'/enable '1'/" `find package/ -follow -type f -path '*/luci-app-oled/root/etc/config/oled'`
 
+# set default theme to argon
+sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' `find package -type f -path '*/default-settings/files/*-default-settings'`
+
 mkdir -p `find package/ -follow -type d -path '*/pdnsd-alt'`/patches
 mv $GITHUB_WORKSPACE/patches/99-disallow-aaaa.patch `find package/ -follow -type d -path '*/pdnsd-alt'`/patches
 
@@ -55,9 +58,6 @@ case $status_page in
     ;;
 esac
 done
-
-# set default theme to argon
-sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon"' `find package -type f -path '*/default-settings/files/*-default-settings'`
 
 # fix po path for snapshot
 #find package/ -follow -type d -path '*/po/zh-cn' | xargs dirname | xargs -ri sh -c "rm -f {}/zh_Hans; ln -sf zh-cn {}/zh_Hans"
