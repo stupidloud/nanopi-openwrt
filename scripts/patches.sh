@@ -113,6 +113,8 @@ if [[ $DEVICE == 'r1s' ]]; then
   sed -i 's/kmod-rtl8189es//;s/wpad-basic-openssl/wpad-basic-wolfssl/' target/linux/sunxi/image/cortexa53.mk
   sed -i 's/arm-trusted-firmware-sunxi-a64/trusted-firmware-a-sunxi-a64/' package/boot/uboot-sunxi/Makefile
   merge_package https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/emortal/autocore
+
+  sed -i '/luci/d' extra_packages.seed
 fi
 
 # fix for r1s-h3
