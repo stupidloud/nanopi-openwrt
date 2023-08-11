@@ -96,7 +96,7 @@ esac
 # add r1s support to Lean's repo
 if [[ $DEVICE == 'r1s' ]]; then
   cd ~ && rm -rf immortalwrt/ && git clone -b openwrt-18.06-k5.4 --depth=1 https://github.com/immortalwrt/immortalwrt && cd immortalwrt
-  cp -a target/linux/sunxi/. ~/lede/target/linux/sunxi/. && cp -a package/boot/. ~/package/boot/.
+  cp -a target/linux/sunxi/. ~/lede/target/linux/sunxi/. && cp -a package/boot/. ~/lede/package/boot/.
   sed -i 's/kmod-rtl8189es//;s/wpad-basic-openssl/wpad-basic-wolfssl/' target/linux/sunxi/image/cortexa53.mk
   merge_package https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/emortal/autocore
 
