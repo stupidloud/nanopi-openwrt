@@ -95,11 +95,9 @@ esac
 
 # add r1s support to Lean's repo
 if [[ $DEVICE == 'r1s' ]]; then
-  cd ~ && rm -rf immortalwrt/ && git clone -b openwrt-18.06-k5.4 https://github.com/immortalwrt/immortalwrt && cd immortalwrt
-  git log --grep r1s -i | grep '^commit ' | head -n -2 | cut -d' ' -f2 | tac | xargs git show | sed '0,/UENV/s//ATF/' > r1s.diff
-  cd ~/lede && chmod +x target/linux/sunxi/base-files/etc/board.d/* && git apply ~/immortalwrt/r1s.diff
+  cd ~ && rm -rf immortalwrt/ && git clone -b openwrt-18.06-k5.4 --depth=1 https://github.com/immortalwrt/immortalwrt && cd immortalwrt
+  cp -a target/linux/sunxi/. ~/lede/target/linux/sunxi/. && cp -a package/boot/. ~/package/boot/.
   sed -i 's/kmod-rtl8189es//;s/wpad-basic-openssl/wpad-basic-wolfssl/' target/linux/sunxi/image/cortexa53.mk
-  sed -i 's/arm-trusted-firmware-sunxi-a64/trusted-firmware-a-sunxi-a64/' package/boot/uboot-sunxi/Makefile
   merge_package https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/emortal/autocore
 
   sed -i '/luci/d' $GITHUB_WORKSPACE/extra_packages.seed
