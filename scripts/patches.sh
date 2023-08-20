@@ -93,10 +93,24 @@ case $DEVICE in
     ;;
 esac
 
+# add r6s support to Lean's repo
+if [[ $DEVICE == 'r6s' ]]; then
+  pip3 install pylibfdt
+  cd ~ && rm -rf immortalwrt/ && git clone -b master --depth=1 https://github.com/immortalwrt/immortalwrt && cd immortalwrt
+  rsync -a --delete target/linux/rockchip/. ~/lede/target/linux/rockchip/. && rsync -a --delete target/linux/generic/. ~/lede/target/linux/generic/. && rsync -a --delete package/boot/. ~/lede/package/boot/.
+  cd ~/lede
+  wget https://github.com/coolsnowwolf/lede/raw/master/target/linux/generic/hack-6.1/952-add-net-conntrack-events-support-multiple-registrant.patch
+  wget https://github.com/coolsnowwolf/lede/raw/master/target/linux/generic/hack-6.1/953-net-patch-linux-kernel-to-support-shortcut-fe.patch
+  mv *.patch target/linux/generic/hack-6.1/
+  wget https://github.com/coolsnowwolf/lede/raw/master/target/linux/generic/pending-6.1/613-netfilter_optional_tcp_window_check.patch
+  mv *.patch target/linux/generic/pending-6.1/
+  git diff
+fi
+
 # add r1s support to Lean's repo
 if [[ $DEVICE == 'r1s' ]]; then
   cd ~ && rm -rf immortalwrt/ && git clone -b openwrt-18.06-k5.4 --depth=1 https://github.com/immortalwrt/immortalwrt && cd immortalwrt
-  cp -a target/linux/sunxi/. ~/lede/target/linux/sunxi/. && cp -a package/boot/. ~/lede/package/boot/.
+  rsync -a --delete target/linux/sunxi/. ~/lede/target/linux/sunxi/. && rsync -a --delete package/boot/. ~/lede/package/boot/.
   cd ~/lede
   sed -i 's/kmod-rtl8189es//;s/wpad-basic-openssl/wpad-basic-wolfssl/' target/linux/sunxi/image/cortexa53.mk
   merge_package https://github.com/immortalwrt/immortalwrt/branches/openwrt-18.06-k5.4/package/emortal/autocore
