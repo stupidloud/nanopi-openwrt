@@ -124,6 +124,7 @@ if [[ $DEVICE == 'r1s-h3' ]]; then
 fi
 
 # ...
+sed -i 's/rk3399_bl31_v1.35.elf/rk3399_bl31_v1.36.elf/' package/boot/uboot-rockchip/Makefile
 sed -i 's/kmod-usb-net-rtl8152/kmod-usb-net-rtl8152-vendor/' target/linux/rockchip/image/armv8.mk target/linux/sunxi/image/cortexa53.mk target/linux/sunxi/image/cortexa7.mk
 
 ## ugly fix of the read-only issue
