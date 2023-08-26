@@ -94,7 +94,7 @@ case $DEVICE in
 esac
 
 # add r6s support to Lean's repo
-if [[ $DEVICE == 'r6s' ]]; then
+if [[ $DEVICE == 'r6s' || $DEVICE == 'r6c' ]]; then
   pip3 install pylibfdt
   cd ~ && rm -rf immortalwrt/ && git clone -b master --depth=1 https://github.com/immortalwrt/immortalwrt && cd immortalwrt
   rsync -a --delete target/linux/rockchip/. ~/lede/target/linux/rockchip/. && rsync -a --delete target/linux/generic/. ~/lede/target/linux/generic/. && rsync -a --delete package/boot/. ~/lede/package/boot/.
