@@ -104,6 +104,7 @@ if [[ $DEVICE == 'r6s' || $DEVICE == 'r6c' ]]; then
   mv *.patch target/linux/generic/hack-6.1/
   wget https://github.com/coolsnowwolf/lede/raw/master/target/linux/generic/pending-6.1/613-netfilter_optional_tcp_window_check.patch
   mv *.patch target/linux/generic/pending-6.1/
+  sed -i "s/ucidef_set_interfaces_lan_wan 'eth0 eth1' 'eth2'/ucidef_set_interfaces_lan_wan 'eth1 eth2' 'eth0'/" target/linux/rockchip/armv8/base-files/etc/board.d/02_network
   git diff
 fi
 
