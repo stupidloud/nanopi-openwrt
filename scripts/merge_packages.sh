@@ -48,6 +48,7 @@ merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/brook
 merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/chinadns-ng
 merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/trojan-go
 merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/trojan-plus
+merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/sing-box
 merge_package "-b luci https://github.com/xiaorouji/openwrt-passwall"
 merge_package https://github.com/jerrykuku/lua-maxminddb
 merge_package https://github.com/jerrykuku/luci-app-vssr
