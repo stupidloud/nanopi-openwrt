@@ -44,12 +44,12 @@ merge_package https://github.com/messense/aliyundrive-webdav/trunk/openwrt/luci-
 merge_package "-b 18.06 https://github.com/jerrykuku/luci-theme-argon"
 merge_package https://github.com/vernesong/OpenClash/trunk/luci-app-openclash
 merge_package https://github.com/NateLol/luci-app-oled
-merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/brook
-merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/chinadns-ng
-merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/trojan-go
-merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/trojan-plus
-merge_package https://github.com/xiaorouji/openwrt-passwall/tree/packages/sing-box
-merge_package "-b luci https://github.com/xiaorouji/openwrt-passwall"
+merge_package https://github.com/xiaorouji/openwrt-passwall-packages/tree/main/brook
+merge_package https://github.com/xiaorouji/openwrt-passwall-packages/tree/main/chinadns-ng
+merge_package https://github.com/xiaorouji/openwrt-passwall-packages/tree/main/trojan-go
+merge_package https://github.com/xiaorouji/openwrt-passwall-packages/tree/main/trojan-plus
+merge_package https://github.com/xiaorouji/openwrt-passwall-packages/tree/main/sing-box
+merge_package "-b main https://github.com/xiaorouji/openwrt-passwall"
 merge_package https://github.com/jerrykuku/lua-maxminddb
 merge_package https://github.com/jerrykuku/luci-app-vssr
 merge_package https://github.com/kongfl888/luci-app-adguardhome
