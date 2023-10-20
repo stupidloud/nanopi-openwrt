@@ -7,24 +7,24 @@ CONFIG_TARGET_x86_64_DEVICE_generic=y
 CONFIG_TARGET_ROOTFS_PARTSIZE=750
 
 CONFIG_PACKAGE_acpid=y
-CONFIG_PACKAGE_luci-app-adbyby-plus=y
-CONFIG_PACKAGE_luci-app-ddnsto=y
-CONFIG_PACKAGE_luci-app-dockerman=y
+CONFIG_PACKAGE_luci-app-adbyby-plus=n
+CONFIG_PACKAGE_luci-app-ddnsto=n
+CONFIG_PACKAGE_luci-app-dockerman=n
 CONFIG_DOCKER_OPTIONAL_FEATURES=y
-CONFIG_PACKAGE_luci-app-godproxy=y
-CONFIG_PACKAGE_luci-app-netdata=y
-CONFIG_PACKAGE_luci-app-openclash=y
+CONFIG_PACKAGE_luci-app-godproxy=n
+CONFIG_PACKAGE_luci-app-netdata=n
+CONFIG_PACKAGE_luci-app-openclash=n
 
-CONFIG_PACKAGE_luci-app-passwall=y
-CONFIG_PACKAGE_luci-app-qbittorrent=y
-CONFIG_PACKAGE_luci-app-statistics=y
-CONFIG_PACKAGE_luci-app-transmission=y
+CONFIG_PACKAGE_luci-app-passwall=n
+CONFIG_PACKAGE_luci-app-qbittorrent=n
+CONFIG_PACKAGE_luci-app-statistics=n
+CONFIG_PACKAGE_luci-app-transmission=n
 CONFIG_PACKAGE_luci-theme-argon=y
 CONFIG_PACKAGE_luci-theme-openwrt=y
 CONFIG_PACKAGE_luci-theme-openwrt-2020=y
 CONFIG_PACKAGE_collectd-mod-ping=y
 CONFIG_PACKAGE_collectd-mod-thermal=y
-CONFIG_PACKAGE_qemu-ga=y
+CONFIG_PACKAGE_qemu-ga=n
 
 CONFIG_PACKAGE_kmod-igc=y
 CONFIG_PACKAGE_kmod-ath9k-htc=y
@@ -35,7 +35,7 @@ CONFIG_PACKAGE_kmod-sound-core=y
 
 CONFIG_PACKAGE_iw=y
 CONFIG_PACKAGE_iwinfo=y
-CONFIG_PACKAGE_wpad-basic-wolfssl=y
-CONFIG_DRIVER_11AC_SUPPORT=y
-CONFIG_DRIVER_11N_SUPPORT=y
-CONFIG_DRIVER_11W_SUPPORT=y
+CONFIG_PACKAGE_wpad-basic-wolfssl=n
+CONFIG_DRIVER_11AC_SUPPORT=n
+CONFIG_DRIVER_11N_SUPPORT=n
+CONFIG_DRIVER_11W_SUPPORT=n
