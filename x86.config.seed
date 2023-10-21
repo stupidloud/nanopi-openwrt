@@ -15,7 +15,7 @@ CONFIG_PACKAGE_luci-app-godproxy=n
 CONFIG_PACKAGE_luci-app-netdata=n
 CONFIG_PACKAGE_luci-app-openclash=n
 
-CONFIG_PACKAGE_luci-app-passwall=n
+CONFIG_PACKAGE_luci-app-passwall=y
 CONFIG_PACKAGE_luci-app-qbittorrent=n
 CONFIG_PACKAGE_luci-app-statistics=n
 CONFIG_PACKAGE_luci-app-transmission=n
