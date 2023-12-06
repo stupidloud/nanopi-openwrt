@@ -28,9 +28,9 @@ rm -rf /tmp/upg && mkdir /tmp/upg && cd /tmp/upg
 
 latest_release_tag=`get_latest_release stupidloud/nanopi-openwrt`
 echo -e '\e[92m准备更新到'$latest_release_tag'\e[0m'
-md5sum=`wget https://ghproxy.com/https://github.com/stupidloud/nanopi-openwrt/releases/download/$latest_release_tag/$board_id$ver.img.gz -O- | tee >(gzip -dc>$board_id.img) | md5sum | awk '{print $1}'`
+md5sum=`wget https://mirror.ghproxy.com/https://github.com/stupidloud/nanopi-openwrt/releases/download/$latest_release_tag/$board_id$ver.img.gz -O- | tee >(gzip -dc>$board_id.img) | md5sum | awk '{print $1}'`
 if [ "$md5sum" != "d41d8cd98f00b204e9800998ecf8427e" ]; then
-	wget https://ghproxy.com/https://github.com/stupidloud/nanopi-openwrt/releases/download/$latest_release_tag/$board_id$ver.img.gz.md5 -O md5sum.txt
+	wget https://mirror.ghproxy.com/https://github.com/stupidloud/nanopi-openwrt/releases/download/$latest_release_tag/$board_id$ver.img.gz.md5 -O md5sum.txt
 	echo -e '\e[92m'$latest_release_tag'固件已下载\e[0m'
 fi
 
