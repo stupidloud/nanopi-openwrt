@@ -116,7 +116,7 @@ if [[ $DEVICE == 'r1s' ]]; then
   rsync -a --delete target/linux/sunxi/. ~/lede/target/linux/sunxi/. && rsync -a --delete package/boot/. ~/lede/package/boot/.
   cd ~/lede
   sed -i 's/kmod-rtl8189es//;s/wpad-basic-openssl/wpad-basic-wolfssl/' target/linux/sunxi/image/cortexa53.mk
-  merge_package "-b openwrt-18.06-k5.4 https://github.com/immortalwrt/immortalwrt" package/emortal/autocore
+  merge_package "-b openwrt-18.06-k5.4 https://github.com/immortalwrt/immortalwrt" immortalwrt/package/emortal/autocore
 
   sed -i '/luci/d' $GITHUB_WORKSPACE/common.seed $GITHUB_WORKSPACE/extra_packages.seed
 fi
