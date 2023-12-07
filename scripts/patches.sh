@@ -97,6 +97,7 @@ esac
 if [[ $DEVICE == 'r6s' || $DEVICE == 'r6c' ]]; then
   pip3 install pylibfdt
   cd ~ && rm -rf immortalwrt/ && git clone -b master --depth=1 https://github.com/immortalwrt/immortalwrt && cd immortalwrt
+  mv include/kernel-6.1 ~/lede/include/
   rsync -a --delete target/linux/rockchip/. ~/lede/target/linux/rockchip/. && rsync -a --delete target/linux/generic/. ~/lede/target/linux/generic/. && rsync -a --delete package/boot/. ~/lede/package/boot/.
   cd ~/lede
   wget https://github.com/coolsnowwolf/lede/raw/master/target/linux/generic/hack-6.1/952-add-net-conntrack-events-support-multiple-registrant.patch
