@@ -1,10 +1,10 @@
 function merge_package(){
     repo=`echo $1 | rev | cut -d'/' -f 1 | rev`
-    find package/ -follow -name $3 -not -path "package/custom/*" | xargs -rt rm -rf
+    pkg=`echo $2 | rev | cut -d'/' -f 1 | rev`
+    find package/ -follow -name $pkg -not -path "package/custom/*" | xargs -rt rm -rf
     git clone --depth=1 --single-branch $1
-    mv $2 $3
+    mv $2 package/custom/
     rm -rf $repo
-    mv $3 package/custom/
 }
 function drop_package(){
     find package/ -follow -name $1 -not -path "package/custom/*" | xargs -rt rm -rf
