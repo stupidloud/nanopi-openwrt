@@ -56,9 +56,9 @@ jobs:
           for i in {1..20}
           do
             curl -sL --fail https://github.com/stupidloud/sshactions/releases/download/cache/lede.$DEVICE.img.zst.0$i || break
-          done | zstdmt -d -o lede.img || (truncate -s 30g lede.img && mkfs.btrfs -M lede.img)
+          done | zstdmt -d -o /mnt/lede.img || (truncate -s 30g /mnt/lede.img && mkfs.btrfs -M /mnt/lede.img)
           LOOP_DEVICE=$(losetup -f) && echo "LOOP_DEVICE=$LOOP_DEVICE" >> $GITHUB_ENV
-          sudo losetup -P --direct-io $LOOP_DEVICE lede.img
+          sudo losetup -P --direct-io $LOOP_DEVICE /mnt/lede.img
           mkdir lede && sudo mount -o nossd,compress=zstd $LOOP_DEVICE lede
           if [ -d 'lede/.git' ]; then
           cd lede && rm -f zerospace && git config --local user.email "action@github.com" && git config --local user.name "GitHub Action"
@@ -176,7 +176,7 @@ jobs:
           export cache_repo_id='39020554'
           #zstdmt -c --adapt --long lede.img | parallel --wc --block 1.99G --pipe \
           #'curl -s --data-binary @- -H "$AUTH" -H "Content-Type: application/octet-stream" https://uploads.$cache_path/$cache_repo_id/assets?name=lede.'$DEVICE'.img.zst.0{#} > /dev/null'
-          zstdmt -c --long lede.img | split --numeric=1 -b 2000m - lede.$DEVICE.img.zst.
+          zstdmt -c --long /mnt/lede.img | split --numeric=1 -b 2000m - lede.$DEVICE.img.zst.
           #for f in *img.zst*
           #do
           #  while true; do curl --data-binary @$f -H "$AUTH" -H 'Content-Type: application/octet-stream' "https://uploads.$cache_path/$cache_repo_id/assets?name=$f" && break || true; done
