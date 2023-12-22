@@ -128,8 +128,7 @@ fi
 
 # fix for x86
 if [[ $DEVICE == 'x86' ]]; then
-  echo -ne "CONFIG_PACKAGE_kmod-usb-audio=n\n" >> .config
-  make defconfig
+  echo -ne "CONFIG_PACKAGE_kmod-usb-audio=n\n" >> .config_fix
 fi
 
 # ...
