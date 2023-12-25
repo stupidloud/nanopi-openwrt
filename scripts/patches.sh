@@ -126,11 +126,6 @@ if [[ $DEVICE == 'r1s-h3' ]]; then
   sed -i 's/kmod-leds-gpio//' target/linux/sunxi/image/cortexa7.mk
 fi
 
-# fix for x86
-if [[ $DEVICE == 'x86' ]]; then
-  echo -ne "CONFIG_PACKAGE_kmod-usb-audio=n\n" >> .config_fix
-fi
-
 # ...
 sed -i 's/rk3399_bl31_v1.35.elf/rk3399_bl31_v1.36.elf/;s/rk3568_ddr_1560MHz_v1.13.bin/rk3568_ddr_1560MHz_v1.18.bin/;s/rk3568_bl31_v1.34.elf/rk3568_bl31_v1.43.elf/' package/boot/uboot-rockchip/Makefile
 sed -i 's/kmod-usb-net-rtl8152/kmod-usb-net-rtl8152-vendor/' target/linux/rockchip/image/armv8.mk target/linux/sunxi/image/cortexa53.mk target/linux/sunxi/image/cortexa7.mk
