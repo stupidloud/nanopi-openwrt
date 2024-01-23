@@ -71,13 +71,7 @@ jobs:
       - name: Update feeds and packages
         run: |
           cd ~/lede
-          rm -rf ./tmp && rm -rf ./feeds && rm -rf ./pacakges/feeds
-          if [ -d 'feeds' ]; then
-            pushd feeds/packages; git restore .; popd
-            pushd feeds/luci; git restore .; popd
-            pushd feeds/routing; git restore .; popd
-            pushd feeds/telephony; git restore .; popd
-          fi
+          rm -rf tmp feeds pacakges/feeds
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           . $GITHUB_WORKSPACE/scripts/merge_packages.sh

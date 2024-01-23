@@ -107,7 +107,7 @@ if [[ $DEVICE == 'r6s' || $DEVICE == 'r6c' ]]; then
   mv *.patch target/linux/generic/pending-6.1/
   sed -i "s/ucidef_set_interfaces_lan_wan 'eth0 eth1' 'eth2'/ucidef_set_interfaces_lan_wan 'eth1 eth0' 'eth2'/" target/linux/rockchip/armv8/base-files/etc/board.d/02_network
   sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += autocore-arm/' target/linux/rockchip/Makefile
-  git diff
+  git diff --summary
 fi
 
 # add r1s support to Lean's repo
