@@ -169,7 +169,8 @@ jobs:
         run: |
           cd
           sleep 60
-          sudo mount -o remount,compress=no,nodatacow,nodatasum lede
+          sudo umount lede
+          sudo mount -o compress=no,nodatacow,nodatasum $LOOP_DEVICE lede
           cd lede/; pv /dev/zero > zerospace || true; sync; rm -f zerospace; cd -
           sleep 60
           sudo umount lede
