@@ -119,7 +119,8 @@ jobs:
           ulimit -SHn 65000
           cd ~/lede
           while true; do make download -j && break || true; done
-          make -j$[`nproc`+1] IGNORE_ERRORS=1 tools/compile toolchain/compile buildinfo target/compile package/compile package/install target/install
+          if [ `nproc` -lt 8 ] && con = `nproc`/2+3 || con = `nproc`
+          make -j$con IGNORE_ERRORS=1 tools/compile toolchain/compile buildinfo target/compile package/compile package/install target/install
           if [ ! -e ~/lede/bin/targets/*/*/*imagebuilder*xz ]; then make IGNORE_ERRORS=1 V=sc; fi
           mv `ls ~/lede/bin/targets/*/*/*imagebuilder*xz` ~/ib-$DEVICE.tar.xz
 
