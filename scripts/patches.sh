@@ -96,7 +96,7 @@ esac
 # add r6s support to Lean's repo
 if [[ $DEVICE == 'r6s' || $DEVICE == 'r6c' ]]; then
   pip3 install pylibfdt
-  cd ~ && rm -rf immortalwrt/ && git clone -b master --depth=1 https://github.com/immortalwrt/immortalwrt && cd immortalwrt
+  cd ~ && rm -rf immortalwrt/ && git clone -b master https://github.com/immortalwrt/immortalwrt && cd immortalwrt
   git revert --no-edit 3bc7cfe0923ea23626a4e8c666c4a4b64a78f195 #cpufreq
   mv include/kernel-6.1 ~/lede/include/
   rsync -a --delete target/linux/rockchip/. ~/lede/target/linux/rockchip/. && rsync -a --delete target/linux/generic/. ~/lede/target/linux/generic/. && rsync -a --delete package/boot/. ~/lede/package/boot/.
