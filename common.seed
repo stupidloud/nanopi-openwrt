@@ -87,6 +87,7 @@ CONFIG_PACKAGE_kmod-usb2=y
 CONFIG_PACKAGE_kmod-usb3=y
 # CONFIG_PACKAGE_kmod-usb-net-rtl8152 is not set
 CONFIG_PACKAGE_kmod-usb-net-rtl8152-vendor=y
+CONFIG_PACKAGE_kmod-usb-net-ipheth=y
 CONFIG_PACKAGE_losetup=y
 CONFIG_PACKAGE_openssh-sftp-server=y
 CONFIG_PACKAGE_pv=y
