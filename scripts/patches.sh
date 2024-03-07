@@ -99,7 +99,7 @@ if [[ $DEVICE == 'r6s' || $DEVICE == 'r6c' ]]; then
   cd ~ && rm -rf immortalwrt/ && git clone -b master https://github.com/immortalwrt/immortalwrt && cd immortalwrt
   git revert --no-commit 3bc7cfe0923ea23626a4e8c666c4a4b64a78f195 #cpufreq
   mv include/kernel-6.1 ~/lede/include/
-  rsync -a --delete target/linux/rockchip/. ~/lede/target/linux/rockchip/. && rsync -a --delete target/linux/generic/. ~/lede/target/linux/generic/. && rsync -a --delete package/boot/. ~/lede/package/boot/.
+  rsync -a --delete target/linux/rockchip/. ~/lede/target/linux/rockchip/. && rsync -a --delete target/linux/generic/. ~/lede/target/linux/generic/. && rsync -a --delete package/boot/. ~/lede/package/boot/. && cp -a include/u-boot.mk ~/lede/include/u-boot.mk
   cd ~/lede
   wget https://github.com/coolsnowwolf/lede/raw/master/target/linux/generic/hack-6.1/952-add-net-conntrack-events-support-multiple-registrant.patch
   wget https://github.com/coolsnowwolf/lede/raw/master/target/linux/generic/hack-6.1/953-net-patch-linux-kernel-to-support-shortcut-fe.patch
