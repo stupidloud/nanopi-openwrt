@@ -118,7 +118,7 @@ jobs:
         run: |
           ulimit -SHn 65000
           cd ~/lede
-          rm -r dl;while true; do make download -j && break || true; done
+          rm -rf dl;while true; do make download -j && break || true; done
           [ `nproc` -gt 8 ] && con=$[`nproc`/2+3] || con=`nproc`
           if [ -d build_dir ]; then
             make -j$con IGNORE_ERRORS=1 tools/compile toolchain/compile buildinfo target/compile package/compile package/install target/install
